@@ -9,7 +9,9 @@ namespace CoreConsole
         {
             Console.Write("Input name --> ");
             string name = Console.ReadLine();
-            string str = CreaterString.CreateString(name);
+
+            var createrString = new HelloCreaterString(new SystemTime());
+            string str = createrString.HelloCreateString(name);
             Console.WriteLine(str);
         }
     }

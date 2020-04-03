@@ -14,7 +14,8 @@ namespace WindowsFormsAppHelloWorld
         private void button1_Click(object sender, EventArgs e)
         {
             string name = textBoxName.Text;
-            string str = CreaterString.CreateString(name);
+            var createrString = new HelloCreaterString(new SystemTime());
+            string str = createrString.HelloCreateString(name);
             textBoxName.Text = "";
             MessageBox.Show(str);
 
