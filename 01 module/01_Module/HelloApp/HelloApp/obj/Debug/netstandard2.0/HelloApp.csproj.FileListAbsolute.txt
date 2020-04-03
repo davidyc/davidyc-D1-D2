@@ -1,0 +1,14 @@
+C:\Sergey Davydov\C#\EPAM Mentor program\davidyc-D1-D2\01 module\01_Module\HelloApp\HelloApp\bin\Debug\netstandard2.0\HelloApp.deps.json
+C:\Sergey Davydov\C#\EPAM Mentor program\davidyc-D1-D2\01 module\01_Module\HelloApp\HelloApp\bin\Debug\netstandard2.0\HelloApp.dll
+C:\Sergey Davydov\C#\EPAM Mentor program\davidyc-D1-D2\01 module\01_Module\HelloApp\HelloApp\bin\Debug\netstandard2.0\ref\HelloApp.dll
+C:\Sergey Davydov\C#\EPAM Mentor program\davidyc-D1-D2\01 module\01_Module\HelloApp\HelloApp\bin\Debug\netstandard2.0\HelloApp.pdb
+C:\Sergey Davydov\C#\EPAM Mentor program\davidyc-D1-D2\01 module\01_Module\HelloApp\HelloApp\obj\Debug\netstandard2.0\HelloApp.csprojAssemblyReference.cache
+C:\Sergey Davydov\C#\EPAM Mentor program\davidyc-D1-D2\01 module\01_Module\HelloApp\HelloApp\obj\Debug\netstandard2.0\App.xaml.g.cs
+C:\Sergey Davydov\C#\EPAM Mentor program\davidyc-D1-D2\01 module\01_Module\HelloApp\HelloApp\obj\Debug\netstandard2.0\MainPage.xaml.g.cs
+C:\Sergey Davydov\C#\EPAM Mentor program\davidyc-D1-D2\01 module\01_Module\HelloApp\HelloApp\obj\Debug\netstandard2.0\HelloApp.csproj.CoreCompileInputs.cache
+C:\Sergey Davydov\C#\EPAM Mentor program\davidyc-D1-D2\01 module\01_Module\HelloApp\HelloApp\obj\Debug\netstandard2.0\HelloApp.AssemblyInfoInputs.cache
+C:\Sergey Davydov\C#\EPAM Mentor program\davidyc-D1-D2\01 module\01_Module\HelloApp\HelloApp\obj\Debug\netstandard2.0\HelloApp.AssemblyInfo.cs
+C:\Sergey Davydov\C#\EPAM Mentor program\davidyc-D1-D2\01 module\01_Module\HelloApp\HelloApp\obj\Debug\netstandard2.0\XamlC.stamp
+C:\Sergey Davydov\C#\EPAM Mentor program\davidyc-D1-D2\01 module\01_Module\HelloApp\HelloApp\obj\Debug\netstandard2.0\HelloApp.dll
+C:\Sergey Davydov\C#\EPAM Mentor program\davidyc-D1-D2\01 module\01_Module\HelloApp\HelloApp\obj\Debug\netstandard2.0\ref\HelloApp.dll
+C:\Sergey Davydov\C#\EPAM Mentor program\davidyc-D1-D2\01 module\01_Module\HelloApp\HelloApp\obj\Debug\netstandard2.0\HelloApp.pdb

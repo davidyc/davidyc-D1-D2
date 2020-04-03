@@ -1,0 +1,16 @@
+C:\Sergey Davydov\C#\EPAM Mentor program\davidyc-D1-D2\01 module\01_Module\CoreConsole\bin\Debug\netcoreapp3.1\CoreConsole.exe
+C:\Sergey Davydov\C#\EPAM Mentor program\davidyc-D1-D2\01 module\01_Module\CoreConsole\bin\Debug\netcoreapp3.1\CoreConsole.deps.json
+C:\Sergey Davydov\C#\EPAM Mentor program\davidyc-D1-D2\01 module\01_Module\CoreConsole\bin\Debug\netcoreapp3.1\CoreConsole.runtimeconfig.json
+C:\Sergey Davydov\C#\EPAM Mentor program\davidyc-D1-D2\01 module\01_Module\CoreConsole\bin\Debug\netcoreapp3.1\CoreConsole.runtimeconfig.dev.json
+C:\Sergey Davydov\C#\EPAM Mentor program\davidyc-D1-D2\01 module\01_Module\CoreConsole\bin\Debug\netcoreapp3.1\CoreConsole.dll
+C:\Sergey Davydov\C#\EPAM Mentor program\davidyc-D1-D2\01 module\01_Module\CoreConsole\bin\Debug\netcoreapp3.1\CoreConsole.pdb
+C:\Sergey Davydov\C#\EPAM Mentor program\davidyc-D1-D2\01 module\01_Module\CoreConsole\obj\Debug\netcoreapp3.1\CoreConsole.csprojAssemblyReference.cache
+C:\Sergey Davydov\C#\EPAM Mentor program\davidyc-D1-D2\01 module\01_Module\CoreConsole\obj\Debug\netcoreapp3.1\CoreConsole.csproj.CoreCompileInputs.cache
+C:\Sergey Davydov\C#\EPAM Mentor program\davidyc-D1-D2\01 module\01_Module\CoreConsole\obj\Debug\netcoreapp3.1\CoreConsole.AssemblyInfoInputs.cache
+C:\Sergey Davydov\C#\EPAM Mentor program\davidyc-D1-D2\01 module\01_Module\CoreConsole\obj\Debug\netcoreapp3.1\CoreConsole.AssemblyInfo.cs
+C:\Sergey Davydov\C#\EPAM Mentor program\davidyc-D1-D2\01 module\01_Module\CoreConsole\obj\Debug\netcoreapp3.1\CoreConsole.dll
+C:\Sergey Davydov\C#\EPAM Mentor program\davidyc-D1-D2\01 module\01_Module\CoreConsole\obj\Debug\netcoreapp3.1\CoreConsole.pdb
+C:\Sergey Davydov\C#\EPAM Mentor program\davidyc-D1-D2\01 module\01_Module\CoreConsole\obj\Debug\netcoreapp3.1\CoreConsole.genruntimeconfig.cache
+C:\Sergey Davydov\C#\EPAM Mentor program\davidyc-D1-D2\01 module\01_Module\CoreConsole\bin\Debug\netcoreapp3.1\HelloWorldClassLiblary.dll
+C:\Sergey Davydov\C#\EPAM Mentor program\davidyc-D1-D2\01 module\01_Module\CoreConsole\bin\Debug\netcoreapp3.1\HelloWorldClassLiblary.pdb
+C:\Sergey Davydov\C#\EPAM Mentor program\davidyc-D1-D2\01 module\01_Module\CoreConsole\obj\Debug\netcoreapp3.1\CoreConsole.csproj.CopyComplete

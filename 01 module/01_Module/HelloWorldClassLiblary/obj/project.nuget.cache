@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "i6Up4QAFxWFyUNWD4BqJUkTOd3+c8aMUuS0rS9Xdhw85uPG+IpWw9iVyeM1AbldsCQVKOLz4rxBnRam9QukHcg==",
+  "success": true,
+  "projectFilePath": "C:\\Sergey Davydov\\C#\\EPAM Mentor program\\davidyc-D1-D2\\01 module\\01_Module\\HelloWorldClassLiblary\\HelloWorldClassLiblary.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Sergey_Davydov2\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Users\\Sergey_Davydov2\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
