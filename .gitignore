@@ -1,0 +1,10 @@
+.vs/
+bin/
+target/
+output/
+release/
+debug/
+*.log
+*~
+thumbs.db
+.DS_Store
