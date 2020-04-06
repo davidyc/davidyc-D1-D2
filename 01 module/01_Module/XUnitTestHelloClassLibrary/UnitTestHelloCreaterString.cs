@@ -11,13 +11,13 @@ namespace XUnitTestHelloClassLibrary
         {
             //Arrange
             var name = "Sergey";
-            var dateTime = new DateTime(2020, 1,1,0,0,0);
+            var dateTime = new DateTime(2020, 1,1,7,0,0);
 
             // Act
             var result = HelloCreaterString.HelloCreateString(name, dateTime);
 
             // Assert
-            Assert.Equal(String.Format("{0} Hello Sergey!", dateTime.ToString("HH:mm")), result);
+            Assert.Equal(String.Format("07:00 Hello Sergey!", dateTime.ToString("HH:mm")), result);
         }
     }
 }
