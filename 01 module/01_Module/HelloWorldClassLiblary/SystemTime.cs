@@ -7,6 +7,6 @@ namespace HelloWorldClassLiblary
 {
     public class SystemTime : ITime
     {
-        public DateTime GetDateTime { get { return DateTime.Now; }}
+        public DateTime DateTime { get { return DateTime.Now; } }
     }
 }

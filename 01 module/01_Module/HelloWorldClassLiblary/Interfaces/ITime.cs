@@ -6,6 +6,6 @@ namespace HelloWorldClassLiblary.Interfaces
 {
     public interface ITime
     {
-        DateTime GetDateTime { get; }
+        DateTime DateTime { get; }
     }
 }

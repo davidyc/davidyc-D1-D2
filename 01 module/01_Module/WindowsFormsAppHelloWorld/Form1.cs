@@ -14,11 +14,11 @@ namespace WindowsFormsAppHelloWorld
         private void button1_Click(object sender, EventArgs e)
         {
             string name = textBoxName.Text;
-            var createrString = new HelloCreaterString(new SystemTime());
-            string str = createrString.HelloCreateString(name);
+            var dateTime = DateTime.Now;
+
+            var str = HelloCreaterString.HelloCreateString(name, dateTime);
             textBoxName.Text = "";
             MessageBox.Show(str);
-
         }
     }
 }

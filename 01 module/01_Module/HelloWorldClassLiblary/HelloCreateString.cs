@@ -4,19 +4,11 @@ using System;
 
 namespace HelloWorldClassLiblary
 {
-    public class HelloCreaterString 
+    public class HelloCreaterString
     {
-        ITime time;
-
-        public HelloCreaterString(ITime time)
+        public static string HelloCreateString(string name, DateTime dateTime)
         {
-            this.time = time;
-        }
-
-        public string HelloCreateString(string name)
-        {
-            var currentTime = time.GetDateTime.ToLongTimeString();
-            return String.Format("{0} Hello {1}!", currentTime, name);
+            return String.Format("{0} Hello {1}!", dateTime.ToString("HH:mm"), name);
         }
     }
 }

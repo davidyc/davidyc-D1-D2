@@ -9,9 +9,9 @@ namespace CoreConsole
         {
             Console.Write("Input name --> ");
             string name = Console.ReadLine();
+            var datetime = DateTime.Now;
 
-            var createrString = new HelloCreaterString(new SystemTime());
-            string str = createrString.HelloCreateString(name);
+            string str = HelloCreaterString.HelloCreateString(name, datetime);
             Console.WriteLine(str);
         }
     }

@@ -7,7 +7,12 @@ namespace HelloWorldClassLiblary
 {
     public class StaticTime : ITime
     {
-        public DateTime GetDateTime { get { return new DateTime(2020, 1, 1, 0, 0, 0); } }
-        
+        public DateTime DateTime { get; }
+
+        public StaticTime(int year, int mounth, int day, int hour, int minute, int second)
+        {
+            DateTime = new DateTime(year, mounth, day, hour, minute, second);
+        }
+
     }
 }

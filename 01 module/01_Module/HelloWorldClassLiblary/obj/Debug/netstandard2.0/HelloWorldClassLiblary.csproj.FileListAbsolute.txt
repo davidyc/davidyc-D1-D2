@@ -1,9 +1,0 @@
-C:\Sergey Davydov\C#\EPAM Mentor program\davidyc-D1-D2\01 module\01_Module\HelloWorldClassLiblary\bin\Debug\netstandard2.0\HelloWorldClassLiblary.deps.json
-C:\Sergey Davydov\C#\EPAM Mentor program\davidyc-D1-D2\01 module\01_Module\HelloWorldClassLiblary\bin\Debug\netstandard2.0\HelloWorldClassLiblary.dll
-C:\Sergey Davydov\C#\EPAM Mentor program\davidyc-D1-D2\01 module\01_Module\HelloWorldClassLiblary\bin\Debug\netstandard2.0\HelloWorldClassLiblary.pdb
-C:\Sergey Davydov\C#\EPAM Mentor program\davidyc-D1-D2\01 module\01_Module\HelloWorldClassLiblary\obj\Debug\netstandard2.0\HelloWorldClassLiblary.csprojAssemblyReference.cache
-C:\Sergey Davydov\C#\EPAM Mentor program\davidyc-D1-D2\01 module\01_Module\HelloWorldClassLiblary\obj\Debug\netstandard2.0\HelloWorldClassLiblary.csproj.CoreCompileInputs.cache
-C:\Sergey Davydov\C#\EPAM Mentor program\davidyc-D1-D2\01 module\01_Module\HelloWorldClassLiblary\obj\Debug\netstandard2.0\HelloWorldClassLiblary.AssemblyInfoInputs.cache
-C:\Sergey Davydov\C#\EPAM Mentor program\davidyc-D1-D2\01 module\01_Module\HelloWorldClassLiblary\obj\Debug\netstandard2.0\HelloWorldClassLiblary.AssemblyInfo.cs
-C:\Sergey Davydov\C#\EPAM Mentor program\davidyc-D1-D2\01 module\01_Module\HelloWorldClassLiblary\obj\Debug\netstandard2.0\HelloWorldClassLiblary.dll
-C:\Sergey Davydov\C#\EPAM Mentor program\davidyc-D1-D2\01 module\01_Module\HelloWorldClassLiblary\obj\Debug\netstandard2.0\HelloWorldClassLiblary.pdb
