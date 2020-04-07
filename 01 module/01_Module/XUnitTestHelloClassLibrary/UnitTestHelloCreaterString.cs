@@ -17,7 +17,7 @@ namespace XUnitTestHelloClassLibrary
             var result = HelloCreaterString.HelloCreateString(name, dateTime);
 
             // Assert
-            Assert.Equal(String.Format("07:00 Hello Sergey!", dateTime.ToString("HH:mm")), result);
+            Assert.Equal("07:00 Hello Sergey!", result);
         }
     }
 }

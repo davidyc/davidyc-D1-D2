@@ -1,5 +1,4 @@
-﻿using HelloWorldClassLiblary.Interfaces;
-using System;
+﻿using System;
 
 
 namespace HelloWorldClassLiblary
@@ -8,7 +7,7 @@ namespace HelloWorldClassLiblary
     {
         public static string HelloCreateString(string name, DateTime dateTime)
         {
-            return String.Format("{0} Hello {1}!", dateTime.ToString("HH:mm"), name);
+            return $"{dateTime.ToString("HH:mm")} Hello {name}!";
         }
     }
 }
