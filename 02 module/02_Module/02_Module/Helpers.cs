@@ -11,16 +11,27 @@ namespace Module1Task
             Console.WriteLine(info);
         }
 
-        public static void FileFound(string message, bool needStop = false, bool excludeFile = false, bool excludeFolder = false)
+        public static void FileFound(string message)
         {
             Console.WriteLine(message + " was found");
         }
 
-        public static void FolderFound(string message, bool needStop = false, bool excludeFile = false, bool excludeFolder = false)
+        public static void FolderFound(string message)
         {
             Console.WriteLine("Folder " + message + " was found");
+        }
+        public static void FileFiltered(string message)
+        {
+            Console.WriteLine(message + " was Filtered");
+        }
+
+        public static void FolderFiltered(string message)
+        {
+            Console.WriteLine("Folder " + message + " was Filtered");
         }
 
 
     }
+
 }
+
