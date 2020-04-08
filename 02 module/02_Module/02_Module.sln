@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29911.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "02_Module", "02_Module\02_Module.csproj", "{63C0A7F9-E4E0-4814-BA3F-6AFFE0B91103}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "02_Module", "02_Module\02_Module.csproj", "{63C0A7F9-E4E0-4814-BA3F-6AFFE0B91103}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XUnitTestFileVisitor", "XUnitTestFileVisitor\XUnitTestFileVisitor.csproj", "{498F8615-0520-4F34-A7EC-0FAB4EEBC30C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{63C0A7F9-E4E0-4814-BA3F-6AFFE0B91103}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63C0A7F9-E4E0-4814-BA3F-6AFFE0B91103}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63C0A7F9-E4E0-4814-BA3F-6AFFE0B91103}.Release|Any CPU.Build.0 = Release|Any CPU
+		{498F8615-0520-4F34-A7EC-0FAB4EEBC30C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{498F8615-0520-4F34-A7EC-0FAB4EEBC30C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{498F8615-0520-4F34-A7EC-0FAB4EEBC30C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{498F8615-0520-4F34-A7EC-0FAB4EEBC30C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
