@@ -6,4 +6,9 @@
     <RootNamespace>_02_Module</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="System.IO.Abstractions" Version="10.0.8" />
+    <PackageReference Include="System.IO.Abstractions.TestingHelpers" Version="10.0.8" />
+  </ItemGroup>
+
 </Project>
