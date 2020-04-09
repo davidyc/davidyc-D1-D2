@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Module1Task
+namespace Module2Task
 {
     public class Helpers
     {

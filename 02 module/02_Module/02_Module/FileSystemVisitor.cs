@@ -2,20 +2,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
 using System.Text;
 
-namespace Module1Task
+namespace Module2Task
 {
     public delegate void Info(string message);
     public class FileSystemVisitor : IEnumerable
     {
+        private readonly IFileSystem fileSystem;
+
         private ICollection<string> filesFolders;
         private string startPath;
         private Func<string, bool> filteredFunc;
         private bool needStop;
         private bool excludeFile;
-        private bool excludeFolder;
+        private bool excludeFolder;       
 
         public event Info StartEnd;
         public event Info FileFind;
@@ -24,8 +27,10 @@ namespace Module1Task
         public event Info FolderFindFitered;
 
 
-        public FileSystemVisitor(string path)
+        public FileSystemVisitor(string path, IFileSystem fileSystem = null)
         {
+         
+            this.fileSystem = fileSystem;            
             startPath = path;
             filesFolders = new List<string>();
             needStop = false;
@@ -33,7 +38,7 @@ namespace Module1Task
             excludeFolder = false;
         }
 
-        public FileSystemVisitor(string path, Func<string, bool> func, bool needStop = false, bool excludeFile = false, bool excludeFolder = false) : this(path)
+        public FileSystemVisitor(string path, Func<string, bool> func, bool needStop = false, bool excludeFile = false, bool excludeFolder = false, IFileSystem fileSystem = null) : this(path, fileSystem)
         {
             filteredFunc = func;
             this.needStop = needStop;
@@ -43,9 +48,14 @@ namespace Module1Task
          
         void GetFolderElements(string path)
         {
-            List<string> folders = Directory.GetDirectories(path).ToList<string>();
-                        
-            if (folders.Count == 0)
+            string[] folders;
+            // пойдет ли такой подход пуси то нужно только для тестов или лучше сделать какую то обертку 
+            if (fileSystem == null)
+                folders = Directory.GetDirectories(path);
+            else
+                folders = fileSystem.Directory.GetDirectories(path);            
+
+            if (folders.Length == 0)
             {
                 if (filteredFunc != null)
                 {                    
@@ -65,20 +75,30 @@ namespace Module1Task
             }
             else
             {
-                foreach (var pat in folders)
-                    GetFolderElements(pat);               
+                foreach (var folder in folders)
+                    GetFolderElements(folder);               
                 AddFilesToCollection(path);
             }
         }
         void AddFilesToCollection(string path)
         {
-            var files = Directory.GetFiles(path);
+            string[] files;
+            string filemane;
+            if (fileSystem==null)
+                files = Directory.GetFiles(path);
+            else
+                files = fileSystem.Directory.GetFiles(path);
+            
             foreach (var file in files)
             {
                 if (filteredFunc != null)
-                {               
-                    var x = Path.GetFileName(file);
-                    if (filteredFunc(x) && !excludeFile)
+                {                    
+                    if (fileSystem == null)
+                        filemane = Path.GetFileName(file);
+                    else
+                        filemane = fileSystem.Path.GetFileName(file);
+               
+                    if (filteredFunc(filemane) && !excludeFile)
                     {
                         filesFolders.Add(file);
                         FileFindFitered?.Invoke(file);
@@ -92,11 +112,12 @@ namespace Module1Task
             }
         }
 
-        public void GetAllElements()
+        public ICollection<string> GetAllElements()
         {
             StartEnd?.Invoke("Stard Search");
             GetFolderElements(startPath);
-            StartEnd?.Invoke("End Search");           
+            StartEnd?.Invoke("End Search");
+            return filesFolders;
         }
         public IEnumerator GetEnumerator()
         {
@@ -104,5 +125,5 @@ namespace Module1Task
                 yield return item;            
         }
 
-    }
+    }    
 }

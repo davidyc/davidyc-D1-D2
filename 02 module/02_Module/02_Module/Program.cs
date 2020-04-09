@@ -3,15 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.IO.Abstractions.TestingHelpers;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Module1Task
+namespace Module2Task
 {
     class Program
     {
         static void Main(string[] args)
-        {
+        {                       
             FileSystemVisitor fsv = new FileSystemVisitor(@"..\..\..\..\FIleVisitor",
                 x => x.Contains("New"), excludeFolder:true);
             //FileSystemVisitor fsv = new FileSystemVisitor(@"..\..\..\..\FIleVisitor");
