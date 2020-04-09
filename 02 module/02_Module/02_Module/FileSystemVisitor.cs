@@ -17,6 +17,7 @@ namespace Module2Task
         private string startPath;
         private Func<string, bool> filteredFunc;
         private bool needStop;
+        private bool onlyOneFile;
         private bool excludeFile;
         private bool excludeFolder;       
 
@@ -36,12 +37,13 @@ namespace Module2Task
             needStop = false;
             excludeFile = false;
             excludeFolder = false;
+            onlyOneFile = false;
         }
 
-        public FileSystemVisitor(string path, Func<string, bool> func, bool needStop = false, bool excludeFile = false, bool excludeFolder = false, IFileSystem fileSystem = null) : this(path, fileSystem)
+        public FileSystemVisitor(string path, Func<string, bool> func, bool onlyOneFile = false, bool excludeFile = false, bool excludeFolder = false, IFileSystem fileSystem = null) : this(path, fileSystem)
         {
             filteredFunc = func;
-            this.needStop = needStop;
+            this.onlyOneFile = onlyOneFile;
             this.excludeFile = excludeFile;
             this.excludeFolder = excludeFolder;
         }
@@ -49,20 +51,22 @@ namespace Module2Task
         void GetFolderElements(string path)
         {
             string[] folders;
-            // пойдет ли такой подход пуси то нужно только для тестов или лучше сделать какую то обертку 
+            // пойдет ли такой подход пусити это нужно только для тестов или лучше сделать какую то обертку сделать
             if (fileSystem == null)
                 folders = Directory.GetDirectories(path);
             else
-                folders = fileSystem.Directory.GetDirectories(path);            
-
+                folders = fileSystem.Directory.GetDirectories(path);
+                      
             if (folders.Length == 0)
             {
-                if (filteredFunc != null)
-                {                    
-                    if (filteredFunc(path) && !excludeFolder)
+                if (filteredFunc != null) // придумал только такой способ прерывания
+                {
+                    if (filteredFunc(path) && !excludeFolder && !needStop)
                     {
-                        filesFolders.Add(path);                        
-                        FolderFindFitered?.Invoke(path);                      
+                        if (onlyOneFile)
+                            needStop = true;
+                        filesFolders.Add(path);
+                        FolderFindFitered?.Invoke(path);
                     }
                     AddFilesToCollection(path);
                 }
@@ -76,9 +80,11 @@ namespace Module2Task
             else
             {
                 foreach (var folder in folders)
-                    GetFolderElements(folder);               
+                    GetFolderElements(folder);
                 AddFilesToCollection(path);
             }
+            
+          
         }
         void AddFilesToCollection(string path)
         {
@@ -98,8 +104,10 @@ namespace Module2Task
                     else
                         filemane = fileSystem.Path.GetFileName(file);
                
-                    if (filteredFunc(filemane) && !excludeFile)
+                    if (filteredFunc(filemane) && !excludeFile && !needStop)
                     {
+                        if (onlyOneFile)
+                            needStop = true;
                         filesFolders.Add(file);
                         FileFindFitered?.Invoke(file);
                     }                   

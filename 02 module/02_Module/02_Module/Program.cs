@@ -14,7 +14,7 @@ namespace Module2Task
         static void Main(string[] args)
         {                       
             FileSystemVisitor fsv = new FileSystemVisitor(@"..\..\..\..\FIleVisitor",
-                x => x.Contains("New"), excludeFolder:true);
+                x => x.Contains("New"), onlyOneFile:true);
             //FileSystemVisitor fsv = new FileSystemVisitor(@"..\..\..\..\FIleVisitor");
            
             fsv.StartEnd += Helpers.ConsoleInfo;
