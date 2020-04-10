@@ -30,7 +30,9 @@ namespace Module2Task
 
         public FileSystemVisitor(string path, IFileSystem fileSystem = null)
         {
-         
+
+            if (fileSystem == null)
+                fileSystem = new FileSystem();
             this.fileSystem = fileSystem;            
             startPath = path;
             filesFolders = new List<string>();
@@ -51,17 +53,17 @@ namespace Module2Task
         void GetFolderElements(string path)
         {
             string[] folders;
-            // пойдет ли такой подход пусити это нужно только для тестов или лучше сделать какую то обертку сделать
-            if (fileSystem == null)
-                folders = Directory.GetDirectories(path);
-            else
-                folders = fileSystem.Directory.GetDirectories(path);
+
+            if (needStop)
+                return;
+                        
+            folders = fileSystem.Directory.GetDirectories(path);
                       
             if (folders.Length == 0)
             {
-                if (filteredFunc != null) // придумал только такой способ прерывания
+                if (filteredFunc != null)
                 {
-                    if (filteredFunc(path) && !excludeFolder && !needStop)
+                    if (filteredFunc(path) && !excludeFolder)
                     {
                         if (onlyOneFile)
                             needStop = true;
@@ -82,29 +84,25 @@ namespace Module2Task
                 foreach (var folder in folders)
                     GetFolderElements(folder);
                 AddFilesToCollection(path);
-            }
-            
-          
+            }         
         }
         void AddFilesToCollection(string path)
         {
             string[] files;
             string filemane;
-            if (fileSystem==null)
-                files = Directory.GetFiles(path);
-            else
-                files = fileSystem.Directory.GetFiles(path);
+
+            if (needStop)
+                return;
+           
+            files = fileSystem.Directory.GetFiles(path);
             
             foreach (var file in files)
             {
                 if (filteredFunc != null)
                 {                    
-                    if (fileSystem == null)
-                        filemane = Path.GetFileName(file);
-                    else
-                        filemane = fileSystem.Path.GetFileName(file);
+                    filemane = fileSystem.Path.GetFileName(file);
                
-                    if (filteredFunc(filemane) && !excludeFile && !needStop)
+                    if (filteredFunc(filemane) && !excludeFile)
                     {
                         if (onlyOneFile)
                             needStop = true;
