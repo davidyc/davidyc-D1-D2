@@ -50,6 +50,12 @@ namespace Module2Task
             this.excludeFolder = excludeFolder;
         }
          
+        void AddPathToCollection(string path, Info eventInfo )
+        {
+            filesFolders.Add(path);
+            eventInfo?.Invoke(path);
+        }
+
         void GetFolderElements(string path)
         {
             string[] folders;
@@ -67,17 +73,14 @@ namespace Module2Task
                     {
                         if (onlyOneFile)
                             needStop = true;
-                        filesFolders.Add(path);
-                        FolderFindFitered?.Invoke(path);
-                    }
-                    AddFilesToCollection(path);
+                        AddPathToCollection(path, FolderFindFitered);
+                    }                   
                 }
                 else
                 {
-                    filesFolders.Add(path);
-                    FolderFind?.Invoke(path);
-                    AddFilesToCollection(path);
+                    AddPathToCollection(path, FolderFind);      
                 }
+                AddFilesToCollection(path);
             }
             else
             {
@@ -106,14 +109,12 @@ namespace Module2Task
                     {
                         if (onlyOneFile)
                             needStop = true;
-                        filesFolders.Add(file);
-                        FileFindFitered?.Invoke(file);
+                        AddPathToCollection(file, FileFindFitered);
                     }                   
                 }
                 else
                 {
-                    filesFolders.Add(file);
-                    FileFind?.Invoke(file);
+                    AddPathToCollection(file, FileFind);
                 }
             }
         }
