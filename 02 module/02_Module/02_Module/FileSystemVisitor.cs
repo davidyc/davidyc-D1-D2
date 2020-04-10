@@ -79,22 +79,22 @@ namespace Module2Task
                 else
                 {
                     AddPathToCollection(path, FolderFind);      
-                }
-                AddFilesToCollection(path);
+                }                
             }
             else
             {
                 foreach (var folder in folders)
-                    GetFolderElements(folder);
-                AddFilesToCollection(path);
-            }         
+                    GetFolderElements(folder);               
+            }
+
+            AddFilesToCollection(path);
         }
         void AddFilesToCollection(string path)
         {
             string[] files;
             string filemane;
 
-            if (needStop)
+            if (needStop || excludeFile)
                 return;
            
             files = fileSystem.Directory.GetFiles(path);
@@ -105,7 +105,7 @@ namespace Module2Task
                 {                    
                     filemane = fileSystem.Path.GetFileName(file);
                
-                    if (filteredFunc(filemane) && !excludeFile)
+                    if (filteredFunc(filemane))
                     {
                         if (onlyOneFile)
                             needStop = true;
