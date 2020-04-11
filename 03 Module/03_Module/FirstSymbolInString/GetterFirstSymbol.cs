@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+
 
 namespace FirstSymbolInString
 {
@@ -8,7 +7,17 @@ namespace FirstSymbolInString
     {
         public static string GetFirstSymbol(string inputString)
         {
-            return inputString[0].ToString();
+            try
+            {
+                if (string.IsNullOrEmpty(inputString))
+                    throw new StringNullOrEmptyException("Input string is null or empty");
+                return inputString[0].ToString();
+            }
+            catch (StringNullOrEmptyException e)
+            {
+               return e.Message;
+            }
+          
         }
     }
 }

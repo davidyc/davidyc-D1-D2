@@ -10,7 +10,9 @@ namespace XUnitTestModule3
         [InlineData("Hello", "H")]           
         [InlineData("luck", "l")]
         [InlineData("1234567", "1")]
-       
+        [InlineData("", "Input string is null or empty")]
+        [InlineData(null, "Input string is null or empty")]
+
         public void TestGetFirstSymbol(string value, string expected)
         {
             var actual = GetterFirstSymbol.GetFirstSymbol(value);  
