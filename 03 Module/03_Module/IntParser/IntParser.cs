@@ -31,6 +31,24 @@ namespace CustomerIntParser
             return (int)number;
         }
 
+        //этого в задинии нет но я решил создать аналоги парс и трайпарс что б тесты пописать на них
+        public static bool TryParseInt(string number, out int resultInt)
+        {
+            try
+            {
+                resultInt = IntParser.ParseInt(number);
+                return true;
+            }
+            catch
+            {
+                resultInt = 0;
+                return false;
+            }
+        
+        }
+       
+        // тут есть вопрос стоит ли тестит приватные методы как я понял в нете есть споры на счет этого. 
+        //А как на практике
         static bool IsNegative(string numberString)
         {
             return numberString.Contains("-") ? true : false;

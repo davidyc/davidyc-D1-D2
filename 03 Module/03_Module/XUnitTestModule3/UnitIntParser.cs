@@ -39,8 +39,7 @@ namespace XUnitTestModule3
             }
             Assert.IsType(expected.GetType(), actual);
         }
-
-        
+                
         [Theory]
         [InlineData("2147483648")]
         [InlineData("-2147483649")]
@@ -64,5 +63,31 @@ namespace XUnitTestModule3
             Assert.IsType(expected.GetType(), actual);
         }
 
+        [Theory]
+        [InlineData("10", true)]       
+        [InlineData("257", true)]
+        [InlineData("-159", true)]
+        [InlineData("1234567", true)]
+        [InlineData("2ddd57", false)]
+        [InlineData("2147483648", false)]
+        [InlineData("-2147483649", false)]
+        public void TestTryParseIntTrueFalse(string value, bool expected)
+        {
+            int number;
+            var actual = IntParser.TryParseInt(value, out number);
+            Assert.Equal(expected, actual);
+        }
+
+        [Theory]
+        [InlineData("10", 10)]        
+        [InlineData("257", 257)]
+        [InlineData("-159", -159)]
+        [InlineData("1234567", 1234567)]
+        public void TestTryParseInt(string value, int expected)
+        {
+            int actual;
+            var succseful = IntParser.TryParseInt(value, out actual);
+            Assert.Equal(expected, actual);
+        }
     }
 }
