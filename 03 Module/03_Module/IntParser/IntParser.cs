@@ -4,21 +4,17 @@ namespace CustomerIntParser
 {
     public class IntParser
     {
-
         public static int ParseInt(string inputString)
         {
             long number = 0;
             int dec = 1;
             var numberString = CleanNumber(inputString);
-            var charArray = numberString.ToCharArray();
-            Array.Reverse(charArray);                
-
-
-            foreach (var ch in charArray)
+          
+            for (int i = numberString.Length-1; i >= 0; i--)
             {
-                if ((ch - 48) < 0 || (ch - 48) > 9)
+                if ((numberString[i] - 48) < 0 || (numberString[i] - 48) > 9)
                     throw new IntFormatException("String have invalid symbol");
-                number += ((int)ch - 48) * dec;
+                number += ((int)numberString[i] - 48) * dec;
                 dec *= 10;
             }
 
@@ -30,8 +26,6 @@ namespace CustomerIntParser
 
             return (int)number;
         }
-
-        //этого в задинии нет но я решил создать аналоги парс и трайпарс что б тесты пописать на них
         public static bool TryParseInt(string number, out int resultInt)
         {
             try
@@ -43,17 +37,12 @@ namespace CustomerIntParser
             {
                 resultInt = 0;
                 return false;
-            }
-        
-        }
-       
-        // тут есть вопрос стоит ли тестит приватные методы как я понял в нете есть споры на счет этого. 
-        //А как на практике
+            }        
+        }  
         static bool IsNegative(string numberString)
         {
-            return numberString.Contains("-") ? true : false;
+            return numberString[0] == '-';
         }
-
         static string CleanNumber(string inputString)
         {
             var str = inputString.Replace(" ", "").Replace("-", "");
