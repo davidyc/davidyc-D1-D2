@@ -9,19 +9,17 @@ namespace ServiceConsoleileWatcher
     {
         private IDictionary<string, string> rules;
         private string path;
-        //private IFileWatcer fileSystemWatcher; //позже добавить обертку
-        private FileSystemWatcher fileSystemWatcher;
+        private IFileWatcer fileSystemWatcher; //позже добавить обертку
+        //private FileSystemWatcher fileSystemWatcher;
         private Action<string> show;
 
         public ServiseFileWatcher(string path, IDictionary<string,string> rules, Action<string> show) 
         {
             this.path = path;
-            fileSystemWatcher = new FileSystemWatcher();
-            fileSystemWatcher.Path = path;
+            fileSystemWatcher = new ConsoleFileWancher(path);            
             this.rules = rules;
             this.show = show;
-        }
-      
+        }      
 
         private void OnCreate(object source, FileSystemEventArgs e)
         {
@@ -51,15 +49,7 @@ namespace ServiceConsoleileWatcher
         }
         public void Run()
         {
-            //fileSystemWatcher.Run(OnCreate);
-            fileSystemWatcher.NotifyFilter = NotifyFilters.CreationTime | NotifyFilters.FileName |
-            NotifyFilters.DirectoryName;
-
-            fileSystemWatcher.Created += new FileSystemEventHandler(OnCreate);
-            fileSystemWatcher.EnableRaisingEvents = true;
-
-            Console.WriteLine("Press the Escape (Esc) key to quit");
-            while (Console.ReadKey().Key != ConsoleKey.Escape) ;
+            fileSystemWatcher.Run(OnCreate);
         }
 
     }

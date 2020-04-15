@@ -7,8 +7,14 @@ namespace ServiceConsoleileWatcher
 {
     public class ConsoleFileWancher : IFileWatcer
     {
+        private string path;
         public FileSystemWatcher FileSystemWatcher { get; set; }
 
+        public ConsoleFileWancher(string path)
+        {
+            this.path = path;
+            FileSystemWatcher = new FileSystemWatcher(path);
+        }
         public void Run(Action<object, FileSystemEventArgs> onCreate)
         {
             FileSystemWatcher.NotifyFilter = NotifyFilters.CreationTime | NotifyFilters.FileName |
