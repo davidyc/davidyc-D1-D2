@@ -1,17 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Text;
+using System.Threading;
+using WorkMessage = ServiceConsoleileWatcher.Resoures.WorkStatusStrings;
 
 namespace ServiceConsoleileWatcher
 {
+   
+
     public class ServiseFileWatcher
     {
         private IDictionary<string, string> rules;
         private string path;
-        private IFileWatcer fileSystemWatcher; //позже добавить обертку
-        //private FileSystemWatcher fileSystemWatcher;
+        private IFileWatcer fileSystemWatcher;       
         private Action<string> show;
+
+        public static string name_folder_for_move_file = "default";
 
         public ServiseFileWatcher(string path, IDictionary<string,string> rules, Action<string> show) 
         {
@@ -19,11 +25,12 @@ namespace ServiceConsoleileWatcher
             fileSystemWatcher = new ConsoleFileWancher(path);            
             this.rules = rules;
             this.show = show;
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("ru-RU");
         }      
 
         private void OnCreate(object source, FileSystemEventArgs e)
         {
-            show.Invoke("File: " + e.FullPath + " " + e.ChangeType);
+            show.Invoke(String.Format(WorkMessage.FileCreated, e.Name, DateTime.Now.ToString(Thread.CurrentThread.CurrentUICulture)));
             MoveFile(e);
         }
 
@@ -33,18 +40,19 @@ namespace ServiceConsoleileWatcher
             {
                 if (e.Name.Contains(item.Key))
                 {
-                    show.Invoke($"Rules {item.Key} was found ");
+                    show.Invoke(String.Format(WorkMessage.RuleFound, item.Key));
                     File.Move(e.FullPath, Path.Combine(path, item.Value, e.Name));
-                    show.Invoke($"File {e.Name} was moved to {Path.Combine(path, item.Value, e.Name)}");
+                    show.Invoke(String.Format(WorkMessage.MoveFile, e.Name, Path.Combine(path, item.Value, e.Name)));
                     break;
                 }
             }
 
             if (File.Exists(e.FullPath))
             {
-                show.Invoke($"Rules wasn't found");
-                File.Move(e.FullPath, Path.Combine(path, "default", e.Name));
-                show.Invoke($"File {e.Name} was moved to {Path.Combine(path, "default", e.Name)}");
+                show.Invoke(WorkMessage.RuleNotFound);
+                File.Move(e.FullPath, Path.Combine(path, name_folder_for_move_file, e.Name));
+                show.Invoke(String.Format(WorkMessage.MoveFile, e.Name, Path.Combine(path, name_folder_for_move_file,
+                    e.Name)));
             }
         }
         public void Run()

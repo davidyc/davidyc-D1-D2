@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Text;
+using System.Threading;
+using WorkMessage = ServiceConsoleileWatcher.Resoures.WorkStatusStrings; 
 
 namespace ServiceConsoleileWatcher
 {
@@ -23,7 +26,8 @@ namespace ServiceConsoleileWatcher
             FileSystemWatcher.Created += new FileSystemEventHandler(onCreate);
             FileSystemWatcher.EnableRaisingEvents = true;
 
-            Console.WriteLine("Press the Escape (Esc) key to quit");
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("ru-RU");
+            Console.WriteLine(WorkMessage.StopWorkMessage);
             while (Console.ReadKey().Key != ConsoleKey.Escape) ;
         }
     }
