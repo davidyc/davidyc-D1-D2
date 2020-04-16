@@ -12,14 +12,14 @@ namespace XUnitTestModule3
         [InlineData("257", 257)]
         [InlineData("-159", -159)]
         [InlineData("1234567", 1234567)]
-        public void ParseInt_StringNumber_IntNumber(string value, int expected)
+        public void ParseInt_GivenStringNumber_ParseToIntNumber(string value, int expected)
         {
             var actual = IntParser.ParseInt(value);
             Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void ParseInt_String12Fr444_IntFormatException()
+        public void ParseInt_GivenIncorrectStringNumber_ShouldIntFormatException()
         {
             //Arrange
             var inputString = "12Fr444";             
@@ -32,7 +32,7 @@ namespace XUnitTestModule3
         [Theory]
         [InlineData("2147483648")]
         [InlineData("-2147483649")]
-        public void ParseInt_ToLargeInt_IntSizeException(string number)
+        public void ParseInt_GivenStringNumberToLargeInt_ShouldIntSizeException(string number)
         {
             //Arrange
             var inputString = number;
@@ -47,7 +47,7 @@ namespace XUnitTestModule3
         [InlineData("257", true)]
         [InlineData("-159", true)]
         [InlineData("1234567", true)]        
-        public void TryParseInt_NumberString_True(string value, bool expected)
+        public void TryParseInt_GivenStringNumber_ShouldTrue(string value, bool expected)
         {
             int number;
             var actual = IntParser.TryParseInt(value, out number);
@@ -58,7 +58,7 @@ namespace XUnitTestModule3
         [InlineData("2ddd57", false)]
         [InlineData("2147483648", false)]
         [InlineData("-2147483649", false)]
-        public void TryParseInt_IncorrectInt_False(string value, bool expected)
+        public void TryParseInt_GivenIncorrectStringNumber_ShouldFalse(string value, bool expected)
         {
             int number;
             var actual = IntParser.TryParseInt(value, out number);
@@ -70,7 +70,7 @@ namespace XUnitTestModule3
         [InlineData("257", 257)]
         [InlineData("-159", -159)]
         [InlineData("1234567", 1234567)]
-        public void TryParseInt_NumberString_IntNumber(string value, int expected)
+        public void TryParseInt_GivenStringNumber_ParseToIntNumber(string value, int expected)
         {
             int actual;
             var succseful = IntParser.TryParseInt(value, out actual);

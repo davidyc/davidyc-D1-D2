@@ -10,14 +10,14 @@ namespace XUnitTestModule3
         [InlineData("Hello", "H")]
         [InlineData("luck", "l")]
         [InlineData("1234567", "1")]
-        public void GetFirstSymbol_InputString_FirstSymbol(string value, string expected)
+        public void GetFirstSymbol_GivenNotEmptyString_ReturnFirstSymbol(string value, string expected)
         {
             var actual = GetterFirstSymbol.GetFirstSymbol(value);
             Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void GetFirstSymbol_EmptyString_StringNullOrEmptyException()
+        public void GetFirstSymbol_GivenEmptyString_StringNullOrEmptyException()
         {
             //Arrange
             var inputString = String.Empty;
@@ -28,7 +28,7 @@ namespace XUnitTestModule3
         }
 
         [Fact]
-        public void GetFirstSymbol_Null_StringNullOrEmptyException()
+        public void GetFirstSymbol_GivenNull_StringNullOrEmptyException()
         {
             //Arrange
             string inputString = null;
