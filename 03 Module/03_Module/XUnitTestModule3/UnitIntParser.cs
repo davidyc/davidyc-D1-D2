@@ -11,11 +11,22 @@ namespace XUnitTestModule3
         [InlineData("0", 0)]
         [InlineData("257", 257)]
         [InlineData("-159", -159)]
-        [InlineData("1234567", 1234567)]
+        [InlineData("1234567", 1234567)]    
         public void ParseInt_GivenStringNumber_ParseToIntNumber(string value, int expected)
         {
             var actual = IntParser.ParseInt(value);
             Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void ParseInt_GivenNull_ArgumentNullException()
+        {
+            //Arrange
+            string inputString = null;
+            // Act
+            Action actual = () => IntParser.ParseInt(inputString);
+            // Assert
+            Assert.Throws<ArgumentNullException>(actual);
         }
 
         [Fact]
@@ -58,6 +69,8 @@ namespace XUnitTestModule3
         [InlineData("2ddd57", false)]
         [InlineData("2147483648", false)]
         [InlineData("-2147483649", false)]
+        [InlineData("", false)]
+        [InlineData(null, false)]
         public void TryParseInt_GivenIncorrectStringNumber_ShouldFalse(string value, bool expected)
         {
             int number;
@@ -70,6 +83,8 @@ namespace XUnitTestModule3
         [InlineData("257", 257)]
         [InlineData("-159", -159)]
         [InlineData("1234567", 1234567)]
+        [InlineData("", 0)]
+        [InlineData(null, 0)]
         public void TryParseInt_GivenStringNumber_ParseToIntNumber(string value, int expected)
         {
             int actual;

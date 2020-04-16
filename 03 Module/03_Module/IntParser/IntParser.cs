@@ -8,6 +8,10 @@ namespace CustomerIntParser
         {
             long number = 0;
             int dec = 1;
+            
+            if(inputString == null)
+                throw new ArgumentNullException("Input argument is null");
+
             var numberString = CleanNumber(inputString);
           
             for (int i = numberString.Length-1; i >= 0; i--)
