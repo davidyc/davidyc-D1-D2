@@ -10,23 +10,35 @@ namespace ServiceConsoleileWatcher
 {
     public class ConsoleFileWancher : IFileWatcer
     {
-        private string path;
-        public FileSystemWatcher FileSystemWatcher { get; set; }
+        private IEnumerable<string> path;
+        public ICollection<FileSystemWatcher> FileSystemWatchers { get; set; }
 
-        public ConsoleFileWancher(string path)
+        public ConsoleFileWancher(IEnumerable<string> path)
         {
             this.path = path;
-            FileSystemWatcher = new FileSystemWatcher(path);
+            FileSystemWatchers = new List<FileSystemWatcher>();
+
+            foreach (var item in path)
+            {
+                FileSystemWatchers.Add(new FileSystemWatcher(item));
+            }                  
         }
-        public void Run(Action<object, FileSystemEventArgs> onCreate)
+
+        private void SetFileSystemWatchers(Action<object, FileSystemEventArgs> onCreate)
         {
-            FileSystemWatcher.NotifyFilter = NotifyFilters.CreationTime | NotifyFilters.FileName |
+            foreach (var fileSystemWatcher in FileSystemWatchers)
+            {
+                fileSystemWatcher.NotifyFilter = NotifyFilters.CreationTime | NotifyFilters.FileName |
             NotifyFilters.DirectoryName;
 
-            FileSystemWatcher.Created += new FileSystemEventHandler(onCreate);
-            FileSystemWatcher.EnableRaisingEvents = true;
+                fileSystemWatcher.Created += new FileSystemEventHandler(onCreate);
+                fileSystemWatcher.EnableRaisingEvents = true;
+            }              
+        }
 
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo("ru-RU");
+        public void Run(Action<object, FileSystemEventArgs> onCreate)
+        {
+            SetFileSystemWatchers(onCreate);         
             Console.WriteLine(WorkMessage.StopWorkMessage);
             while (Console.ReadKey().Key != ConsoleKey.Escape) ;
         }
