@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ServiceConsoleileWatcher.Enums;
+using ServiceConsoleileWatcher.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -15,24 +17,19 @@ namespace ServiceConsoleileWatcher
     {
         static int count = 0;
 
-        private IDictionary<string, string> rules;
-        private IEnumerable<string> path;
+        private IEnumerable<IRule> rules;      
         private IFileWatcer fileSystemWatcher;       
         private Action<string> show;
-        private bool addDateMove;
-        private bool addCount;
+        private string folderDefault;
 
-        public static string name_folder_for_move_file = @"C:\";
-
-        public ServiseFileWatcher(IEnumerable<string> path, IDictionary<string,string> rules, Action<string> show, 
-            bool addDate = false, bool addCount = false) 
+        public ServiseFileWatcher(string folderDefault, IEnumerable<IRule> rules, IFileWatcer fileSystemWatcher,
+            Action<string> show) 
         {
-            this.path = path;
-            fileSystemWatcher = new ConsoleFileWancher(path); // передавать сюда бул что бы было видно что оно работает
+            this.folderDefault = folderDefault;
+            this.fileSystemWatcher = fileSystemWatcher;
             this.rules = rules;
             this.show = show;
-            this.addCount = addCount;
-            this.addDateMove = addDate;
+          
         }      
 
         private void OnCreate(object source, FileSystemEventArgs e)
@@ -41,30 +38,31 @@ namespace ServiceConsoleileWatcher
             CheckRulesForMoveFile(e);
         }
 
-        private void MoveFile(FileSystemEventArgs e, string endFolderName)
+        private void MoveFile(FileSystemEventArgs e, string endFolderName, NamePrefixs namePrefixs = NamePrefixs.none)
         {
             string fileName = e.Name;
-            if (addDateMove)
-                fileName = $"{DateTime.Now.ToLongDateString()}_{fileName}";
-            if (addCount)
+            if (namePrefixs == NamePrefixs.date)
+            {
+                fileName = $"{DateTime.Now.ToLongDateString()}_{fileName}";     
+            }
+            else if (namePrefixs == NamePrefixs.count)
             {
                 fileName = $"({count})_{fileName}";
-                count++;
-            }
-
+                count++;                
+            }             
             File.Move(e.FullPath, Path.Combine(endFolderName, fileName));
             show.Invoke(String.Format(WorkMessage.MoveFile, e.Name, endFolderName));
         }
        
         private void CheckRulesForMoveFile(FileSystemEventArgs e)
         {
-            foreach (var item in rules)
+            foreach (var rule in rules)
             {
-                var rgx = new Regex(item.Key);
+                var rgx = new Regex(rule.Rule);
                 if (rgx.IsMatch(e.Name))
                 {
-                    show.Invoke(String.Format(WorkMessage.RuleFound, item.Key));
-                    MoveFile(e, item.Value);             
+                    show.Invoke(String.Format(WorkMessage.RuleFound, rule.Rule));
+                    MoveFile(e, rule.FolderPath, rule.NamePrefixs);             
                     break;
                 }
             }
@@ -72,7 +70,7 @@ namespace ServiceConsoleileWatcher
             if (File.Exists(e.FullPath))
             {
                 show.Invoke(WorkMessage.RuleNotFound);
-                MoveFile(e, name_folder_for_move_file);
+                MoveFile(e, folderDefault);
             }
         }
         public void Run()

@@ -9,6 +9,6 @@ namespace ServiceConsoleileWatcher
         public FolderConfigSectionCollection Folders
         {
             get { return (FolderConfigSectionCollection)this["Folders"]; }
-        }
+        }   
     }
 }

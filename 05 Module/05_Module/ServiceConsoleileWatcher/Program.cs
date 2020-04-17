@@ -1,4 +1,5 @@
 ﻿using ServiceConsoleileWatcher.ConfigSection;
+using ServiceConsoleileWatcher.Enums;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -12,28 +13,27 @@ namespace ServiceConsoleileWatcher
         static void Main(string[] args)
         {
             var culture  = ConfigurationManager.AppSettings.Get("language");
+            var defaultFolder = ConfigurationManager.AppSettings.Get("defaulfFolder");
 
             WatchFolderConfigSection configSection = (WatchFolderConfigSection)ConfigurationManager.GetSection("WatchFolderConfigSection");
             FolderConfigSectionCollection folders = configSection.Folders;
 
-
-            var tmpListPath = new List<string>();
+            var listPath = new List<string>();
             foreach (PathSectionElement folder in folders)
             {
-                tmpListPath.Add(folder.Path);
+                listPath.Add(folder.Path);
             }
-
+            
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(culture);
-            Dictionary<string, string> rules = new Dictionary<string, string>()
+
+            IEnumerable<Rules> rules = new List<Rules>()
             {
-                {".txt", @"C:\Sergey Davydov\C#\EPAM Mentor program\davidyc-D1-D2\05 Module\05_Module\FolderForWatching\txt"},
-                { ".docx", @"C:\Sergey Davydov\C#\EPAM Mentor program\davidyc-D1-D2\05 Module\05_Module\FolderForWatching\doc"}
-            };
+                new Rules { FolderPath = @"..\..\..\..\FolderForWatching\txt", Rule = ".txt" , NamePrefixs = NamePrefixs.count},
+                new Rules { FolderPath = @"..\..\..\..\FolderForWatching\doc", Rule = ".docx" , NamePrefixs = NamePrefixs.date}
+            };          
 
-           
-
-            var sfw = new ServiseFileWatcher(tmpListPath.ToArray(), rules, x => Console.WriteLine(x), addCount:true);
-            ServiseFileWatcher.name_folder_for_move_file = @"C:\Sergey Davydov\C#\EPAM Mentor program\davidyc-D1-D2\05 Module\05_Module\FolderForWatching\default";
+            var cfw = new ConsoleFileWancher(listPath);
+            var sfw = new ServiseFileWatcher(defaultFolder, rules, cfw, x => Console.WriteLine(x));            
             sfw.Run();
 
         }

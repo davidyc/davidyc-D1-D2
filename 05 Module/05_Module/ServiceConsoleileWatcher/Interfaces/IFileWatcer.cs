@@ -5,9 +5,9 @@ using System.IO;
 
 namespace ServiceConsoleileWatcher
 {
-    interface IFileWatcer
+    public interface IFileWatcer
     {
         public ICollection<FileSystemWatcher> FileSystemWatchers { get; set; }
-        public void Run(Action<object, FileSystemEventArgs> onCreate);
+        public void Run(Action<object, FileSystemEventArgs> onCreate);       
     }
 }
