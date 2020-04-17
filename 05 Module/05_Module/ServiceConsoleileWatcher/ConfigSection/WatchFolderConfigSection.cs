@@ -1,4 +1,4 @@
-﻿using ServiceConsoleileWatcher.ConfigSection;
+﻿using ServiceConsoleileWatcher;
 using System.Configuration;
 
 namespace ServiceConsoleileWatcher

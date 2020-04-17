@@ -1,4 +1,4 @@
-﻿using ServiceConsoleileWatcher.ConfigSection;
+﻿using ServiceConsoleileWatcher;
 using ServiceConsoleileWatcher.Enums;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Globalization;
 using System.Threading;
 
 namespace ServiceConsoleileWatcher
-{    
+{  
     class Program
     {
         static void Main(string[] args)
@@ -23,14 +23,17 @@ namespace ServiceConsoleileWatcher
             {
                 listPath.Add(folder.Path);
             }
-            
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo(culture);
 
-            IEnumerable<Rules> rules = new List<Rules>()
+            MoveRulesConfigSection ruleConfigSection = (MoveRulesConfigSection)ConfigurationManager.GetSection("MoveRulesConfigSection");
+            var rulesConfig = ruleConfigSection.Rules;
+
+            var rules = new List<Rules>();
+            foreach (RuleSectionElement rule in rulesConfig)
             {
-                new Rules { FolderPath = @"..\..\..\..\FolderForWatching\txt", Rule = ".txt" , NamePrefixs = NamePrefixs.count},
-                new Rules { FolderPath = @"..\..\..\..\FolderForWatching\doc", Rule = ".docx" , NamePrefixs = NamePrefixs.date}
-            };          
+                rules.Add(new Rules { FolderPath = rule.FolderPath, Rule = rule.Rule, NamePrefixs = rule.NamePrefixs });
+            }
+
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(culture);
 
             var cfw = new ConsoleFileWancher(listPath);
             var sfw = new ServiseFileWatcher(defaultFolder, rules, cfw, x => Console.WriteLine(x));            

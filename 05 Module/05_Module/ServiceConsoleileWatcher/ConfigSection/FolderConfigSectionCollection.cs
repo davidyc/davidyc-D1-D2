@@ -1,6 +1,6 @@
 ﻿using System.Configuration;
 
-namespace ServiceConsoleileWatcher.ConfigSection
+namespace ServiceConsoleileWatcher
 {
 
     [ConfigurationCollection(typeof(PathSectionElement), AddItemName = "Folder")]
