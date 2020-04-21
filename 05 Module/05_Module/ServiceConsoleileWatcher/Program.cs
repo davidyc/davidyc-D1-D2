@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
+using System.Text;
 using System.Threading;
 
 namespace ServiceConsoleileWatcher
@@ -12,6 +13,7 @@ namespace ServiceConsoleileWatcher
     {
         static void Main(string[] args)
         {
+            Console.OutputEncoding = Encoding.UTF8;
             var culture  = ConfigurationManager.AppSettings.Get("language");
             var defaultFolder = ConfigurationManager.AppSettings.Get("defaulfFolder");
 
@@ -35,7 +37,7 @@ namespace ServiceConsoleileWatcher
 
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(culture);
 
-            var cfw = new ConsoleFileWancher(listPath);
+            var cfw = new ConsoleFileWatcher(listPath);
             var sfw = new ServiseFileWatcher(defaultFolder, rules, cfw, x => Console.WriteLine(x));            
             sfw.Run();
 

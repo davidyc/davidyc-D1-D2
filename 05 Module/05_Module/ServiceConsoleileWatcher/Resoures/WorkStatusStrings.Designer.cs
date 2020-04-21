@@ -61,6 +61,15 @@ namespace ServiceConsoleileWatcher.Resoures {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Can not move file {0}.
+        /// </summary>
+        internal static string CannotMove {
+            get {
+                return ResourceManager.GetString("CannotMove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to File: {0} was created in {1}.
         /// </summary>
         internal static string FileCreated {

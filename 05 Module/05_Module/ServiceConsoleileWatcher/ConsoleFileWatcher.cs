@@ -8,12 +8,12 @@ using WorkMessage = ServiceConsoleileWatcher.Resoures.WorkStatusStrings;
 
 namespace ServiceConsoleileWatcher
 {
-    public class ConsoleFileWancher : IFileWatcer
+    public class ConsoleFileWatcher : IFileWatcher
     {
         private IEnumerable<string> path;
         public ICollection<FileSystemWatcher> FileSystemWatchers { get; set; }
 
-        public ConsoleFileWancher(IEnumerable<string> path)
+        public ConsoleFileWatcher(IEnumerable<string> path)
         {
             this.path = path;
             FileSystemWatchers = new List<FileSystemWatcher>();

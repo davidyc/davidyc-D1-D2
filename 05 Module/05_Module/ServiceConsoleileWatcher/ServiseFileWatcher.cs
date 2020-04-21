@@ -18,11 +18,11 @@ namespace ServiceConsoleileWatcher
         static int count = 0;
 
         private IEnumerable<IRule> rules;      
-        private IFileWatcer fileSystemWatcher;       
+        private IFileWatcher fileSystemWatcher;       
         private Action<string> show;
         private string folderDefault;
 
-        public ServiseFileWatcher(string folderDefault, IEnumerable<IRule> rules, IFileWatcer fileSystemWatcher,
+        public ServiseFileWatcher(string folderDefault, IEnumerable<IRule> rules, IFileWatcher fileSystemWatcher,
             Action<string> show) 
         {
             this.folderDefault = folderDefault;
@@ -49,9 +49,24 @@ namespace ServiceConsoleileWatcher
             {
                 fileName = $"({count})_{fileName}";
                 count++;                
-            }             
-            File.Move(e.FullPath, Path.Combine(endFolderName, fileName));
-            show.Invoke(String.Format(WorkMessage.MoveFile, e.Name, endFolderName));
+            }   
+            
+           
+            if (File.Exists(Path.Combine(endFolderName, fileName)))
+            {
+                Random rnd = new Random();
+                fileName = $"{rnd.Next(100000,999999)}_{fileName}";
+            }
+
+            try
+            {
+                File.Move(e.FullPath, Path.Combine(endFolderName, fileName));
+                show.Invoke(String.Format(WorkMessage.MoveFile, e.Name, endFolderName));
+            }
+            catch
+            {
+                show.Invoke(String.Format(WorkMessage.CannotMove, e.Name));
+            }           
         }
        
         private void CheckRulesForMoveFile(FileSystemEventArgs e)
