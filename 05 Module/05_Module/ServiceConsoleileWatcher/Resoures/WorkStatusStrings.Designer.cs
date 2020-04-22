@@ -61,7 +61,7 @@ namespace ServiceConsoleileWatcher.Resoures {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Can not move file {0}.
+        ///   Looks up a localized string similar to Cann&apos;t move file {0}.
         /// </summary>
         internal static string CannotMove {
             get {
