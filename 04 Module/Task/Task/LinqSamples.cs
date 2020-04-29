@@ -12,6 +12,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using SampleSupport;
+using Task;
 using Task.Data;
 
 // Version Mad01
@@ -21,44 +22,45 @@ namespace SampleQueries
 	[Title("LINQ Module")]
 	[Prefix("Linq")]
 	public class LinqSamples : SampleHarness
-	{
-		// так в целом как писать юнит тесты, для таких запросов это кейсов? мокать истоточных данных
-		// но тогда разве это не тоже самое что на реалном гонять 
-		
-		private DataSource dataSource = new DataSource();
+	{	
+		private readonly IDataSource dataSource;		
 
-		[Category("Module 4")]
-		[Title("Task 1")]
-		[Description("Give a list of all customers whose total turnover (the sum of all orders) exceeds a certain value of X. Demonstrate the execution of the request with different X (think about whether you can do without copying the request several times)")]
-		public void Linq1()
+		public LinqSamples(IDataSource dataSource, string resources)
 		{
-			//подумал как можно сделать без многих запросов хз ваще. Я про это (think about whether you can do without copying the request several times)
-			var count = 15000;
+			this.dataSource = dataSource;
+			this.dataSource.Resource  = resources;
+		}
 
+		//[Category("Module 4")] перенес в юнит тесты проверку так как стало падать при отображени
+		//[Title("Task 1")]
+		//[Description("Give a list of all customers whose total turnover (the sum of all orders) exceeds a certain value of X. Demonstrate the execution of the request with different X (think about whether you can do without copying the request several times)")]
+		public IEnumerable<CustomerTotalOrderSum> Linq1(decimal count)
+		{	
 			var clients = dataSource.Customers.Where(x => x.Orders.Sum(o => o.Total) > count)
 				.Select(c=> 
-				new { 
-					CustemID = c.CustomerID, 
+				new CustomerTotalOrderSum{
+					Customer = c, 
 					TotalSum = c.Orders.Sum(o=> o.Total) 
 				});
 
 			foreach (var item in clients)
 			{
-				Console.WriteLine($" id = {item.CustemID} sum = {item.TotalSum}");
+				Console.WriteLine($" id = {item.Customer.CustomerID} sum = {item.TotalSum}");
 			}
+
+			return clients;			
 		}
 
 		[Category("Module 4")]
 		[Title("Task 2")]
 		[Description("For each client, make a list of suppliers located in the same country and the same city. Do tasks with and without grouping.")]
-		public void Linq2()
-		{
-			// Do tasks with and without grouping. тут еще подумаю
+		public IEnumerable<IGrouping<IEnumerable<Supplier>, Customer>> Linq2()
+		{			
 			var suppliersForCustomerGroup =
 				dataSource.Customers
 				.GroupBy(cust => dataSource.Suppliers
 				.Where(supl => supl.Country == cust.Country && supl.City == cust.City));
-
+					
 			foreach (var group in suppliersForCustomerGroup)
 			{
 				foreach (var cust in group)
@@ -70,20 +72,17 @@ namespace SampleQueries
 					}
 				}
 			}
+
+			return suppliersForCustomerGroup;
 		}
 
-		[Category("Module 4")]
-		[Title("Task 3")]
-		[Description("Find all customers who have orders exceeding the total value of X")]
-		public void Linq3()
+		//[Category("Module 4")] перенес в юнит тесты проверку так как стало падать при отображени
+		//[Title("Task 3")]
+		//[Description("Find all customers who have orders exceeding the total value of X")]
+		public IEnumerable<Customer> Linq3(int orderSum)
 		{
-			var orderSum = 10000;
-			var clients = dataSource.Customers.Where(cust => cust.Orders.Any(order => order.Total > orderSum));
-
-			foreach (var client in clients)
-			{
-				Console.WriteLine($"Customer ID = {client.CustomerID}");
-			}			
+			IEnumerable<Customer> clients = dataSource.Customers.Where(cust => cust.Orders.Any(order => order.Total > orderSum));
+			return clients;
 		}
 
 		[Category("Module 4")]
@@ -149,7 +148,6 @@ namespace SampleQueries
 		[Description("Group all products by categories, inside - by stock status, inside the last group sort by cost")]
 		public void Linq7()
 		{
-			// можно ли использовать в линкью g -> group  в люмдах 
 			var products = dataSource.Products.GroupBy(g => g.Category)
 				.Select(c =>
 			  new

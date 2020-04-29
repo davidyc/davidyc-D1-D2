@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Task.Properties {
+namespace LinqUnitTest.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Task.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Task.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("LinqUnitTest.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -76,15 +76,43 @@ namespace Task.Properties {
         ///      &lt;order&gt;
         ///        &lt;id&gt;10643&lt;/id&gt;
         ///        &lt;orderdate&gt;1997-08-25T00:00:00&lt;/orderdate&gt;
-        ///        &lt;total&gt;814.50&lt;/total&gt;
+        ///        &lt;total&gt;800.00&lt;/total&gt;
         ///      &lt;/order&gt;
         ///      &lt;order&gt;
-        ///        &lt;id&gt;10692&lt;/id&gt;
+        ///        &lt;id&gt;10643&lt;/id&gt;
         ///        &lt;orderdate&gt;199 [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string Customers {
+        internal static string FakeCustomersLinq1 {
             get {
-                return ResourceManager.GetString("Customers", resourceCulture);
+                return ResourceManager.GetString("FakeCustomersLinq1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
+        ///&lt;customers&gt;
+        ///  &lt;customer&gt;
+        ///    &lt;id&gt;ALFKI&lt;/id&gt;
+        ///    &lt;name&gt;Alfreds Futterkiste&lt;/name&gt;
+        ///    &lt;address&gt;Obere Str. 57&lt;/address&gt;
+        ///    &lt;city&gt;Berlin&lt;/city&gt;
+        ///    &lt;postalcode&gt;12209&lt;/postalcode&gt;
+        ///    &lt;country&gt;Germany&lt;/country&gt;
+        ///    &lt;phone&gt;030-0074321&lt;/phone&gt;
+        ///    &lt;fax&gt;030-0076545&lt;/fax&gt;
+        ///    &lt;orders&gt;
+        ///      &lt;order&gt;
+        ///        &lt;id&gt;10643&lt;/id&gt;
+        ///        &lt;orderdate&gt;1997-08-25T00:00:00&lt;/orderdate&gt;
+        ///        &lt;total&gt;800.00&lt;/total&gt;
+        ///      &lt;/order&gt;
+        ///      &lt;order&gt;
+        ///        &lt;id&gt;10643&lt;/id&gt;
+        ///        &lt;orderdate&gt;199 [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string FakeCustomersLinq2 {
+            get {
+                return ResourceManager.GetString("FakeCustomersLinq2", resourceCulture);
             }
         }
     }

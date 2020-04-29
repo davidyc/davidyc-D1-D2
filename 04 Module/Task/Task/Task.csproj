@@ -47,10 +47,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\Customer.cs" />
+    <Compile Include="Data\CustomerTotalOrderSum.cs" />
     <Compile Include="Data\DataSource.cs" />
+    <Compile Include="Data\FakeDataSource.cs" />
     <Compile Include="Data\Order.cs" />
     <Compile Include="Data\Product.cs" />
     <Compile Include="Data\Supplier.cs" />
+    <Compile Include="IDataSource.cs" />
     <Compile Include="LinqSamples.cs" />
     <Compile Include="ObjectDumper.cs" />
     <Compile Include="Program.cs" />

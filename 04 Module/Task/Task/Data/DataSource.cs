@@ -7,12 +7,12 @@ using System.Xml.Linq;
 
 namespace Task.Data
 {
-	public class DataSource
+	public class DataSource : IDataSource
 	{
 		private List<Product> productList;
 		private List<Customer> customerList;
 		private List<Supplier> supplierList;
-
+		public string Resource { get; set; }
 		public List<Product> Products
 		{
 			get
@@ -45,6 +45,8 @@ namespace Task.Data
 				return customerList;
 			}
 		}
+
+
 
 		private void createLists()
 		{

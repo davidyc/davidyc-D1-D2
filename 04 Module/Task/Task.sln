@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29911.84
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task", "Task\Task.csproj", "{C770ED8F-6F5E-4DED-92C6-D5FE544DE764}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqUnitTest", "LinqUnitTest\LinqUnitTest.csproj", "{56846B25-8ED6-47B3-AEA1-955AB60BFD4B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +17,15 @@ Global
 		{C770ED8F-6F5E-4DED-92C6-D5FE544DE764}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C770ED8F-6F5E-4DED-92C6-D5FE544DE764}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C770ED8F-6F5E-4DED-92C6-D5FE544DE764}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56846B25-8ED6-47B3-AEA1-955AB60BFD4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56846B25-8ED6-47B3-AEA1-955AB60BFD4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56846B25-8ED6-47B3-AEA1-955AB60BFD4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56846B25-8ED6-47B3-AEA1-955AB60BFD4B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AA692A9C-81EE-490B-9C53-09C91D5BEBCE}
 	EndGlobalSection
 EndGlobal

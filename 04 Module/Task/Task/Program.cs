@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using SampleSupport;
 using SampleQueries;
 using System.IO;
+using Task.Data;
 
 // See the ReadMe.html for additional information
 namespace SampleQueries
@@ -22,14 +23,10 @@ namespace SampleQueries
 		[STAThread]
 		static void Main(string[] args)
 		{
-			List<SampleHarness> harnesses = new List<SampleHarness>();
-
-			
-			LinqSamples linqHarness = new LinqSamples();
-			harnesses.Add(linqHarness);
-						
-			Application.EnableVisualStyles();
-				
+			List<SampleHarness> harnesses = new List<SampleHarness>();			
+			LinqSamples linqHarness = new LinqSamples(new DataSource(), Task.Properties.Resources.Customers);
+			harnesses.Add(linqHarness);						
+			Application.EnableVisualStyles();				
 			using (SampleForm form = new SampleForm("HomeWork - Mihail Romanov", harnesses))
 			{
 				form.ShowDialog();
