@@ -104,15 +104,71 @@ namespace LinqUnitTest.Properties {
         ///      &lt;order&gt;
         ///        &lt;id&gt;10643&lt;/id&gt;
         ///        &lt;orderdate&gt;1997-08-25T00:00:00&lt;/orderdate&gt;
-        ///        &lt;total&gt;800.00&lt;/total&gt;
+        ///        &lt;total&gt;8800.00&lt;/total&gt;
         ///      &lt;/order&gt;
         ///      &lt;order&gt;
         ///        &lt;id&gt;10643&lt;/id&gt;
+        ///        &lt;orderdate&gt;19 [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string FakeCustomersLinq3 {
+            get {
+                return ResourceManager.GetString("FakeCustomersLinq3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
+        ///&lt;customers&gt;
+        ///  &lt;customer&gt;
+        ///    &lt;id&gt;ALFKI&lt;/id&gt;
+        ///    &lt;name&gt;Alfreds Futterkiste&lt;/name&gt;
+        ///    &lt;address&gt;Obere Str. 57&lt;/address&gt;
+        ///    &lt;city&gt;Berlin&lt;/city&gt;
+        ///    &lt;postalcode&gt;12209&lt;/postalcode&gt;
+        ///    &lt;country&gt;Germany&lt;/country&gt;
+        ///    &lt;phone&gt;030-0074321&lt;/phone&gt;
+        ///    &lt;fax&gt;030-0076545&lt;/fax&gt;
+        ///    &lt;orders&gt;
+        ///      &lt;order&gt;
+        ///        &lt;id&gt;10643&lt;/id&gt;
+        ///        &lt;orderdate&gt;1997-08-25T00:00:00&lt;/orderdate&gt;
+        ///        &lt;total&gt;8800.00&lt;/total&gt;
+        ///      &lt;/order&gt;
+        ///      &lt;order&gt;
+        ///        &lt;id&gt;10643&lt;/id&gt;
+        ///        &lt;orderdate&gt;19 [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string FakeCustomersLinq4 {
+            get {
+                return ResourceManager.GetString("FakeCustomersLinq4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
+        ///&lt;customers&gt;
+        ///  &lt;customer&gt;
+        ///    &lt;id&gt;ALFKI&lt;/id&gt;
+        ///    &lt;name&gt;Alfreds Futterkiste&lt;/name&gt;
+        ///    &lt;address&gt;Obere Str. 57&lt;/address&gt;
+        ///    &lt;city&gt;Berlin&lt;/city&gt;
+        ///    &lt;postalcode&gt;12209&lt;/postalcode&gt;
+        ///    &lt;country&gt;Germany&lt;/country&gt;
+        ///    &lt;phone&gt;030-0074321&lt;/phone&gt;
+        ///    &lt;fax&gt;030-0076545&lt;/fax&gt;
+        ///    &lt;orders&gt;
+        ///      &lt;order&gt;
+        ///        &lt;id&gt;10643&lt;/id&gt;
+        ///        &lt;orderdate&gt;1997-08-25T00:00:00&lt;/orderdate&gt;
+        ///        &lt;total&gt;814.50&lt;/total&gt;
+        ///      &lt;/order&gt;
+        ///      &lt;order&gt;
+        ///        &lt;id&gt;10692&lt;/id&gt;
         ///        &lt;orderdate&gt;199 [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string FakeCustomersLinq2 {
+        internal static string FakeCustomersLinq6 {
             get {
-                return ResourceManager.GetString("FakeCustomersLinq2", resourceCulture);
+                return ResourceManager.GetString("FakeCustomersLinq6", resourceCulture);
             }
         }
     }

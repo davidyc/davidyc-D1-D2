@@ -27,7 +27,7 @@ namespace SampleQueries
 			LinqSamples linqHarness = new LinqSamples(new DataSource(), Task.Properties.Resources.Customers);
 			harnesses.Add(linqHarness);						
 			Application.EnableVisualStyles();				
-			using (SampleForm form = new SampleForm("HomeWork - Mihail Romanov", harnesses))
+			using (SampleForm form = new SampleForm("HomeWork - Sergey Davydov", harnesses))
 			{
 				form.ShowDialog();
 			}

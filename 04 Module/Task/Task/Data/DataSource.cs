@@ -166,7 +166,7 @@ namespace Task.Data
 
 
 			customerList = (
-				from e in XDocument.Parse(Properties.Resources.Customers).
+				from e in XDocument.Parse(Resource).
 						  Root.Elements("customer")
 				select new Customer
 				{

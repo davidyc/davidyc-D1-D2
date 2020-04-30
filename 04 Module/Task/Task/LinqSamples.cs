@@ -15,7 +15,6 @@ using SampleSupport;
 using Task;
 using Task.Data;
 
-// Version Mad01
 
 namespace SampleQueries
 {
@@ -31,9 +30,9 @@ namespace SampleQueries
 			this.dataSource.Resource  = resources;
 		}
 
-		//[Category("Module 4")] перенес в юнит тесты проверку так как стало падать при отображени
-		//[Title("Task 1")]
-		//[Description("Give a list of all customers whose total turnover (the sum of all orders) exceeds a certain value of X. Demonstrate the execution of the request with different X (think about whether you can do without copying the request several times)")]
+		[Category("Module 4")]
+		[Title("Task 1")]
+		[Description("Give a list of all customers whose total turnover (the sum of all orders) exceeds a certain value of X. Demonstrate the execution of the request with different X (think about whether you can do without copying the request several times)")]
 		public IEnumerable<CustomerTotalOrderSum> Linq1(decimal count)
 		{	
 			var clients = dataSource.Customers.Where(x => x.Orders.Sum(o => o.Total) > count)
@@ -54,7 +53,7 @@ namespace SampleQueries
 		[Category("Module 4")]
 		[Title("Task 2")]
 		[Description("For each client, make a list of suppliers located in the same country and the same city. Do tasks with and without grouping.")]
-		public IEnumerable<IGrouping<IEnumerable<Supplier>, Customer>> Linq2()
+		public void Linq2()
 		{			
 			var suppliersForCustomerGroup =
 				dataSource.Customers
@@ -71,14 +70,12 @@ namespace SampleQueries
 						Console.WriteLine($"  Supplier name: {supp.SupplierName} country: {supp.Country} city: {supp.City}");
 					}
 				}
-			}
-
-			return suppliersForCustomerGroup;
+			}			
 		}
 
-		//[Category("Module 4")] перенес в юнит тесты проверку так как стало падать при отображени
-		//[Title("Task 3")]
-		//[Description("Find all customers who have orders exceeding the total value of X")]
+		[Category("Module 4")] 
+		[Title("Task 3")]
+		[Description("Find all customers who have orders exceeding the total value of X")]
 		public IEnumerable<Customer> Linq3(int orderSum)
 		{
 			IEnumerable<Customer> clients = dataSource.Customers.Where(cust => cust.Orders.Any(order => order.Total > orderSum));
@@ -88,20 +85,17 @@ namespace SampleQueries
 		[Category("Module 4")]
 		[Title("Task 4")]
 		[Description("Issue a list of customers indicating the month from which year they became customers (accept the month and year of the very first order as such)")]
-		public void Linq4()
+		public IEnumerable<FirstOrder> Linq4()
 		{
 
 			var customers = dataSource.Customers.Where(c => c.Orders.Any())
-				.Select(cust => new
+				.Select(cust => new FirstOrder
 				{
-					Customer = cust.CustomerID,
+					CustomerID = cust.CustomerID,
 					Date = cust.Orders.Min(order=>order.OrderDate)
 				});
-			
-			foreach (var customer in customers)
-			{
-				Console.WriteLine($"Customer ID: {customer.Customer } Date: {customer.Date}");
-			}
+
+			return customers;	
 		}
 
 		[Category("Module 4")]
@@ -129,18 +123,14 @@ namespace SampleQueries
 		[Category("Module 4")]
 		[Title("Task 6")]
 		[Description(" Indicate all customers who have a non-digital postal code or a region is missing or the operator’s code is not indicated on the phone (for simplicity we consider this to be equivalent to “no parentheses at the beginning”).")]
-		public void Linq6()
+		public IEnumerable<Customer> Linq6()
 		{
 			var custoners = dataSource.Customers.Where(
 					cust => cust.PostalCode != null && cust.PostalCode.Any(symbol => symbol < '0' || symbol > '9')
 				   || string.IsNullOrWhiteSpace(cust.Region)
 				   || cust.Phone.FirstOrDefault() != '('
 				);
-
-			foreach (var custoner in custoners)
-			{
-				Console.WriteLine($"Custom ID = {custoner.CustomerID}");
-			}
+			return custoners;
 		}
 
 		[Category("Module 4")]

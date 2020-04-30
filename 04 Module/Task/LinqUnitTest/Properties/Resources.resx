@@ -121,7 +121,13 @@
   <data name="FakeCustomersLinq1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\FakeCustomersLinq1.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
-  <data name="FakeCustomersLinq2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\FakeCustomersLinq2.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  <data name="FakeCustomersLinq3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\FakeCustomersLinq3.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="FakeCustomersLinq4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\FakeCustomersLinq4.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="FakeCustomersLinq6" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\FakeCustomersLinq6.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
 </root>
