@@ -22,6 +22,10 @@ namespace Task.Data
 
 				return productList;
 			}
+			set
+			{
+				productList = value;
+			}
 		}
 
 		public List<Supplier> Suppliers
@@ -33,6 +37,10 @@ namespace Task.Data
 
 				return supplierList;
 			}
+			set
+			{
+				supplierList = value;
+			}
 		}
 
 		public List<Customer> Customers
@@ -43,6 +51,10 @@ namespace Task.Data
 					createLists();
 
 				return customerList;
+			}
+			set
+			{
+				customerList = value;
 			}
 		}
 

@@ -23,6 +23,10 @@ namespace Task.Data
 
 				return productList;
 			}
+			set
+			{
+				productList = value;
+			}
 		}
 
 		public List<Supplier> Suppliers
@@ -34,9 +38,14 @@ namespace Task.Data
 
 				return supplierList;
 			}
+			set
+			{
+				supplierList = value;
+			}
 		}
 
-		public List<Customer> Customers
+		// падала ошибка сделал виртуальным прошло, можно мокать ток виртуальные свойства? методы?
+		public virtual List<Customer> Customers
 		{
 			get
 			{
@@ -44,6 +53,10 @@ namespace Task.Data
 					createListsCustomers();
 
 				return customerList;
+			}
+			set
+			{
+				customerList = value;
 			}
 		}
 

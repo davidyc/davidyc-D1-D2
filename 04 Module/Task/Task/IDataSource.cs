@@ -9,9 +9,9 @@ namespace Task
 {
 	public interface IDataSource
 	{
-		List<Product> Products { get; }
-		List<Supplier> Suppliers { get; }
-		List<Customer> Customers { get; }
+		List<Product> Products { get; set; }
+		List<Supplier> Suppliers { get; set; }
+		List<Customer> Customers { get; set; }
 		string Resource { get; set; }
 	}
 }

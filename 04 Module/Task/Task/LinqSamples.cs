@@ -22,22 +22,23 @@ namespace SampleQueries
 	[Prefix("Linq")]
 	public class LinqSamples : SampleHarness
 	{	
-		private readonly IDataSource dataSource;		
+		public IDataSource DataSource { set; get; }		
 
 		public LinqSamples(IDataSource dataSource, string resources)
 		{
-			this.dataSource = dataSource;
-			this.dataSource.Resource  = resources;
+			this.DataSource = dataSource;
+			this.DataSource.Resource  = resources;
 		}
 
 		[Category("Module 4")]
 		[Title("Task 1")]
 		[Description("Give a list of all customers whose total turnover (the sum of all orders) exceeds a certain value of X. Demonstrate the execution of the request with different X (think about whether you can do without copying the request several times)")]
-		public IEnumerable<CustomerTotalOrderSum> Linq1(decimal count)
+		public IEnumerable Linq1(decimal count)
 		{	
-			var clients = dataSource.Customers.Where(x => x.Orders.Sum(o => o.Total) > count)
+			// Переписал под анонимные типы) работает вроде)
+			var clients = DataSource.Customers.Where(x => x.Orders.Sum(o => o.Total) > count)
 				.Select(c=> 
-				new CustomerTotalOrderSum{
+				new {
 					Customer = c, 
 					TotalSum = c.Orders.Sum(o=> o.Total) 
 				});
@@ -56,8 +57,8 @@ namespace SampleQueries
 		public void Linq2()
 		{			
 			var suppliersForCustomerGroup =
-				dataSource.Customers
-				.GroupBy(cust => dataSource.Suppliers
+				DataSource.Customers
+				.GroupBy(cust => DataSource.Suppliers
 				.Where(supl => supl.Country == cust.Country && supl.City == cust.City));
 					
 			foreach (var group in suppliersForCustomerGroup)
@@ -78,7 +79,7 @@ namespace SampleQueries
 		[Description("Find all customers who have orders exceeding the total value of X")]
 		public IEnumerable<Customer> Linq3(int orderSum)
 		{
-			IEnumerable<Customer> clients = dataSource.Customers.Where(cust => cust.Orders.Any(order => order.Total > orderSum));
+			IEnumerable<Customer> clients = DataSource.Customers.Where(cust => cust.Orders.Any(order => order.Total > orderSum));
 			return clients;
 		}
 
@@ -88,7 +89,7 @@ namespace SampleQueries
 		public IEnumerable<FirstOrder> Linq4()
 		{
 
-			var customers = dataSource.Customers.Where(c => c.Orders.Any())
+			var customers = DataSource.Customers.Where(c => c.Orders.Any())
 				.Select(cust => new FirstOrder
 				{
 					CustomerID = cust.CustomerID,
@@ -103,7 +104,7 @@ namespace SampleQueries
 		[Description("Do the previous task, but issue a list sorted by year, month, customer turnover (maximum to minimum) and customer name")]
 		public void Linq5()
 		{
-			var customers = dataSource.Customers.Where(cust => cust.Orders.Any())
+			var customers = DataSource.Customers.Where(cust => cust.Orders.Any())
 				.Select(cust => new
 				{
 					Customer = cust.CustomerID,
@@ -125,7 +126,7 @@ namespace SampleQueries
 		[Description(" Indicate all customers who have a non-digital postal code or a region is missing or the operator’s code is not indicated on the phone (for simplicity we consider this to be equivalent to “no parentheses at the beginning”).")]
 		public IEnumerable<Customer> Linq6()
 		{
-			var custoners = dataSource.Customers.Where(
+			var custoners = DataSource.Customers.Where(
 					cust => cust.PostalCode != null && cust.PostalCode.Any(symbol => symbol < '0' || symbol > '9')
 				   || string.IsNullOrWhiteSpace(cust.Region)
 				   || cust.Phone.FirstOrDefault() != '('
@@ -138,7 +139,7 @@ namespace SampleQueries
 		[Description("Group all products by categories, inside - by stock status, inside the last group sort by cost")]
 		public void Linq7()
 		{
-			var products = dataSource.Products.GroupBy(g => g.Category)
+			var products = DataSource.Products.GroupBy(g => g.Category)
 				.Select(c =>
 			  new
 			  {
@@ -175,7 +176,7 @@ namespace SampleQueries
 			decimal cheapPrice = 10;
 			decimal budgetPrice = 50;
 
-			var productCategories = dataSource.Products
+			var productCategories = DataSource.Products
 				.GroupBy(prod => prod.UnitPrice < cheapPrice ? "Cheap Price"
 				: prod.UnitPrice < budgetPrice ? "Budget Price" : "Expensive Price");
 
@@ -194,7 +195,7 @@ namespace SampleQueries
 		[Description("Calculate the average profitability of each city (average order amount for all customers from a given city) and average intensity (average number of orders per client from each city)")]
 		public void Linq9()
 		{
-			var orders = dataSource.Customers.GroupBy(cust => cust.City)
+			var orders = DataSource.Customers.GroupBy(cust => cust.City)
 				.Select(city =>
 				   new {
 					   City = city.Key,
@@ -213,7 +214,7 @@ namespace SampleQueries
 		[Description("Make the average annual statistics of customer activity by month (excluding the year), statistics by year, by year and month (that is, when one month in different years has its own value).")]
 		public void Linq10()
 		{
-			var avarageStatics = dataSource.Customers
+			var avarageStatics = DataSource.Customers
 			   .Select(c => new
 			   {
 				   CustomerID = c.CustomerID,
