@@ -4,6 +4,7 @@ using DeepEqual.Syntax;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using SampleQueries;
+using Task;
 using Task.Data;
 
 namespace LinqUnitTest
@@ -107,7 +108,7 @@ namespace LinqUnitTest
         public void Linq3_MoCK_Given10000_DeepEqualTrue()
         {
             // Arrange
-            Mock<FakeDataSource> mockData = new Mock<FakeDataSource>();
+            Mock<IDataSource> mockData = new Mock<IDataSource>();
             mockData.SetupProperty(x => x.Customers, new List<Customer>()
             {
                  new Customer()
@@ -166,10 +167,8 @@ namespace LinqUnitTest
                     }
             });
 
-            var linqSamples = new LinqSamples(new FakeDataSource(),null);
-            //пойдет такое? из приватного поля пришлось сделать свойство
-            //или нужно было передавать в конструктор как то мок объект?
-            linqSamples.DataSource.Customers = mockData.Object.Customers;
+            var linqSamples = new LinqSamples(mockData.Object, null);           
+     
             int count = 8700;
             IEnumerable<Customer> expected = new List<Customer>()
             {

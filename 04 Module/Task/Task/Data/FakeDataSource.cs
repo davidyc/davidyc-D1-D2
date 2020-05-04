@@ -44,8 +44,7 @@ namespace Task.Data
 			}
 		}
 
-		// падала ошибка сделал виртуальным прошло, можно мокать ток виртуальные свойства? методы?
-		public virtual List<Customer> Customers
+		public List<Customer> Customers
 		{
 			get
 			{
