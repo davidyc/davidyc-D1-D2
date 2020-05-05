@@ -1,10 +1,11 @@
-﻿using System;
+﻿using MyIoC.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyIoC
+namespace MyIoC.Classes
 {
 	[ImportConstructor]
 	public class CustomerBLL
