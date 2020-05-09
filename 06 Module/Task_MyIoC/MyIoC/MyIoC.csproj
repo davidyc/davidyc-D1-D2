@@ -54,7 +54,9 @@
     <Compile Include="Attributes\ImportConstructorAttribute.cs" />
     <Compile Include="Attributes\ExportAttribute.cs" />
     <Compile Include="Container.cs" />
-    <Compile Include="IoCTests.cs" />
+    <Compile Include="Exceptions\NoInDLLException.cs" />
+    <Compile Include="Exceptions\NoPublicConstructorException.cs" />
+    <Compile Include="Interfaces\IContainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

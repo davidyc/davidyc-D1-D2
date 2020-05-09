@@ -63,7 +63,7 @@ namespace MyIoC
 		{
 			if (!typesDict.ContainsKey(type))
 			{
-				throw new NoInDLLException($"Type {type.Name} cann't find in  DLL");
+				throw new NoAttributeException($"Type {type.Name} has not attribute");
 			}
 
 			Type dependendType = typesDict[type];

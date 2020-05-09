@@ -2,18 +2,18 @@
 
 namespace MyIoC.Exceptions
 {
-    public class NoInDLLException : Exception
+    public class NoAttributeException : Exception
     {
-        public NoInDLLException()
+        public NoAttributeException()
         {
         }
 
-        public NoInDLLException(string message)
+        public NoAttributeException(string message)
             : base(message)
         {
         }
 
-        public NoInDLLException(string message, Exception innerException)
+        public NoAttributeException(string message, Exception innerException)
             : base(message, innerException)
         {
         }
