@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29911.84
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Module 7", "Module 7\Module 7.csproj", "{3983D9B7-F2ED-41EF-8996-B32F0A6C9412}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestXMLParser", "UnitTestXMLParser\UnitTestXMLParser.csproj", "{46A43336-C156-4D4B-B12D-0868D38BB799}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XUnitTestCatalogXML", "XUnitTestCatalogXML\XUnitTestCatalogXML.csproj", "{8F6D187F-0D2D-4009-B436-7BF8FDAAAE7A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{3983D9B7-F2ED-41EF-8996-B32F0A6C9412}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3983D9B7-F2ED-41EF-8996-B32F0A6C9412}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3983D9B7-F2ED-41EF-8996-B32F0A6C9412}.Release|Any CPU.Build.0 = Release|Any CPU
-		{46A43336-C156-4D4B-B12D-0868D38BB799}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{46A43336-C156-4D4B-B12D-0868D38BB799}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{46A43336-C156-4D4B-B12D-0868D38BB799}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{46A43336-C156-4D4B-B12D-0868D38BB799}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F6D187F-0D2D-4009-B436-7BF8FDAAAE7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F6D187F-0D2D-4009-B436-7BF8FDAAAE7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F6D187F-0D2D-4009-B436-7BF8FDAAAE7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F6D187F-0D2D-4009-B436-7BF8FDAAAE7A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -4,7 +4,9 @@ using System.Text;
 
 namespace Module_7.Interfaces
 {
-    public interface IReadXML
+    public interface IParserElement
     {
+        string ElementName { get; }
+        IEnumerable<IEntity> ReadElement();
     }
 }

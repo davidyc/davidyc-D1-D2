@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Module_7.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Module_7.Models
 {
-    public class Book 
+    public class Book : IEntity
     {
         public string Name { get; set; }
         public List<Author> Authors { get; set; }
