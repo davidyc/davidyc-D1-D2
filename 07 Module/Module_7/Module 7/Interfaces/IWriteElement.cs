@@ -8,6 +8,6 @@ namespace Module_7.Interfaces
     public interface IWriteElement
     {
         string ElementName { get; }
-        void WriteElement(XmlWriter xmlWriter);
+        void WriteElement(XmlWriter xmlWriter, IEntity entity);
     }
 }

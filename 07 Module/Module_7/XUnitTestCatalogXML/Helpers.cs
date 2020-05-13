@@ -34,8 +34,8 @@ namespace XUnitTestCatalogXML
             return
                 $"<Book>" +
                 $"<Name>Book</Name>" +
-                $"<Author Name = \"Author1\", Surname=\"Surname1\"></Author>" +
-                $"<Author Name = \"Author2\", Surname=\"Surname2\"></Author>" +
+                $"<Author Name=\"Author1\" Surname=\"Surname1\" />" +
+                $"<Author Name=\"Author2\" Surname=\"Surname2\" />" +
                 $"<PublicationCity>City 17</PublicationCity>" +
                 $"<PublisherName>Publish House</PublisherName>" +
                 $"<PublishYear>2020</PublishYear>" +
@@ -74,9 +74,9 @@ namespace XUnitTestCatalogXML
                 $"<PublishYear>2020</PublishYear>" +
                 $"<PagesCount>100000</PagesCount>" +
                 $"<Note>Non</Note>" +
-                $"<ISBN>ISSN12345</ISBN>" +
+                $"<ISSN>ISSN12345</ISSN>" +
                 $"<Number>15</Number>" +
-                $"<Date>05:12:2020</Date>" +
+                $"<Date>12:05:2020</Date>" +
                 $"</Newspaper>";
         }
 
@@ -107,13 +107,13 @@ namespace XUnitTestCatalogXML
             return
                 $"<Patent>" +
                 $"<Name>Patent</Name>" +
-                $"<Creator Name = \"Creator1\", Surname=\"Surname1\"></Creator>" +
-                $"<Creator Name = \"Creator2\", Surname=\"Surname2\"></Creator>" +
+                $"<Creator Name=\"Creator1\" Surname=\"Surname1\" />" +
+                $"<Creator Name=\"Creator2\" Surname=\"Surname2\" />" +
                 $"<RegistrationNumber>P123456789</RegistrationNumber>" +
                 $"<PagesCount>10</PagesCount>" +
                 $"<Note>Non</Note>" +
-                $"<FilingDate>05:12:2020</FilingDate>" +
-                $"<PublishDate>05:12:2020</PublishDate>" +
+                $"<FilingDate>12:05:2020</FilingDate>" +
+                $"<PublishDate>12:05:2020</PublishDate>" +
                 $"</Patent>";
         }
     }

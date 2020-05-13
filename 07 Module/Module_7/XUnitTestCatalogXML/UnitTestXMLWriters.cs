@@ -32,13 +32,14 @@ namespace XUnitTestCatalogXML
             var actualXML = new StringBuilder();
             var books = Helpers.GetBook();
             catalog.AddWriters(new BookWriter());
-
-            catalog.WriteTo(actualXML, books);
             catalog.DateCreate = new DateTime(2020, 5, 12);
 
-            var xml = @"<?xml version=""1.0"" encoding=""utf-16""?><catalog datecreate=""12:05:2020"" >"
+            catalog.WriteTo(actualXML, books);
+           
+
+            var xml = @"<?xml version=""1.0"" encoding=""utf-16""?><catalog datecreate=""12:05:2020"">"
                 + Helpers.GetBookXML()
-                + @"</catalog/>";
+                + @"</catalog>";
             var expectedXML = new StringBuilder(xml);
 
             Assert.True(expectedXML.Equals(actualXML));
@@ -50,38 +51,38 @@ namespace XUnitTestCatalogXML
             var actualXML = new StringBuilder();
             var newspapers = Helpers.GetNewspaper();
             catalog.AddWriters(new NewspaperWriter());
-
-            catalog.WriteTo(actualXML, newspapers);
             catalog.DateCreate = new DateTime(2020, 5, 12);
+            catalog.WriteTo(actualXML, newspapers);
+           
 
-            var xml = @"<?xml version=""1.0"" encoding=""utf-16""?><catalog datecreate=""12:05:2020"" >"
-                + Helpers.GetNewspaper()
-                + @"</catalog/>";
+            var xml = @"<?xml version=""1.0"" encoding=""utf-16""?><catalog datecreate=""12:05:2020"">"
+                + Helpers.GetNewspaperXML()
+                + @"</catalog>";
             var expectedXML = new StringBuilder(xml);
 
             Assert.True(expectedXML.Equals(actualXML));
         }
 
         [Fact]
-        public void CatalogWriteTo_Newspaper_XMLwithPantent()
+        public void CatalogWriteTo_Patent_XMLwithPantent()
         {
             var actualXML = new StringBuilder();
             var patents = Helpers.GetPatant();
             catalog.AddWriters(new PatentWriter());
 
-            catalog.WriteTo(actualXML, patents);
             catalog.DateCreate = new DateTime(2020, 5, 12);
+            catalog.WriteTo(actualXML, patents);
 
-            var xml = @"<?xml version=""1.0"" encoding=""utf-16""?><catalog datecreate=""12:05:2020"" >"
-                + Helpers.GetPatant()
-                + @"</catalog/>";
+            var xml = @"<?xml version=""1.0"" encoding=""utf-16""?><catalog datecreate=""12:05:2020"">"
+                + Helpers.GetPatantXML()
+                + @"</catalog>";
             var expectedXML = new StringBuilder(xml);
 
             Assert.True(expectedXML.Equals(actualXML));
         }
 
         [Fact]
-        public void CatalogWriteTo_Newspaper_XMLwithMultiElements()
+        public void CatalogWriteTo_MultiElements_XMLwithMultiElements()
         {
             var actualXML = new StringBuilder();
             var xmlElements = new List<IEntity>();
@@ -90,15 +91,15 @@ namespace XUnitTestCatalogXML
             xmlElements.AddRange(Helpers.GetPatant());
 
             catalog.AddWriters(new BookWriter(), new NewspaperWriter(), new PatentWriter());
-
-            catalog.WriteTo(actualXML, xmlElements);
             catalog.DateCreate = new DateTime(2020, 5, 12);
+            catalog.WriteTo(actualXML, xmlElements);
+           
 
-            var xml = @"<?xml version=""1.0"" encoding=""utf-16""?><catalog datecreate=""12:05:2020"" >"
+            var xml = @"<?xml version=""1.0"" encoding=""utf-16""?><catalog datecreate=""12:05:2020"">"
                 + Helpers.GetBookXML()
                 + Helpers.GetNewspaperXML()
                 + Helpers.GetPatantXML()
-                + @"</catalog/>";
+                + @"</catalog>";
             var expectedXML = new StringBuilder(xml);
 
             Assert.True(expectedXML.Equals(actualXML));
@@ -170,7 +171,7 @@ namespace XUnitTestCatalogXML
 
             var xml = @"<?xml version=""1.0"" encoding=""utf-16""?><catalog datecreate=""12:05:2020"" >"
                 + Helpers.GetPatantXML()
-                + @"</catalog/>";
+                + @"</catalog>";
             var str = new StringBuilder(xml);
 
             var actualCollection = catalog.ReadFrom(str);

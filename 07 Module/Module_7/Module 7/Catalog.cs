@@ -22,8 +22,6 @@ namespace Module_7
             writeElemenWriters = new Dictionary<string, IWriteElement>();
         }
         
-
-
         public void AddParsers(params IParserElement[] elementParsers)
         {
             foreach (var item in elementParsers)
@@ -47,11 +45,15 @@ namespace Module_7
                 xmlWriter.WriteStartDocument();
                 xmlWriter.WriteStartElement(ElementName);
                 xmlWriter.WriteAttributeString("datecreate",DateCreate.ToString("dd:MM:yyyy"));
-                foreach (var item in writeElemenWriters)
+                if(entities != null)
                 {
-                    item.Value.WriteElement(xmlWriter);
-                }
-               // xmlWriter.WriteEndElement();
+                    foreach (var item in entities)
+                    {
+                        var x = writeElemenWriters[item.GetType().Name.ToString()];
+                        x.WriteElement(xmlWriter, item);
+                    }
+                }               
+                xmlWriter.WriteEndElement();
             }
         }
 
