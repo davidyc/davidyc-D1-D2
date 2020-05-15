@@ -34,8 +34,10 @@ namespace XUnitTestCatalogXML
             return
                 $"<Book>" +
                 $"<Name>Book</Name>" +
+                $"<Authors>" +
                 $"<Author Name=\"Author1\" Surname=\"Surname1\" />" +
                 $"<Author Name=\"Author2\" Surname=\"Surname2\" />" +
+                $"</Authors>" +
                 $"<PublicationCity>City 17</PublicationCity>" +
                 $"<PublisherName>Publish House</PublisherName>" +
                 $"<PublishYear>2020</PublishYear>" +
@@ -76,12 +78,12 @@ namespace XUnitTestCatalogXML
                 $"<Note>Non</Note>" +
                 $"<ISSN>ISSN12345</ISSN>" +
                 $"<Number>15</Number>" +
-                $"<Date>12:05:2020</Date>" +
+                $"<Date>05/12/2020</Date>" +
                 $"</Newspaper>";
         }
 
 
-        public static IEnumerable<Patent> GetPatant()
+        public static IEnumerable<Patent> GetPatent()
         {
             var patents = new List<Patent>()
             {
@@ -102,18 +104,20 @@ namespace XUnitTestCatalogXML
             };
             return patents;
         }
-        public static string GetPatantXML()
+        public static string GetPatentXML()
         {
             return
                 $"<Patent>" +
                 $"<Name>Patent</Name>" +
+                $"<Creators>" +               
                 $"<Creator Name=\"Creator1\" Surname=\"Surname1\" />" +
                 $"<Creator Name=\"Creator2\" Surname=\"Surname2\" />" +
+                $"</Creators>" +
                 $"<RegistrationNumber>P123456789</RegistrationNumber>" +
                 $"<PagesCount>10</PagesCount>" +
                 $"<Note>Non</Note>" +
-                $"<FilingDate>12:05:2020</FilingDate>" +
-                $"<PublishDate>12:05:2020</PublishDate>" +
+                $"<FilingDate>05/12/2020</FilingDate>" +
+                $"<PublishDate>05/12/2020</PublishDate>" +
                 $"</Patent>";
         }
     }

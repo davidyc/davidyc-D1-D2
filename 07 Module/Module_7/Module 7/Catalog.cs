@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Text;
+using System.Threading;
 using System.Xml;
+using System.Xml.Linq;
 using Module_7.Interfaces;
 
 namespace Module_7
@@ -17,7 +21,7 @@ namespace Module_7
 
         public Catalog()
         {
-            DateCreate = DateTime.UtcNow;
+            DateCreate = DateTime.UtcNow;               
             readElementParsers = new Dictionary<string, IParserElement>();
             writeElemenWriters = new Dictionary<string, IWriteElement>();
         }
@@ -44,7 +48,7 @@ namespace Module_7
             {
                 xmlWriter.WriteStartDocument();
                 xmlWriter.WriteStartElement(ElementName);
-                xmlWriter.WriteAttributeString("datecreate",DateCreate.ToString("dd:MM:yyyy"));
+                xmlWriter.WriteAttributeString("datecreate",DateCreate.ToString("MM/dd/yyyy"));
                 if(entities != null)
                 {
                     foreach (var item in entities)
@@ -57,9 +61,36 @@ namespace Module_7
             }
         }
 
-        public IEnumerable<IEntity> ReadFrom(StringBuilder xml)
+        public IEnumerable<IEntity> ReadFrom(TextReader textReader)     
         {
-            return null;
+           
+
+        using (XmlReader xmlReader = XmlReader.Create(textReader, new XmlReaderSettings
+        {
+                IgnoreWhitespace = true,
+                IgnoreComments = true
+            }))
+            {
+                xmlReader.ReadToFollowing(ElementName);                 
+                xmlReader.ReadStartElement();
+
+                do
+                {
+                    while (xmlReader.NodeType == XmlNodeType.Element)
+                    {
+                        var node = XNode.ReadFrom(xmlReader) as XElement;
+                        IParserElement parser;
+                        if (readElementParsers.TryGetValue(node.Name.LocalName, out parser))
+                        {
+                            yield return parser.ReadElement(node);
+                        }
+                        else
+                        {
+                            throw new Exception($"Founded unknown element tag: {node.Name.LocalName}");
+                        }
+                    }
+                } while (xmlReader.Read());
+            }                
         }
-    }
+        }
 }

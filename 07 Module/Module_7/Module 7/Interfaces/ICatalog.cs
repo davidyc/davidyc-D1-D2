@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
+using System.Xml;
 
 namespace Module_7.Interfaces
 {
@@ -10,7 +12,7 @@ namespace Module_7.Interfaces
         void AddParsers(params IParserElement[] elementParsers);
         void AddWriters(params IWriteElement[] writers);
         void WriteTo(StringBuilder xml, IEnumerable<IEntity> entities);
-        IEnumerable<IEntity> ReadFrom(StringBuilder xml);
+        IEnumerable<IEntity> ReadFrom(TextReader textReader);
 
     }
 }

@@ -33,16 +33,18 @@ namespace Module_7.Writers
             }
 
             XElement element = new XElement(ElementName);
-            AddElement(element, "Name", patent.Name);
+            AddElement(element, "Name", patent.Name);           
+            var Creators = new XElement("Creators");
             foreach (var item in patent.Creators)
             {
-                AddAttribute(element, "Creator", item.Name, item.Surname);
+                AddAttribute(Creators,  "Creator", item.Name, item.Surname);
             }
+            element.Add(Creators);
             AddElement(element, "RegistrationNumber", patent.RegistrationNumber);
             AddElement(element, "PagesCount", patent.PagesCount.ToString());
             AddElement(element, "Note", patent.Note);
-            AddElement(element, "FilingDate", patent.FilingDate.ToString("dd:MM:yyyy"));
-            AddElement(element, "PublishDate", patent.PublishDate.ToString("dd:MM:yyyy"));
+            AddElement(element, "FilingDate", patent.FilingDate.ToString("MM/dd/yyyy"));
+            AddElement(element, "PublishDate", patent.PublishDate.ToString("MM/dd/yyy"));
             element.WriteTo(xmlWriter);
         }
     }

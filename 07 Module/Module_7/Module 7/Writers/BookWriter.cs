@@ -35,10 +35,13 @@ namespace Module_7.Writers
 
             XElement element = new XElement(ElementName);
             AddElement(element, "Name", book.Name);
+            var authors = new XElement("Authors");
             foreach (var item in book.Authors)
             {
-                AddAttribute(element, "Author", item.Name, item.Surname);
+                AddAttribute(authors, "Author", item.Name, item.Surname);
             }
+            element.Add(authors);
+         
             AddElement(element, "PublicationCity", book.PublicationCity);
             AddElement(element, "PublisherName", book.PublisherName);
             AddElement(element, "PublishYear", book.PublishYear.ToString());

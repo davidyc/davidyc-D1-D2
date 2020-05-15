@@ -36,7 +36,7 @@ namespace Module_7.Writers
             AddElement(element, "Note", newspaper.Note);
             AddElement(element, "ISSN", newspaper.ISSN);
             AddElement(element, "Number", newspaper.Number.ToString());           
-            AddElement(element, "Date", newspaper.Date.ToString("dd:MM:yyyy"));
+            AddElement(element, "Date", newspaper.Date.ToString("MM/dd/yyy"));
 
             element.WriteTo(xmlWriter);
        
