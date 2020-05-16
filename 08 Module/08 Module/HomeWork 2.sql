@@ -81,9 +81,52 @@ Empl2.EmployeeID = Empl.ReportsTo
 /*Задание 2.3. Использование JOIN
 1.	Определить продавцов, которые обслуживают регион 'Western' (таблица Region). 
 */
-SELECT EmployeeID, Region FROM Employees
+SELECT DISTINCT  Employees.EmployeeID FROM Employees
+INNER JOIN EmployeeTerritories
+ON EmployeeTerritories.EmployeeID = Employees.EmployeeID
+INNER JOIN Territories
+ON EmployeeTerritories.TerritoryID = Territories.TerritoryID
+INNER JOIN Region 
+ON Territories.RegionID = Region.RegionID
+WHERE Region.RegionDescription = 'Western'
+
+/*
+2.	Выдать в результатах запроса имена всех заказчиков из таблицы Customers и суммарное количество их заказов из 
+таблицы Orders. Принять во внимание, что у некоторых заказчиков нет заказов, но они также должны быть выведены в 
+результатах запроса. Упорядочить результаты запроса по возрастанию количества заказов.
+*/
+
+SELECT Customers.CustomerID, Count(Orders.OrderID) as CountOrders FROM Customers
+LEFT JOIN Orders ON Orders.CustomerID = Customers.CustomerID
+GROUP BY Customers.CustomerID
+HAVING Count(Orders.OrderID) >= 0
+ORDER BY Count(Orders.OrderID) DESC
+
+/*
+Задание 2.4. Использование подзапросов
+1.	Выдать всех поставщиков (колонка CompanyName в таблице Suppliers), у которых нет хотя бы одного продукта на 
+складе (UnitsInStock в таблице Products равно 0). Использовать вложенный SELECT для этого запроса с использованием
+оператора IN. 
+*/
+SELECT CompanyName FROM Suppliers 
+WHERE Suppliers.SupplierID 
+IN (SELECT Products.SupplierID FROM Products
+WHERE Products.UnitsInStock > 10)
 
 
 /*
-2.	Выдать в результатах запроса имена всех заказчиков из таблицы Customers и суммарное количество их заказов из таблицы Orders. Принять во внимание, что у некоторых заказчиков нет заказов, но они также должны быть выведены в результатах запроса. Упорядочить результаты запроса по возрастанию количества заказов.
+2.	Выдать всех продавцов, которые имеют более 150 заказов. Использовать вложенный SELECT.
 */
+SELECT * FROM Employees
+WHERE
+(SELECT Count(Orders.OrderID) FROM Orders
+WHERE Orders.EmployeeID = Employees.EmployeeID) > 150
+
+/*
+3.	Выдать всех заказчиков (таблица Customers), которые не имеют ни одного заказа 
+(подзапрос по таблице Orders). Использовать оператор EXISTS.
+*/
+SELECT * FROM Customers
+WHERE not EXISTS 
+(SELECT Orders.EmployeeID FROM Orders
+WHERE Orders.CustomerID = Customers.CustomerID)
