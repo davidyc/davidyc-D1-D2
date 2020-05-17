@@ -1,4 +1,4 @@
-  
+Use Northwind
 IF EXISTS (SELECT * FROM SYS.TABLES SystemTables WHERE SystemTables.Name = 'Region')
 BEGIN
     EXEC SP_RENAME 'Region', 'Regions';

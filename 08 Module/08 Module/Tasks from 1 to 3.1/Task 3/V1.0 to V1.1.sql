@@ -1,3 +1,4 @@
+Use Northwind
 IF NOT EXISTS (SELECT * FROM SYS.TABLES SysTables WHERE SysTables.Name = 'EmployeeCreditCards')
 BEGIN
     CREATE TABLE EmployeeCreditCards(
