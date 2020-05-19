@@ -32,8 +32,8 @@ namespace Module_7.Writers
             AddElement(element, "RegistrationNumber", patent.RegistrationNumber);
             AddElement(element, "PagesCount", patent.PagesCount.ToString());
             AddElement(element, "Note", patent.Note);
-            AddElement(element, "FilingDate", patent.FilingDate.ToString("MM/dd/yyyy"));
-            AddElement(element, "PublishDate", patent.PublishDate.ToString("MM/dd/yyy"));
+            AddElement(element, "FilingDate", GetDate(patent.FilingDate));
+            AddElement(element, "PublishDate", GetDate(patent.PublishDate));
             element.WriteTo(xmlWriter);
         }
     }

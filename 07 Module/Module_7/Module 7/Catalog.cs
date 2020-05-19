@@ -28,6 +28,7 @@ namespace Module_7
 
         public Catalog()
         {
+          
             DateCreate = DateTime.UtcNow;               
             readElementParsers = new Dictionary<string, IParserElement>();
             writeElemenWriters = new Dictionary<string, IWriteElement>();
