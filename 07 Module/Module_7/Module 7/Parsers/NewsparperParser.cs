@@ -4,33 +4,17 @@ using System.Globalization;
 using System.Text;
 using System.Threading;
 using System.Xml.Linq;
+using Module_7.Abstracts;
 using Module_7.Interfaces;
 using Module_7.Models;
 
 namespace Module_7.Parsers
 {
-    public class NewsparperParser : IParserElement
+    public class NewsparperParser : AbstractParser
     {
-        public string ElementName => "Newspaper";
+        public override string ElementName => "Newspaper";
 
-        DateTime ConvertDate(string dateInvariant)
-        {            
-            return DateTime.ParseExact(dateInvariant, CultureInfo.InvariantCulture.DateTimeFormat.ShortDatePattern,
-                CultureInfo.InvariantCulture.DateTimeFormat);
-        }
-
-        XElement GetElement(XElement parentElement, string name)
-        {
-            var element = parentElement.Element(name);
-            if (string.IsNullOrEmpty(element?.Value))
-            {
-                throw new Exception($"Wrong struct no element {name}");
-            }
-
-            return element;
-        }
-
-        public IEntity ReadElement(XElement element)
+        public override IEntity ReadElement(XElement element)
         {
             if (element == null)
             {

@@ -10,10 +10,17 @@ using Module_7.Interfaces;
 
 namespace Module_7
 {
-    public class Catalog : ICatalog
+    public class Catalog : ICatalog, IDate
     {
         private readonly IDictionary<string, IParserElement> readElementParsers;
         private readonly IDictionary<string, IWriteElement> writeElemenWriters;
+
+        public string GetDate(DateTime date)
+        {
+            var day = date.Day < 10 ? $"0{date.Day}" : $"{date.Day}";
+            var mouth = date.Month < 10 ? $"0{date.Month}" : $"{date.Month}";
+            return $"{mouth}/{day}/{date.Year}";
+        }
 
         public string ElementName => "catalog";
         public DateTime DateCreate { get; set; }
@@ -48,7 +55,7 @@ namespace Module_7
             {
                 xmlWriter.WriteStartDocument();
                 xmlWriter.WriteStartElement(ElementName);
-                xmlWriter.WriteAttributeString("datecreate",DateCreate.ToString("MM/dd/yyyy"));
+                xmlWriter.WriteAttributeString("datecreate",GetDate(DateCreate));
                 if(entities != null)
                 {
                     foreach (var item in entities)
@@ -62,35 +69,35 @@ namespace Module_7
         }
 
         public IEnumerable<IEntity> ReadFrom(TextReader textReader)     
-        {
-           
-
-        using (XmlReader xmlReader = XmlReader.Create(textReader, new XmlReaderSettings
-        {
-                IgnoreWhitespace = true,
-                IgnoreComments = true
-            }))
+        {     
+            using (XmlReader xmlReader = XmlReader.Create(textReader, new XmlReaderSettings
             {
-                xmlReader.ReadToFollowing(ElementName);                 
-                xmlReader.ReadStartElement();
-
-                do
+                    IgnoreWhitespace = true,
+                    IgnoreComments = true
+                }))
                 {
-                    while (xmlReader.NodeType == XmlNodeType.Element)
+                    xmlReader.ReadToFollowing(ElementName);                 
+                    xmlReader.ReadStartElement();
+
+                    do
                     {
-                        var node = XNode.ReadFrom(xmlReader) as XElement;
-                        IParserElement parser;
-                        if (readElementParsers.TryGetValue(node.Name.LocalName, out parser))
+                        while (xmlReader.NodeType == XmlNodeType.Element)
                         {
-                            yield return parser.ReadElement(node);
+                            var node = XNode.ReadFrom(xmlReader) as XElement;
+                            IParserElement parser;
+                            if (readElementParsers.TryGetValue(node.Name.LocalName, out parser))
+                            {
+                                yield return parser.ReadElement(node);
+                            }
+                            else
+                            {
+                                throw new Exception($"Founded unknown element tag: {node.Name.LocalName}");
+                            }
                         }
-                        else
-                        {
-                            throw new Exception($"Founded unknown element tag: {node.Name.LocalName}");
-                        }
-                    }
-                } while (xmlReader.Read());
-            }                
-        }
-        }
+                    } while (xmlReader.Read());
+                }                
+            }
+
+       
+    }
 }

@@ -1,4 +1,5 @@
-﻿using Module_7.Interfaces;
+﻿using Module_7.Abstracts;
+using Module_7.Interfaces;
 using Module_7.Models;
 using System;
 using System.Collections.Generic;
@@ -9,40 +10,10 @@ using System.Xml.Linq;
 
 namespace Module_7.Parsers
 {
-    public class PatentParser : IParserElement
+    public class PatentParser : AbstractParser
     {
-        public string ElementName => "Patent";
-
-        DateTime ConvertDate(string dateInvariant)
-        {
-            return DateTime.ParseExact(dateInvariant, CultureInfo.InvariantCulture.DateTimeFormat.ShortDatePattern,
-                CultureInfo.InvariantCulture.DateTimeFormat);
-        }
-
-
-        protected string GetAttributeValue(XElement element, string name)
-        {
-            
-            if (string.IsNullOrEmpty(element?.Value))
-            {
-                 throw new Exception($"{name}");
-            }
-            return element.Attribute(name).Value;
-        }
-
-
-        XElement GetElement(XElement parentElement, string name)
-        {
-            var element = parentElement.Element(name);
-            if (string.IsNullOrEmpty(element?.Value))
-            {
-                throw new Exception($"Wrong struct no element {name}");
-            }
-
-            return element;
-        }
-
-        public IEntity ReadElement(XElement element)
+        public override string ElementName => "Patent";
+        public override IEntity ReadElement(XElement element)
         {
             if (element == null)
             {

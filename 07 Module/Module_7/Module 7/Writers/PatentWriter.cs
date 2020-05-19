@@ -3,28 +3,17 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
+using Module_7.Abstracts;
 using Module_7.Interfaces;
 using Module_7.Models;
 
 namespace Module_7.Writers
 {
-    public class PatentWriter : IWriteElement
+    public class PatentWriter : AbstractWriter
     {
-        public string ElementName => "Patent";
-        void AddElement(XElement element, string newElementName, string value)
-        {
-            var newElement = new XElement(newElementName, value);
-            element.Add(newElement);
-        }
-
-        void AddAttribute(XElement element, string newElementName, string name, string surname)
-        {
-            var newElement = new XElement(newElementName);
-            newElement.SetAttributeValue("Name", name);
-            newElement.SetAttributeValue("Surname", surname);
-            element.Add(newElement);
-        }
-        public void WriteElement(XmlWriter xmlWriter, IEntity entity)
+        public override string ElementName => "Patent";
+  
+        public override void WriteElement(XmlWriter xmlWriter, IEntity entity)
         {
             Patent patent = entity as Patent;
             if (patent == null)

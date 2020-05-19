@@ -4,36 +4,16 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using Module_7.Abstracts;
 using Module_7.Interfaces;
 using Module_7.Models;
 
 namespace Module_7.Parsers
 {
-    public class BookParser : IParserElement
+    public class BookParser : AbstractParser
     {
-        public string ElementName => "Book";     
-
-        protected string GetAttributeValue(XElement element, string name)
-        {
-            if (string.IsNullOrEmpty(element?.Value))
-            {
-                throw new Exception($"{name}");
-            }
-            return element.Attribute(name).Value;
-        }
-
-        XElement GetElement(XElement parentElement, string name)
-        {
-            var element = parentElement.Element(name);
-            if (string.IsNullOrEmpty(element?.Value))
-            {
-                throw new Exception($"Wrong struct no element {name}");
-            }
-
-            return element;
-        }
-
-        public IEntity ReadElement(XElement element)
+        public override string ElementName => "Book";    
+        public override IEntity ReadElement(XElement element)
         {
             if (element == null)
             {

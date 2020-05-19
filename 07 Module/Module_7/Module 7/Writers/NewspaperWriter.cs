@@ -3,22 +3,17 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
+using Module_7.Abstracts;
 using Module_7.Interfaces;
 using Module_7.Models;
 
 namespace Module_7.Writers
 {
-    public class NewspaperWriter : IWriteElement
+    public class NewspaperWriter : AbstractWriter
     {
-        public string ElementName => "Newspaper";
+        public override string ElementName => "Newspaper";
 
-        void AddElement(XElement element, string newElementName, string value)
-        {
-            var newElement = new XElement(newElementName, value);
-            element.Add(newElement);
-        }
-
-        public void WriteElement(XmlWriter xmlWriter, IEntity entity)
+        public override void WriteElement(XmlWriter xmlWriter, IEntity entity)
         {
             Newspaper newspaper = entity as Newspaper;
             if (newspaper == null)
