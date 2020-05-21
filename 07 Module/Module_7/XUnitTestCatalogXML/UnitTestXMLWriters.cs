@@ -234,15 +234,15 @@ namespace XUnitTestCatalogXML
             catalog.WriteTo(actualXML, xmlElements);
 
 
-            string xml = @"<?xml version=""1.0"" encoding=""utf-16""?><catalog datecreate=""05/12/2020"">";
+            StringBuilder expectedXML = new StringBuilder(@"<?xml version=""1.0"" encoding=""utf-16""?><catalog datecreate=""05/12/2020"">");
             for (int i = 0; i < count; i++)
             {
-                xml += Helpers.GetBookXML()
-                + Helpers.GetNewspaperXML()
-                + Helpers.GetPatentXML();
+                expectedXML.Append(Helpers.GetBookXML());
+                expectedXML.Append(Helpers.GetNewspaperXML());
+                expectedXML.Append(Helpers.GetPatentXML());
             };
-            xml += @"</catalog>";
-            var expectedXML = new StringBuilder(xml);
+            expectedXML.Append(@"</catalog>");
+         
 
             Assert.True(expectedXML.Equals(actualXML));
         }
@@ -265,17 +265,18 @@ namespace XUnitTestCatalogXML
             }
 
 
-            var xml = @"<?xml version=""1.0"" encoding=""utf-16""?><catalog datecreate=""05/12/2020"" >";
+            StringBuilder xml = new StringBuilder(@"<?xml version=""1.0"" encoding=""utf-16""?><catalog datecreate=""05/12/2020"">");
             for (int i = 0; i < count; i++)
             {
-                xml += Helpers.GetBookXML()
-                     + Helpers.GetNewspaperXML()
-                     + Helpers.GetPatentXML();
+                xml.Append(Helpers.GetBookXML());
+                xml.Append(Helpers.GetNewspaperXML());
+                xml.Append(Helpers.GetPatentXML());
             };
+            xml.Append(@"</catalog>");
 
-               
-               xml += @"</catalog>";
-            TextReader str = new StringReader(xml);
+
+     
+            TextReader str = new StringReader(xml.ToString());
 
             var actualCollection = catalog.ReadFrom(str);
 
