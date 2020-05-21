@@ -17,7 +17,7 @@ ShipVia >= 2
 Запрос должен возвращать только колонки OrderID и ShippedDate.
 */
 
-SELECT OrderID, ShippedDate,
+SELECT OrderID,
 CASE
     WHEN ShippedDate IS NULL THEN 'Not Shipped'     
 END AS ShippedDate
@@ -54,7 +54,7 @@ ShippedDate >= '1998-05-06'
 */
 SELECT ContactName, Country FROM Customers 
 WHERE Country IN('USA', 'CANADA')
-ORDER BY Country, ContactName 
+ORDER BY ContactName, Country 
 
 /*
 2.	Выбрать из таблицы Customers всех заказчиков, не проживающих в USA и Canada. Запрос сделать с помощью оператора
@@ -110,5 +110,5 @@ ORDER BY Country
 которые удовлетворяют этому условию. 
 */
 SELECT ProductName FROM Products
-WHERE ProductName LIKE 'cho%olade'
+WHERE ProductName LIKE 'cho_olade'
 
