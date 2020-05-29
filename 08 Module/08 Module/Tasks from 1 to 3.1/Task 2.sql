@@ -1,3 +1,4 @@
+Use Northwind
 /*
 Задание 2.1. Использование агрегатных функций (SUM, COUNT)
 1.	Найти общую сумму всех заказов из таблицы Order Details с учетом количества закупленных товаров и скидок по ним. 
@@ -51,7 +52,12 @@ ORDER BY 'Amount' DESC;
 */
 SELECT EmployeeID, COUNT(CustomerID) as CountOrders  FROM Orders
 WHERE OrderDate > '1998'
-GROUP BY EmployeeID
+GROUP BY 
+
+SELECT EmployeeID AS 'EmployeeId', CustomerID AS 'CustomerId', COUNT(orderID)   AS 'Amount'
+FROM Orders
+WHERE YEAR(OrderDate) = '1998'
+GROUP BY EmployeeID, CustomerID
 
 /*
 4.	Найти покупателей и продавцов, котоdрые живут в одном городе. Если в городе живут только один или 
@@ -108,10 +114,11 @@ ORDER BY Count(Orders.OrderID) DESC
 складе (UnitsInStock в таблице Products равно 0). Использовать вложенный SELECT для этого запроса с использованием
 оператора IN. 
 */
-SELECT CompanyName FROM Suppliers 
-WHERE Suppliers.SupplierID 
-IN (SELECT Products.SupplierID FROM Products
-WHERE Products.UnitsInStock > 0)
+SELECT CompanyName AS 'CompanyName'
+FROM Suppliers
+WHERE SupplierID IN (SELECT SupplierID
+FROM Products
+WHERE UnitsInStock = 0);
 
 
 /*

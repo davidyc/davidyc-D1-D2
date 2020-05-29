@@ -34,11 +34,11 @@ ShippedDate IS NULL
 значений возвращать дату в формате по умолчанию.
 */
 
-SELECT OrderID AS ID,
+SELECT OrderID AS "Order Number",
 CASE
     WHEN ShippedDate IS NULL THEN 'Not Shipped'    
     WHEN ShippedDate IS NOT NULL THEN convert(varchar, ShippedDate) 
-    END AS Ship
+    END AS "Shipped Date"
 FROM Orders 
 WHERE
 ShippedDate IS NULL
