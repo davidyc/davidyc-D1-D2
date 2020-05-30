@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Module_09.Models
+namespace Module_09.Model
 {   
     public class Territory
     {
