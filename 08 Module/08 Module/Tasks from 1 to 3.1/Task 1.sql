@@ -96,12 +96,11 @@ ORDER BY Country
 3.	Выбрать всех заказчиков из таблицы Customers, у которых название страны начинается на буквы из диапазона b и g, 
 не используя оператор BETWEEN. 
 */
-SELECT CustomerID, Country FROM Customers 
-WHERE Country LIKE 'b%'   
-OR Country LIKE 'B%'
-OR Country LIKE 'g%'
-OR Country LIKE 'G%'
-ORDER BY Country
+SELECT 
+    CustomersT.[CustomerId]     AS 'CustomerId'
+    ,CustomersT.[Country]       AS 'Country'
+FROM [dbo].[Customers] CustomersT WHERE SUBSTRING(CustomersT.[Country], 1, 1) IN ('b', 'c', 'd', 'e', 'f', 'g')
+ORDER BY CustomersT.[Country];
 
 /*
 Задание 1.4. Использование оператора LIKE
