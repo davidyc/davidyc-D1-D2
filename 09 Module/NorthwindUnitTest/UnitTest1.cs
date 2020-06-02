@@ -32,6 +32,7 @@ namespace NorthwindUnitTest
         {
             orderRepository.AddNew(new Order()
             {
+                
                 OrderDate = new DateTime(1996, 2, 2),
                 ShipName = "Name",
                 ShipAddress = "Adress",
@@ -86,6 +87,33 @@ namespace NorthwindUnitTest
         public void DeleteOrderByID()
         {
             orderRepository.DeleteOrderByID(11077);
+            Assert.IsTrue(1 == 1);
+        }
+
+        [TestMethod]
+        public void Update()
+        {
+            orderRepository.Update(new Order()
+            {
+                OrderID = 11094,               
+                ShipName = "Name",
+                ShipAddress = "Adress",
+                Details = new List<OrderDetail>
+                {
+                    new OrderDetail
+                    {
+                        Product = new Product{ProductID = 11},
+                        Quantity = 10,
+                        UnitPrice = 14
+                    },
+                    new OrderDetail
+                    {
+                        Product = new Product{ProductID = 10},
+                        Quantity = 10,
+                        UnitPrice = 14
+                    },
+                }
+            });
             Assert.IsTrue(1 == 1);
         }
     }

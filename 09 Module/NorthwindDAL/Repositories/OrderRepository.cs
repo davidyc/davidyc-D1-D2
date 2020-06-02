@@ -96,6 +96,7 @@ namespace NorthwindDAL.Repositories
                 }
             }
         }
+
         public void AddNew(Order newOrder)
         {          
             using (var connection = ProviderFactory.CreateConnection())
@@ -114,7 +115,43 @@ namespace NorthwindDAL.Repositories
         }                    
         public Order Update(Order order)
         {
-            throw new NotImplementedException();
+            order.SetStatus();
+            if(order.Status != Status.newOrder)
+                return order;
+
+            using (var connection = ProviderFactory.CreateConnection())
+            {
+                connection.ConnectionString = ConnectionString;
+                connection.Open();
+
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "UPDATE Orders set [ShipName]=@ShipName," +
+                        "[ShipAddress]=@ShipAddress  WHERE OrderID = @id";
+
+                    command.CommandType = CommandType.Text;
+
+                    var paramId = command.CreateParameter();
+                    paramId.ParameterName = "@id";
+                    paramId.Value = order.OrderID;
+
+                    var paramShipName = command.CreateParameter();
+                    paramShipName.ParameterName = "@ShipName";
+                    paramShipName.Value = order.ShipName;
+
+                    var paramShipAddress = command.CreateParameter();
+                    paramShipAddress.ParameterName = "@ShipAddress";
+                    paramShipAddress.Value = order.ShipAddress;
+
+                    command.Parameters.Add(paramId);
+                    command.Parameters.Add(paramShipName);
+                    command.Parameters.Add(paramShipAddress);
+
+                    command.ExecuteNonQuery();
+                }
+
+                return order;
+            }
         }
         public void SetInProgress(int id)
         {
@@ -212,7 +249,6 @@ namespace NorthwindDAL.Repositories
             if (order.Status != Status.Done)
                 DeleteOrder(order);
         }
-
         private void DeleteOrder(Order order)
         {
             // DELETE FROM[Order Details] WHERE[Order Details].[OrderID] in
