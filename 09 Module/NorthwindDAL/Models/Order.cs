@@ -7,11 +7,11 @@ namespace NorthwindDAL.Models
     public class Order
     {
         public int OrderID { get; set; }
-        public object OrderDate { get; set; }
+        public Nullable<DateTime> OrderDate { get; set; }
         public string ShipName { get; set; }
         public string ShipAddress { get; set; }
         public Status Status { get; set; }
-        public object ShippedDate { get; set; }
+        public Nullable<DateTime> ShippedDate { get; set; }
         public List<OrderDetail> Details { get; set; }
 
         public void SetStatus()

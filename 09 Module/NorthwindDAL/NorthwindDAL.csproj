@@ -42,6 +42,8 @@
   <ItemGroup>
     <Compile Include="Enums\Status.cs" />
     <Compile Include="Interfaces\IOrderRepository.cs" />
+    <Compile Include="Models\CustOrderHist.cs" />
+    <Compile Include="Models\CustOrdersDetail.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\OrderDetail.cs" />
     <Compile Include="Models\Product.cs" />

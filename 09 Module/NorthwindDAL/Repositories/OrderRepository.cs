@@ -49,12 +49,10 @@ namespace NorthwindDAL.Repositories
 
             return resultOrders;
         }
-
         public IEnumerable<Order> GetOrdersByOrderDate(DateTime orderDate)
         {
             throw new NotImplementedException();
         }
-
         public Order GetOrderById(int id)
         {
             using (var connection = ProviderFactory.CreateConnection())
@@ -98,7 +96,6 @@ namespace NorthwindDAL.Repositories
                 }
             }
         }
-
         public void AddNew(Order newOrder)
         {          
             using (var connection = ProviderFactory.CreateConnection())
@@ -114,13 +111,11 @@ namespace NorthwindDAL.Repositories
                 }
                 
             }
-        }            
-        
+        }                    
         public Order Update(Order order)
         {
             throw new NotImplementedException();
         }
-
         public void SetInProgress(int id)
         {
             using (var connection = ProviderFactory.CreateConnection())
@@ -136,7 +131,6 @@ namespace NorthwindDAL.Repositories
                 }
             }
         }
-
         public void SetInDone(int id)
         {
             using (var connection = ProviderFactory.CreateConnection())
@@ -152,23 +146,115 @@ namespace NorthwindDAL.Repositories
                 }
             }
         }
+        public IEnumerable<CustOrderHist> ExcudeaCustOrderHist(string customerID)
+        {
+            var custOrderHists = new List<CustOrderHist>();
+            using (var connection = ProviderFactory.CreateConnection())
+            {
+                connection.ConnectionString = ConnectionString;
+                connection.Open();
 
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "CustOrderHist";
+                    command.CommandType = CommandType.StoredProcedure;
+                    SqlParameter nameParam = new SqlParameter
+                    {
+                        ParameterName = "@CustomerID",
+                        Value = customerID
+                    };
+                   
+                    command.Parameters.Add(nameParam);
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {                            
+                            custOrderHists.Add(CreateCustOrderHist(reader));
+                        }
+                    }
+                    return custOrderHists;
+                }
+            }
+        }
+        public IEnumerable<CustOrdersDetail> ExcudebCustOrdersDetail(int orderID)
+        {
+            var custOrderHists = new List<CustOrdersDetail>();
+            using (var connection = ProviderFactory.CreateConnection())
+            {
+                connection.ConnectionString = ConnectionString;
+                connection.Open();
 
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "CustOrdersDetail";
+                    command.CommandType = CommandType.StoredProcedure;
+                    SqlParameter nameParam = new SqlParameter
+                    {
+                        ParameterName = "@OrderID",
+                        Value = orderID
+                    };
+
+                    command.Parameters.Add(nameParam);
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            custOrderHists.Add(CreateCustOrdersDetail(reader));
+                        }
+                    }
+                    return custOrderHists;
+                }
+            }
+        }
+        public void DeleteOrderByID(int orderID)
+        {
+            var order = GetOrderById(orderID);
+            if (order.Status != Status.Done)
+                DeleteOrder(order);
+        }
+
+        private void DeleteOrder(Order order)
+        {
+            // DELETE FROM[Order Details] WHERE[Order Details].[OrderID] in
+            //(SELECT OrderID FROM Orders WHERE Orders.CustomerID is null)
+            //DELETE FROM Orders WHERE Orders.CustomerID is null
+
+            using (var connection = ProviderFactory.CreateConnection())
+            {
+                connection.ConnectionString = ConnectionString;
+                connection.Open();
+
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = $"DELETE FROM [Order Details] WHERE [Order Details].[OrderID] = {order.OrderID}" +
+                        $"DELETE FROM Orders WHERE Orders.OrderID =  {order.OrderID}";
+                    command.CommandType = CommandType.Text;
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
         private Order CreateOrder(DbDataReader reader)
         {
-            var order =  new Order
+            var order = new Order
             {
                 OrderID = reader.GetInt32(0),
-                OrderDate = reader["OrderDate"],
+                OrderDate = GetDateTimeFrom(reader, 1),
                 ShipName = reader.GetString(2),
                 ShipAddress = reader.GetString(3),
-                ShippedDate = reader["OrderDate"]
+                ShippedDate = GetDateTimeFrom(reader, 4)
             };
-
-
+           
             order.SetStatus();
             return order;
         }     
+        private Nullable<DateTime> GetDateTimeFrom(DbDataReader reader, int index)
+        {
+            var value = reader.GetValue(index);
+            if (value.ToString().Equals(String.Empty))
+                return null;
+            return (DateTime)value;
+
+        }
         private OrderDetail CreateOrderDetail(DbDataReader reader)
         {
             return new OrderDetail
@@ -210,6 +296,29 @@ namespace NorthwindDAL.Repositories
                 command.CommandType = CommandType.Text;
                 command.ExecuteNonQuery();
             }
+        }
+        private CustOrderHist CreateCustOrderHist(DbDataReader reader)
+        {
+            return new CustOrderHist
+            {
+                ProductName = reader.GetString(0),
+                Total = reader.GetInt32(1)
+            };
+        }
+        private CustOrdersDetail CreateCustOrdersDetail(DbDataReader reader)
+        {
+            var tmp =  new CustOrdersDetail
+            {                
+               
+            };
+            tmp.ProductName = reader.GetString(0);
+            tmp.UnitPrice = reader.GetDecimal(1);
+            tmp.Quantity = reader["Quantity"];
+            tmp.Discount = reader.GetInt32(3);
+            tmp.ExtendedPrice = reader.GetDecimal(4);
+
+            return tmp;
+
         }
     }
 }

@@ -67,6 +67,27 @@ namespace NorthwindUnitTest
             orderRepository.SetInDone(11089);
             Assert.IsTrue(1 == 1);
         }
+
+        [TestMethod]
+        public void ExcudeaCustOrderHist()
+        {
+             var x = orderRepository.ExcudeaCustOrderHist("ALFKI");
+            Assert.IsTrue(1 == 1);
+        }
+
+        [TestMethod]
+        public void ExcudebCustOrdersDetail()
+        {
+            var x = orderRepository.ExcudebCustOrdersDetail(10248);
+            Assert.IsTrue(1 == 1);
+        }
+
+        [TestMethod]
+        public void DeleteOrderByID()
+        {
+            orderRepository.DeleteOrderByID(11077);
+            Assert.IsTrue(1 == 1);
+        }
     }
 }
 

@@ -1,4 +1,5 @@
-﻿using NorthwindDAL.Models;
+﻿using NorthwindDAL.Enums;
+using NorthwindDAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,5 +17,8 @@ namespace NorthwindDAL.Interfaces
         Order Update(Order order);
         void SetInProgress(int id);
         void SetInDone(int id);
+        IEnumerable<CustOrderHist> ExcudeaCustOrderHist(string customerID);
+        IEnumerable<CustOrdersDetail> ExcudebCustOrdersDetail(int orderID);
+        void DeleteOrderByID(int orderID);
     }
 }
