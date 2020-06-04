@@ -16,258 +16,221 @@ namespace NorthwindDAL.Repositories
     {
         private readonly DbProviderFactory ProviderFactory;
         private readonly string ConnectionString;
-
         public OrderRepository(string connectionString, string provider)
         {
             ProviderFactory = DbProviderFactories.GetFactory(provider);
             ConnectionString = connectionString;
         }
-
         public virtual IEnumerable<Order> GetOrders()
         {
             var resultOrders = new List<Order>();
+            var connection = CreateConnection();
 
-            using (var connection = ProviderFactory.CreateConnection())
+            using (var command = connection.CreateCommand())
             {
-                connection.ConnectionString = ConnectionString;
-                connection.Open();
-
-                using (var command = connection.CreateCommand())
+                command.CommandText = "select OrderID, OrderDate, ShipName, ShipAddress, ShippedDate from dbo.Orders";
+                command.CommandType = CommandType.Text;
+                using (var reader = command.ExecuteReader())
                 {
-                    command.CommandText = "select OrderID, OrderDate, ShipName, ShipAddress, ShippedDate from dbo.Orders";
-                    command.CommandType = CommandType.Text;
-
-                    using (var reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {   
-                            resultOrders.Add(CreateOrder(reader));
-                        }
+                    while (reader.Read() && reader != null)
+                    {   
+                        resultOrders.Add(CreateOrder(reader));
                     }
-                }
+                }                
             }
-
+            connection.Close();
             return resultOrders;
-        }
-        public IEnumerable<Order> GetOrdersByOrderDate(DateTime orderDate)
+        }        
+        public virtual Order GetOrderById(int id)
         {
-            throw new NotImplementedException();
-        }
-        public Order GetOrderById(int id)
-        {
-            using (var connection = ProviderFactory.CreateConnection())
+            var connection = CreateConnection();
+            using (var command = connection.CreateCommand())
             {
-                connection.ConnectionString = ConnectionString;
-                connection.Open();
+                command.CommandText =
+                        @"select OrderID, OrderDate, ShipName, ShipAddress, ShippedDate from dbo.Orders where OrderID = @id;
+                        select OrderID, dbo.[Order Details].UnitPrice, Quantity, ProductName, dbo.[Order Details].ProductID  
+                        ProductID from dbo.[Order Details], dbo.Products where OrderID = @id 
+                        and dbo.[Order Details].ProductID = dbo.Products.ProductID";
 
-                using (var command = connection.CreateCommand())
+                command.CommandType = CommandType.Text;
+                var paramId = command.CreateParameter();
+                paramId.ParameterName = "@id";
+                paramId.Value = id;
+                command.Parameters.Add(paramId);
+
+                using (var reader = command.ExecuteReader())
                 {
-                    command.CommandText =
-                        "select OrderID, OrderDate, ShipName, ShipAddress, ShippedDate from dbo.Orders where OrderID = @id;" +
-                        "select OrderID, dbo.[Order Details].UnitPrice, Quantity, ProductName, dbo.[Order Details].ProductID " +
-                        "ProductID from dbo.[Order Details], dbo.Products where OrderID = @id" +
-                        " and dbo.[Order Details].ProductID = dbo.Products.ProductID";
+                    if (!reader.HasRows || reader == null) 
+                        return null;
+                    reader.Read();
 
-                    command.CommandType = CommandType.Text;
+                    var order = CreateOrder(reader);
+                    order.Details = new List<OrderDetail>();
 
-                    var paramId = command.CreateParameter();
-                    paramId.ParameterName = "@id";
-                    paramId.Value = id;
+                    reader.NextResult();                      
 
-                    command.Parameters.Add(paramId);
-
-                    using (var reader = command.ExecuteReader())
-                    {
-                        if (!reader.HasRows) return null;
-
-                        reader.Read();
-
-                        var order = CreateOrder(reader);
-                        order.Details = new List<OrderDetail>();
-
-                        reader.NextResult();                       
-
-                        while (reader.Read())
-                        {   
-                            order.Details.Add(CreateOrderDetail(reader));
-                        }
-                        return order;
+                    while(reader.Read())
+                    {   
+                        order.Details.Add(CreateOrderDetail(reader));
                     }
-                }
-            }
-        }
-
-        public void AddNew(Order newOrder)
-        {          
-            using (var connection = ProviderFactory.CreateConnection())
-            {
-                connection.ConnectionString = ConnectionString;
-                connection.Open();
-                CreateNewOrder(connection, newOrder);
-                var MaxID = GetMaxID(connection);
-
-                foreach (var item in newOrder.Details)
-                {
-                    CreateDetailsOrder(connection, MaxID, item);
+                    connection.Close();
+                    return order;
                 }
                 
             }
+
+        }
+        public virtual void AddNew(Order newOrder)
+        {
+            var connection = CreateConnection();           
+            var MaxID = CreateNewOrder(connection, newOrder);
+            foreach (var item in newOrder.Details)
+            {
+                CreateDetailsOrder(connection, MaxID, item);
+            }
+            connection.Close();
+
         }                    
-        public Order Update(Order order)
+        public virtual Order Update(Order order)
         {
             order.SetStatus();
             if(order.Status != Status.newOrder)
                 return order;
 
-            using (var connection = ProviderFactory.CreateConnection())
+            var connection = CreateConnection();
+
+            using (var command = connection.CreateCommand())
             {
-                connection.ConnectionString = ConnectionString;
-                connection.Open();
+                command.CommandText = @"UPDATE Orders set [ShipName]=@ShipName,
+                    [ShipAddress]=@ShipAddress  WHERE OrderID = @id";
 
-                using (var command = connection.CreateCommand())
-                {
-                    command.CommandText = "UPDATE Orders set [ShipName]=@ShipName," +
-                        "[ShipAddress]=@ShipAddress  WHERE OrderID = @id";
+                command.CommandType = CommandType.Text;
 
-                    command.CommandType = CommandType.Text;
+                var paramId = command.CreateParameter();
+                paramId.ParameterName = "@id";
+                paramId.Value = order.OrderID;
 
-                    var paramId = command.CreateParameter();
-                    paramId.ParameterName = "@id";
-                    paramId.Value = order.OrderID;
+                var paramShipName = command.CreateParameter();
+                paramShipName.ParameterName = "@ShipName";
+                paramShipName.Value = order.ShipName;
 
-                    var paramShipName = command.CreateParameter();
-                    paramShipName.ParameterName = "@ShipName";
-                    paramShipName.Value = order.ShipName;
+                var paramShipAddress = command.CreateParameter();
+                paramShipAddress.ParameterName = "@ShipAddress";
+                paramShipAddress.Value = order.ShipAddress;
 
-                    var paramShipAddress = command.CreateParameter();
-                    paramShipAddress.ParameterName = "@ShipAddress";
-                    paramShipAddress.Value = order.ShipAddress;
+                command.Parameters.Add(paramId);
+                command.Parameters.Add(paramShipName);
+                command.Parameters.Add(paramShipAddress);
 
-                    command.Parameters.Add(paramId);
-                    command.Parameters.Add(paramShipName);
-                    command.Parameters.Add(paramShipAddress);
-
-                    command.ExecuteNonQuery();
-                }
-
-                return order;
+                command.ExecuteNonQuery();
             }
+            connection.Close();
+            return order;            
         }
-        public void SetInProgress(int id)
+        public virtual void SetInProgress(int id)
         {
-            using (var connection = ProviderFactory.CreateConnection())
+            var connection = CreateConnection();
+            using (var command = connection.CreateCommand())
             {
-                connection.ConnectionString = ConnectionString;
-                connection.Open();
-
-                using (var command = connection.CreateCommand())
-                {
-                    command.CommandText = $"UPDATE Orders SET OrderDate = GETDATE() WHERE OrderID = {id};";
-                    command.CommandType = CommandType.Text;
-                    command.ExecuteNonQuery();
-                }
+                command.CommandText = $"UPDATE Orders SET OrderDate = GETDATE() WHERE OrderID = {id};";
+                command.CommandType = CommandType.Text;
+                command.ExecuteNonQuery();
             }
+            connection.Close();
         }
-        public void SetInDone(int id)
+        public virtual void SetInDone(int id)
         {
-            using (var connection = ProviderFactory.CreateConnection())
+            var connection = CreateConnection();
+            using (var command = connection.CreateCommand())
             {
-                connection.ConnectionString = ConnectionString;
-                connection.Open();
-
-                using (var command = connection.CreateCommand())
-                {
-                    command.CommandText = $"UPDATE Orders SET ShippedDate = GETDATE() WHERE OrderID = {id};";
-                    command.CommandType = CommandType.Text;
-                    command.ExecuteNonQuery();
-                }
+                command.CommandText = $"UPDATE Orders SET ShippedDate = GETDATE() WHERE OrderID = {id};";
+                command.CommandType = CommandType.Text;
+                command.ExecuteNonQuery();
             }
+            connection.Close();
+
         }
-        public IEnumerable<CustOrderHist> ExcudeaCustOrderHist(string customerID)
+        public virtual IEnumerable<CustOrderHist> ExcudeaCustOrderHist(string customerID)
         {
             var custOrderHists = new List<CustOrderHist>();
-            using (var connection = ProviderFactory.CreateConnection())
-            {
-                connection.ConnectionString = ConnectionString;
-                connection.Open();
+            var connection = CreateConnection();
 
-                using (var command = connection.CreateCommand())
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = "CustOrderHist";
+                command.CommandType = CommandType.StoredProcedure;
+                SqlParameter nameParam = new SqlParameter
                 {
-                    command.CommandText = "CustOrderHist";
-                    command.CommandType = CommandType.StoredProcedure;
-                    SqlParameter nameParam = new SqlParameter
+                    ParameterName = "@CustomerID",
+                    Value = customerID
+                };
+
+                command.Parameters.Add(nameParam);
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
                     {
-                        ParameterName = "@CustomerID",
-                        Value = customerID
-                    };
-                   
-                    command.Parameters.Add(nameParam);
-                    using (var reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {                            
-                            custOrderHists.Add(CreateCustOrderHist(reader));
-                        }
+                        custOrderHists.Add(CreateCustOrderHist(reader));
                     }
-                    return custOrderHists;
                 }
+                connection.Close();
+                return custOrderHists;              
             }
         }
-        public IEnumerable<CustOrdersDetail> ExcudebCustOrdersDetail(int orderID)
+        public virtual IEnumerable<CustOrdersDetail> ExcudebCustOrdersDetail(int orderID)
         {
             var custOrderHists = new List<CustOrdersDetail>();
-            using (var connection = ProviderFactory.CreateConnection())
+            var connection = CreateConnection();
+            using (var command = connection.CreateCommand())
             {
-                connection.ConnectionString = ConnectionString;
-                connection.Open();
-
-                using (var command = connection.CreateCommand())
+                command.CommandText = "CustOrdersDetail";
+                command.CommandType = CommandType.StoredProcedure;
+                SqlParameter nameParam = new SqlParameter
                 {
-                    command.CommandText = "CustOrdersDetail";
-                    command.CommandType = CommandType.StoredProcedure;
-                    SqlParameter nameParam = new SqlParameter
-                    {
-                        ParameterName = "@OrderID",
-                        Value = orderID
-                    };
+                    ParameterName = "@OrderID",
+                    Value = orderID
+                };
 
-                    command.Parameters.Add(nameParam);
-                    using (var reader = command.ExecuteReader())
+                command.Parameters.Add(nameParam);
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
                     {
-                        while (reader.Read())
-                        {
-                            custOrderHists.Add(CreateCustOrdersDetail(reader));
-                        }
+                        custOrderHists.Add(CreateCustOrdersDetail(reader));
                     }
-                    return custOrderHists;
                 }
             }
+            connection.Close();
+            return custOrderHists;
         }
-        public void DeleteOrderByID(int orderID)
+        public virtual void DeleteOrderByID(int orderID)
         {
-            var order = GetOrderById(orderID);
-            if (order.Status != Status.Done)
+            var order = GetOrderById(orderID);            
+            if (order != null && order.Status != Status.Done)
                 DeleteOrder(order);
         }
         private void DeleteOrder(Order order)
         {
-            // DELETE FROM[Order Details] WHERE[Order Details].[OrderID] in
-            //(SELECT OrderID FROM Orders WHERE Orders.CustomerID is null)
-            //DELETE FROM Orders WHERE Orders.CustomerID is null
-
-            using (var connection = ProviderFactory.CreateConnection())
+            var connection = CreateConnection();
+            using (var command = connection.CreateCommand())
             {
-                connection.ConnectionString = ConnectionString;
-                connection.Open();
-
-                using (var command = connection.CreateCommand())
-                {
-                    command.CommandText = $"DELETE FROM [Order Details] WHERE [Order Details].[OrderID] = {order.OrderID}" +
-                        $"DELETE FROM Orders WHERE Orders.OrderID =  {order.OrderID}";
-                    command.CommandType = CommandType.Text;
-                    command.ExecuteNonQuery();
-                }
+                command.CommandText = @"DELETE FROM [Order Details] WHERE [Order Details].[OrderID] = @ID
+                    DELETE FROM Orders WHERE Orders.OrderID = @ID";
+                var paramId = command.CreateParameter();
+                paramId.ParameterName = "@ID";
+                paramId.Value = order.OrderID;                
+                command.Parameters.Add(paramId);
+                command.CommandType = CommandType.Text;
+                command.ExecuteNonQuery();
             }
+            connection.Close();
+        }
+        public DbConnection CreateConnection()
+        {
+            var connection = ProviderFactory.CreateConnection();
+            connection.ConnectionString = ConnectionString;
+            connection.Open();
+            return connection;
         }
         private Order CreateOrder(DbDataReader reader)
         {
@@ -304,32 +267,53 @@ namespace NorthwindDAL.Repositories
                 }
             };
         }
-        private void CreateNewOrder(DbConnection connection, Order newOrder)
+        private object CreateNewOrder(DbConnection connection, Order newOrder)
         {
             using (var command = connection.CreateCommand())
             {
-                command.CommandText = $"Insert into  Orders (ShipName, ShipAddress )" +
-                $"VALUES('{newOrder.ShipName}', '{newOrder.ShipAddress}')";
+                command.CommandText = @"Insert into  Orders (ShipName, ShipAddress )
+                VALUES(@ShipName,@ShipAddress);SELECT SCOPE_IDENTITY() AS [SCOPE_IDENTITY];";
                 command.CommandType = CommandType.Text;
-                command.ExecuteNonQuery();
-            }
-        }
-        private object GetMaxID(DbConnection connection)
-        {
-            using (var command = connection.CreateCommand())
-            {
-                command.CommandText = "SELECT MAX(OrderID) from Orders";
-                command.CommandType = CommandType.Text;
+                var paramShipName = command.CreateParameter();
+                paramShipName.ParameterName = "@ShipName";
+                paramShipName.Value = newOrder.ShipName;
+                var paramShipAddress = command.CreateParameter();
+                paramShipAddress.ParameterName = "@ShipAddress";
+                paramShipAddress.Value = newOrder.ShipAddress;
+                command.Parameters.Add(paramShipName);
+                command.Parameters.Add(paramShipAddress);
                 return command.ExecuteScalar();
             }
-        }
+        }       
         private void CreateDetailsOrder(DbConnection connection, object MaxID, OrderDetail item)
         {
             using (var command = connection.CreateCommand())
             {
-                command.CommandText = $"INSERT INTO [Northwind].[dbo].[Order Details] (OrderID, ProductID, UnitPrice," +
-                    $" Quantity) VALUES('{MaxID}', '{item.Product.ProductID}', {item.UnitPrice}, {item.Quantity})";
+                command.CommandText = @"INSERT INTO [Northwind].[dbo].[Order Details] (OrderID, ProductID, UnitPrice,
+                     Quantity) VALUES(@MaxID, @ProductID, @UnitPrice, @Quantity)";
                 command.CommandType = CommandType.Text;
+
+                var paramMaxID = command.CreateParameter();
+                paramMaxID.ParameterName = "@MaxID";
+                paramMaxID.Value = MaxID.ToString();
+
+                var paramSProductIDs = command.CreateParameter();
+                paramSProductIDs.ParameterName = "@ProductID";
+                paramSProductIDs.Value = item.Product.ProductID;
+
+                var paramUnitPrice = command.CreateParameter();
+                paramUnitPrice.ParameterName = "@UnitPrice";
+                paramUnitPrice.Value = item.UnitPrice;
+
+                var paramQuantity = command.CreateParameter();
+                paramQuantity.ParameterName = "@Quantity";
+                paramQuantity.Value = item.Quantity;
+
+                command.Parameters.Add(paramMaxID);
+                command.Parameters.Add(paramSProductIDs);
+                command.Parameters.Add(paramUnitPrice);
+                command.Parameters.Add(paramQuantity);
+
                 command.ExecuteNonQuery();
             }
         }
@@ -356,5 +340,6 @@ namespace NorthwindDAL.Repositories
             return tmp;
 
         }
+      
     }
 }

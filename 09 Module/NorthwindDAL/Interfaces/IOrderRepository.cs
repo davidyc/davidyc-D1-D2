@@ -10,8 +10,7 @@ namespace NorthwindDAL.Interfaces
 {
     public interface IOrderRepository
     {
-        IEnumerable<Order> GetOrders();
-        IEnumerable<Order> GetOrdersByOrderDate(DateTime orderDate);
+        IEnumerable<Order> GetOrders();        
         Order GetOrderById(int id);
         void AddNew(Order newOrder);
         Order Update(Order order);
