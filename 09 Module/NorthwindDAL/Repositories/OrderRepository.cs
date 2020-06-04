@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 using System.Data;
 using System.Data.Common;
 using NorthwindDAL.Interfaces;
@@ -34,7 +32,7 @@ namespace NorthwindDAL.Repositories
                 {
                     while (reader.Read() && reader != null)
                     {   
-                        resultOrders.Add(CreateOrder(reader));
+                        resultOrders.Add((Order)MappinObject(reader, typeof(Order)));
                     }
                 }                
             }
@@ -64,14 +62,14 @@ namespace NorthwindDAL.Repositories
                         return null;
                     reader.Read();
 
-                    var order = CreateOrder(reader);
+                    var order = (Order)MappinObject(reader, typeof(Order));
                     order.Details = new List<OrderDetail>();
 
                     reader.NextResult();                      
 
                     while(reader.Read())
                     {   
-                        order.Details.Add(CreateOrderDetail(reader));
+                        order.Details.Add((OrderDetail)MappinObject(reader, typeof(OrderDetail)));
                     }
                     connection.Close();
                     return order;
@@ -170,7 +168,7 @@ namespace NorthwindDAL.Repositories
                 {
                     while (reader.Read())
                     {
-                        custOrderHists.Add(CreateCustOrderHist(reader));
+                        custOrderHists.Add((CustOrderHist)MappinObject(reader, typeof(CustOrderHist)));
                     }
                 }
                 connection.Close();
@@ -196,7 +194,7 @@ namespace NorthwindDAL.Repositories
                 {
                     while (reader.Read())
                     {
-                        custOrderHists.Add(CreateCustOrdersDetail(reader));
+                        custOrderHists.Add((CustOrdersDetail)MappinObject(reader, typeof(CustOrdersDetail)));
                     }
                 }
             }
@@ -232,41 +230,8 @@ namespace NorthwindDAL.Repositories
             connection.Open();
             return connection;
         }
-        private Order CreateOrder(DbDataReader reader)
-        {
-            var order = new Order
-            {
-                OrderID = reader.GetInt32(0),
-                OrderDate = GetDateTimeFrom(reader, 1),
-                ShipName = reader.GetString(2),
-                ShipAddress = reader.GetString(3),
-                ShippedDate = GetDateTimeFrom(reader, 4)
-            };
+     
            
-            order.SetStatus();
-            return order;
-        }     
-        private Nullable<DateTime> GetDateTimeFrom(DbDataReader reader, int index)
-        {
-            var value = reader.GetValue(index);
-            if (value.ToString().Equals(String.Empty))
-                return null;
-            return (DateTime)value;
-
-        }
-        private OrderDetail CreateOrderDetail(DbDataReader reader)
-        {
-            return new OrderDetail
-            {
-                UnitPrice = (decimal)reader["unitPrice"],
-                Quantity = reader["Quantity"],
-                Product = new Product
-                {
-                    ProductID = (int)reader["ProductID"],
-                    ProductName = (string)reader["ProductName"]
-                }
-            };
-        }
         private object CreateNewOrder(DbConnection connection, Order newOrder)
         {
             using (var command = connection.CreateCommand())
@@ -317,29 +282,25 @@ namespace NorthwindDAL.Repositories
                 command.ExecuteNonQuery();
             }
         }
-        private CustOrderHist CreateCustOrderHist(DbDataReader reader)
+        private object MappinObject(DbDataReader reader, Type type)
         {
-            return new CustOrderHist
+            var prop = type.GetProperties();
+            var order = Activator.CreateInstance(type);
+            for (int i = 0; i < prop.Length; i++)
             {
-                ProductName = reader.GetString(0),
-                Total = reader.GetInt32(1)
-            };
-        }
-        private CustOrdersDetail CreateCustOrdersDetail(DbDataReader reader)
-        {
-            var tmp =  new CustOrdersDetail
-            {                
-               
-            };
-            tmp.ProductName = reader.GetString(0);
-            tmp.UnitPrice = reader.GetDecimal(1);
-            tmp.Quantity = reader["Quantity"];
-            tmp.Discount = reader.GetInt32(3);
-            tmp.ExtendedPrice = reader.GetDecimal(4);
-
-            return tmp;
-
-        }
-      
+                try
+                {
+                    prop[i].SetValue(order, reader[prop[i].Name]);
+                }
+                catch
+                {
+                    //это только для сттуса такак как статуса нет в базе его нужно самому заполнять на основе 2 дат
+                    // пойдет ли такой подход
+                    prop[i].SetValue(order, null);
+                }
+                
+            }
+            return order;
+        } 
     }
 }
