@@ -1,4 +1,5 @@
-﻿using NorthwindDAL.Enums;
+﻿using NorthwindDAL.Attributes;
+using NorthwindDAL.Enums;
 using System;
 using System.Collections.Generic;
 
@@ -10,8 +11,10 @@ namespace NorthwindDAL.Models
         public Nullable<DateTime> OrderDate { get; set; }
         public string ShipName { get; set; }
         public string ShipAddress { get; set; }
+        [IgnoreMapping]
         public Status Status { get; set; }
         public Nullable<DateTime> ShippedDate { get; set; }
+        [IgnoreMapping]
         public List<OrderDetail> Details { get; set; }
 
         public void SetStatus()

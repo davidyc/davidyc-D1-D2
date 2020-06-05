@@ -9,7 +9,7 @@ using NorthwindDAL.Repositories;
 namespace NorthwindUnitTest
 {
     [TestClass]
-    public class UnitTest1
+    public class NorthwindUnitTest
     {
         const string stringConnection = "data source=.\\SQLEXPRESS;Initial Catalog=Northwind;Integrated Security=True";
         const string providerName = "System.Data.SqlClient";
@@ -91,7 +91,7 @@ namespace NorthwindUnitTest
         }
 
         [TestMethod]
-        public void GetOrderById()
+        public void GetOrderById_11108_OrderWithID11108()
         {
             var ec = Helpers.GetTestOrder();
             var actual = orderRepository.GetOrderById(11108);

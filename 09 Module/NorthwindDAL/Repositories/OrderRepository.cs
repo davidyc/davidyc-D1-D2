@@ -7,6 +7,8 @@ using NorthwindDAL.Interfaces;
 using NorthwindDAL.Models;
 using NorthwindDAL.Enums;
 using System.Data.SqlClient;
+using System.Linq;
+using NorthwindDAL.Attributes;
 
 namespace NorthwindDAL.Repositories
 {
@@ -22,71 +24,77 @@ namespace NorthwindDAL.Repositories
         public virtual IEnumerable<Order> GetOrders()
         {
             var resultOrders = new List<Order>();
-            var connection = CreateConnection();
-
-            using (var command = connection.CreateCommand())
-            {
-                command.CommandText = "select OrderID, OrderDate, ShipName, ShipAddress, ShippedDate from dbo.Orders";
-                command.CommandType = CommandType.Text;
-                using (var reader = command.ExecuteReader())
+            using (var connection = CreateConnection()) 
+            { 
+                using (var command = connection.CreateCommand())
                 {
-                    while (reader.Read() && reader != null)
-                    {   
-                        resultOrders.Add((Order)MappinObject(reader, typeof(Order)));
+                    command.CommandText = "select OrderID, OrderDate, ShipName, ShipAddress, ShippedDate from dbo.Orders";
+                    command.CommandType = CommandType.Text;
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if(reader == null)
+                            return null;                        
+                        while (reader.Read())
+                        {
+                            resultOrders.Add(MappinObject<Order>(reader, typeof(Order)));
+                        }
                     }
-                }                
+                }
             }
-            connection.Close();
             return resultOrders;
         }        
         public virtual Order GetOrderById(int id)
         {
-            var connection = CreateConnection();
-            using (var command = connection.CreateCommand())
+            using (var connection = CreateConnection())
             {
-                command.CommandText =
-                        @"select OrderID, OrderDate, ShipName, ShipAddress, ShippedDate from dbo.Orders where OrderID = @id;
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText =
+                            @"select OrderID, OrderDate, ShipName, ShipAddress, ShippedDate from dbo.Orders where OrderID = @id;
                         select OrderID, dbo.[Order Details].UnitPrice, Quantity, ProductName, dbo.[Order Details].ProductID  
                         ProductID from dbo.[Order Details], dbo.Products where OrderID = @id 
                         and dbo.[Order Details].ProductID = dbo.Products.ProductID";
 
-                command.CommandType = CommandType.Text;
-                var paramId = command.CreateParameter();
-                paramId.ParameterName = "@id";
-                paramId.Value = id;
-                command.Parameters.Add(paramId);
+                    command.CommandType = CommandType.Text;
+                    var paramId = command.CreateParameter();
+                    paramId.ParameterName = "@id";
+                    paramId.Value = id;
+                    command.Parameters.Add(paramId);
 
-                using (var reader = command.ExecuteReader())
-                {
-                    if (!reader.HasRows || reader == null) 
-                        return null;
-                    reader.Read();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader == null)
+                            return null;                       
+                        if (!reader.HasRows)
+                            return null;
+                        reader.Read();
 
-                    var order = (Order)MappinObject(reader, typeof(Order));
-                    order.Details = new List<OrderDetail>();
+                        var order = MappinObject<Order>(reader, typeof(Order));
+                        order.Details = new List<OrderDetail>();
 
-                    reader.NextResult();                      
+                        reader.NextResult();
 
-                    while(reader.Read())
-                    {   
-                        order.Details.Add((OrderDetail)MappinObject(reader, typeof(OrderDetail)));
+                        while (reader.Read())
+                        {
+                            order.Details.Add(MappinObject<OrderDetail>(reader, typeof(OrderDetail)));
+                        }
+                        return order;
                     }
-                    connection.Close();
-                    return order;
+
                 }
-                
             }
 
         }
         public virtual void AddNew(Order newOrder)
         {
-            var connection = CreateConnection();           
-            var MaxID = CreateNewOrder(connection, newOrder);
-            foreach (var item in newOrder.Details)
+            using (var connection = CreateConnection())
             {
-                CreateDetailsOrder(connection, MaxID, item);
+                var MaxID = CreateNewOrder(connection, newOrder);
+                foreach (var item in newOrder.Details)
+                {
+                    CreateDetailsOrder(connection, MaxID, item);
+                }
             }
-            connection.Close();
 
         }                    
         public virtual Order Update(Order order)
@@ -95,110 +103,116 @@ namespace NorthwindDAL.Repositories
             if(order.Status != Status.newOrder)
                 return order;
 
-            var connection = CreateConnection();
-
-            using (var command = connection.CreateCommand())
+            using (var connection = CreateConnection())
             {
-                command.CommandText = @"UPDATE Orders set [ShipName]=@ShipName,
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = @"UPDATE Orders set [ShipName]=@ShipName,
                     [ShipAddress]=@ShipAddress  WHERE OrderID = @id";
 
-                command.CommandType = CommandType.Text;
+                    command.CommandType = CommandType.Text;
 
-                var paramId = command.CreateParameter();
-                paramId.ParameterName = "@id";
-                paramId.Value = order.OrderID;
+                    var paramId = command.CreateParameter();
+                    paramId.ParameterName = "@id";
+                    paramId.Value = order.OrderID;
 
-                var paramShipName = command.CreateParameter();
-                paramShipName.ParameterName = "@ShipName";
-                paramShipName.Value = order.ShipName;
+                    var paramShipName = command.CreateParameter();
+                    paramShipName.ParameterName = "@ShipName";
+                    paramShipName.Value = order.ShipName;
 
-                var paramShipAddress = command.CreateParameter();
-                paramShipAddress.ParameterName = "@ShipAddress";
-                paramShipAddress.Value = order.ShipAddress;
+                    var paramShipAddress = command.CreateParameter();
+                    paramShipAddress.ParameterName = "@ShipAddress";
+                    paramShipAddress.Value = order.ShipAddress;
 
-                command.Parameters.Add(paramId);
-                command.Parameters.Add(paramShipName);
-                command.Parameters.Add(paramShipAddress);
+                    command.Parameters.Add(paramId);
+                    command.Parameters.Add(paramShipName);
+                    command.Parameters.Add(paramShipAddress);
 
-                command.ExecuteNonQuery();
+                    command.ExecuteNonQuery();
+                }
             }
-            connection.Close();
             return order;            
         }
         public virtual void SetInProgress(int id)
         {
-            var connection = CreateConnection();
-            using (var command = connection.CreateCommand())
+            using (var connection = CreateConnection())
             {
-                command.CommandText = $"UPDATE Orders SET OrderDate = GETDATE() WHERE OrderID = {id};";
-                command.CommandType = CommandType.Text;
-                command.ExecuteNonQuery();
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = $"UPDATE Orders SET OrderDate = GETDATE() WHERE OrderID = {id};";
+                    command.CommandType = CommandType.Text;
+                    command.ExecuteNonQuery();
+                }
             }
-            connection.Close();
         }
         public virtual void SetInDone(int id)
         {
-            var connection = CreateConnection();
-            using (var command = connection.CreateCommand())
+            using (var connection = CreateConnection())
             {
-                command.CommandText = $"UPDATE Orders SET ShippedDate = GETDATE() WHERE OrderID = {id};";
-                command.CommandType = CommandType.Text;
-                command.ExecuteNonQuery();
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = $"UPDATE Orders SET ShippedDate = GETDATE() WHERE OrderID = {id};";
+                    command.CommandType = CommandType.Text;
+                    command.ExecuteNonQuery();
+                }
             }
-            connection.Close();
-
         }
         public virtual IEnumerable<CustOrderHist> ExcudeaCustOrderHist(string customerID)
         {
             var custOrderHists = new List<CustOrderHist>();
-            var connection = CreateConnection();
-
-            using (var command = connection.CreateCommand())
+            using (var connection = CreateConnection())
             {
-                command.CommandText = "CustOrderHist";
-                command.CommandType = CommandType.StoredProcedure;
-                SqlParameter nameParam = new SqlParameter
+                using (var command = connection.CreateCommand())
                 {
-                    ParameterName = "@CustomerID",
-                    Value = customerID
-                };
-
-                command.Parameters.Add(nameParam);
-                using (var reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
+                    command.CommandText = "CustOrderHist";
+                    command.CommandType = CommandType.StoredProcedure;
+                    SqlParameter nameParam = new SqlParameter
                     {
-                        custOrderHists.Add((CustOrderHist)MappinObject(reader, typeof(CustOrderHist)));
+                        ParameterName = "@CustomerID",
+                        Value = customerID
+                    };
+
+                    command.Parameters.Add(nameParam);
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader == null)
+                            return null;
+                        while (reader.Read())
+                        {
+                            custOrderHists.Add(MappinObject<CustOrderHist>(reader, typeof(CustOrderHist)));
+                        }
                     }
                 }
-                connection.Close();
                 return custOrderHists;              
             }
         }
         public virtual IEnumerable<CustOrdersDetail> ExcudebCustOrdersDetail(int orderID)
         {
             var custOrderHists = new List<CustOrdersDetail>();
-            var connection = CreateConnection();
-            using (var command = connection.CreateCommand())
+            using (var connection = CreateConnection())
             {
-                command.CommandText = "CustOrdersDetail";
-                command.CommandType = CommandType.StoredProcedure;
-                SqlParameter nameParam = new SqlParameter
+                using (var command = connection.CreateCommand())
                 {
-                    ParameterName = "@OrderID",
-                    Value = orderID
-                };
-
-                command.Parameters.Add(nameParam);
-                using (var reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
+                    command.CommandText = "CustOrdersDetail";
+                    command.CommandType = CommandType.StoredProcedure;
+                    SqlParameter nameParam = new SqlParameter
                     {
-                        custOrderHists.Add((CustOrdersDetail)MappinObject(reader, typeof(CustOrdersDetail)));
+                        ParameterName = "@OrderID",
+                        Value = orderID
+                    };
+
+                    command.Parameters.Add(nameParam);
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader == null)
+                            return null;
+                        while (reader.Read())
+                        {
+                            custOrderHists.Add(MappinObject<CustOrdersDetail>(reader, typeof(CustOrdersDetail)));
+                        }
                     }
                 }
             }
-            connection.Close();
             return custOrderHists;
         }
         public virtual void DeleteOrderByID(int orderID)
@@ -209,19 +223,20 @@ namespace NorthwindDAL.Repositories
         }
         private void DeleteOrder(Order order)
         {
-            var connection = CreateConnection();
-            using (var command = connection.CreateCommand())
+            using (var connection = CreateConnection())
             {
-                command.CommandText = @"DELETE FROM [Order Details] WHERE [Order Details].[OrderID] = @ID
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = @"DELETE FROM [Order Details] WHERE [Order Details].[OrderID] = @ID
                     DELETE FROM Orders WHERE Orders.OrderID = @ID";
-                var paramId = command.CreateParameter();
-                paramId.ParameterName = "@ID";
-                paramId.Value = order.OrderID;                
-                command.Parameters.Add(paramId);
-                command.CommandType = CommandType.Text;
-                command.ExecuteNonQuery();
+                    var paramId = command.CreateParameter();
+                    paramId.ParameterName = "@ID";
+                    paramId.Value = order.OrderID;
+                    command.Parameters.Add(paramId);
+                    command.CommandType = CommandType.Text;
+                    command.ExecuteNonQuery();
+                }
             }
-            connection.Close();
         }
         public DbConnection CreateConnection()
         {
@@ -229,9 +244,7 @@ namespace NorthwindDAL.Repositories
             connection.ConnectionString = ConnectionString;
             connection.Open();
             return connection;
-        }
-     
-           
+        }         
         private object CreateNewOrder(DbConnection connection, Order newOrder)
         {
             using (var command = connection.CreateCommand())
@@ -282,25 +295,24 @@ namespace NorthwindDAL.Repositories
                 command.ExecuteNonQuery();
             }
         }
-        private object MappinObject(DbDataReader reader, Type type)
+        private T MappinObject<T>(DbDataReader reader, Type type)
         {
-            var prop = type.GetProperties();
-            var order = Activator.CreateInstance(type);
-            for (int i = 0; i < prop.Length; i++)
+            var properties = type.GetProperties();
+            T instance = (T)Activator.CreateInstance(type);
+            for (int i = 0; i < properties.Length; i++)
             {
-                try
+                var Attributes = properties[i].CustomAttributes.FirstOrDefault(x=>x.AttributeType == typeof(IgnoreMapping));
+                if(Attributes != null)
                 {
-                    prop[i].SetValue(order, reader[prop[i].Name]);
+                    break;
                 }
-                catch
-                {
-                    //это только для сттуса такак как статуса нет в базе его нужно самому заполнять на основе 2 дат
-                    // пойдет ли такой подход
-                    prop[i].SetValue(order, null);
-                }
-                
+                var value = reader[properties[i].Name];
+                if (value.ToString().Equals(String.Empty))
+                    properties[i].SetValue(instance, null);
+                else
+                    properties[i].SetValue(instance, value);
             }
-            return order;
+            return instance;
         } 
     }
 }
