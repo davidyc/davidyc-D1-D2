@@ -41,8 +41,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\IgnoreMapping.cs" />
+    <Compile Include="Connection.cs" />
     <Compile Include="Enums\Status.cs" />
+    <Compile Include="Interfaces\IConnection.cs" />
+    <Compile Include="Interfaces\IMappingObject.cs" />
     <Compile Include="Interfaces\IOrderRepository.cs" />
+    <Compile Include="MapObject.cs" />
     <Compile Include="Models\CustOrderHist.cs" />
     <Compile Include="Models\CustOrdersDetail.cs" />
     <Compile Include="Models\Order.cs" />

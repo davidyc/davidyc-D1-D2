@@ -1,4 +1,5 @@
-﻿using NorthwindDAL.Models;
+﻿using NorthwindDAL;
+using NorthwindDAL.Models;
 using NorthwindDAL.Repositories;
 using System;
 using System.Collections.Generic;
@@ -12,16 +13,18 @@ namespace NorthwindUnitTest
     {
         const string stringConnection = "data source=.\\SQLEXPRESS;Initial Catalog=Northwind;Integrated Security=True";
         const string providerName = "System.Data.SqlClient";
-        static OrderRepository  orderRepository = new OrderRepository(stringConnection, providerName);
+        static OrderRepository  orderRepository = new OrderRepository(stringConnection, providerName, new MapObject()
+            , new Connection());
 
         static Helpers()
         {
-            OrderRepository orderRepository = new OrderRepository(stringConnection, providerName);
+            OrderRepository orderRepository = new OrderRepository(stringConnection, providerName, new MapObject(),
+                new Connection());
         }
         public static int ExcuteSelectCountOrders()
         {
             int count = 0;
-            var connection = orderRepository.CreateConnection();
+            var connection = orderRepository.connectionDB.CreateConnection();
             using (var command = connection.CreateCommand())
             {
                 command.CommandText = "SELECT COUNT(OrderID) FROM Orders";
@@ -33,7 +36,7 @@ namespace NorthwindUnitTest
         public static int ExcuteSelectMaxOrders()
         {
             int count = 0;
-            var connection = orderRepository.CreateConnection();
+            var connection = orderRepository.connectionDB.CreateConnection();
             using (var command = connection.CreateCommand())
             {
                 command.CommandText = "SELECT MAX(OrderID) FROM Orders";
@@ -71,7 +74,7 @@ namespace NorthwindUnitTest
         public static int ExcuteSelectMaxOrdersNewStatus()
         {
             int id = 0;
-            var connection = orderRepository.CreateConnection();
+            var connection = orderRepository.connectionDB.CreateConnection();
             using (var command = connection.CreateCommand())
             {
                 command.CommandText = "SELECT MAX(OrderID) FROM Orders WHERE OrderDate is null";
@@ -84,7 +87,7 @@ namespace NorthwindUnitTest
         public static int ExcuteSelectOrderDateByID()
         {
             int id = 0;
-            var connection = orderRepository.CreateConnection();
+            var connection = orderRepository.connectionDB.CreateConnection();
             using (var command = connection.CreateCommand())
             {
                 command.CommandText = "SELECT MAX(OrderID) FROM Orders WHERE OrderDate is null";
@@ -97,7 +100,7 @@ namespace NorthwindUnitTest
         public static object ExcuteSelectOrderDateValue(int id)
         {
             object value = null;
-            var connection = orderRepository.CreateConnection();
+            var connection = orderRepository.connectionDB.CreateConnection();
             using (var command = connection.CreateCommand())
             {
                 command.CommandText = $"SELECT OrderDate FROM Orders WHERE OrderID = {id}";
@@ -110,7 +113,7 @@ namespace NorthwindUnitTest
         public static int ExcuteSelectMaxOrdersInProgress()
         {
             int id = 0;
-            var connection = orderRepository.CreateConnection();
+            var connection = orderRepository.connectionDB.CreateConnection();
             using (var command = connection.CreateCommand())
             {
                 command.CommandText = "SELECT MAX(OrderID) FROM Orders WHERE OrderDate is not null and ShippedDate is null";
@@ -123,7 +126,7 @@ namespace NorthwindUnitTest
         public static object ExcuteSelectShippedDateValue(int id)
         {
             object value = null;
-            var connection = orderRepository.CreateConnection();
+            var connection = orderRepository.connectionDB.CreateConnection();
             using (var command = connection.CreateCommand())
             {
                 command.CommandText = $"SELECT ShippedDate FROM Orders WHERE OrderID = {id}";
@@ -190,7 +193,7 @@ namespace NorthwindUnitTest
         public static object ExcuteSelectShipNameValue(int id)
         {
             object value = null;
-            var connection = orderRepository.CreateConnection();
+            var connection = orderRepository.connectionDB.CreateConnection();
             using (var command = connection.CreateCommand())
             {
                 command.CommandText = $"SELECT ShipName FROM Orders  where OrderID = {id}";

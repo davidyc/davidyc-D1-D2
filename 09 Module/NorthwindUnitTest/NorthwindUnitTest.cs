@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DeepEqual.Syntax;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NorthwindDAL;
 using NorthwindDAL.Models;
 using NorthwindDAL.Repositories;
 
@@ -13,7 +14,7 @@ namespace NorthwindUnitTest
     {
         const string stringConnection = "data source=.\\SQLEXPRESS;Initial Catalog=Northwind;Integrated Security=True";
         const string providerName = "System.Data.SqlClient";
-        OrderRepository orderRepository = new OrderRepository(stringConnection, providerName);
+        OrderRepository orderRepository = new OrderRepository(stringConnection, providerName, new MapObject(), new Connection());
 
         [TestMethod]
         public void AddNew_CountBefore_CountAfter()

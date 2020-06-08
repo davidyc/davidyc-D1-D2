@@ -16,15 +16,20 @@ namespace NorthwindDAL.Repositories
     {
         private readonly DbProviderFactory ProviderFactory;
         private readonly string ConnectionString;
-        public OrderRepository(string connectionString, string provider)
+        private IMappingObject mappingObject;
+        public IConnection connectionDB { get; set; }
+
+        public OrderRepository(string connectionString, string provider, IMappingObject mappingObject, IConnection connection)
         {
-            ProviderFactory = DbProviderFactories.GetFactory(provider);
-            ConnectionString = connectionString;
+            this.connectionDB = connection;
+            connection.ConnectionString = connectionString;
+            connection.ProviderFactory = DbProviderFactories.GetFactory(provider);
+            this.mappingObject = mappingObject;
         }
         public virtual IEnumerable<Order> GetOrders()
         {
             var resultOrders = new List<Order>();
-            using (var connection = CreateConnection()) 
+            using (var connection = connectionDB.CreateConnection()) 
             { 
                 using (var command = connection.CreateCommand())
                 {
@@ -32,11 +37,10 @@ namespace NorthwindDAL.Repositories
                     command.CommandType = CommandType.Text;
                     using (var reader = command.ExecuteReader())
                     {
-                        if(reader == null)
-                            return null;                        
-                        while (reader.Read())
+                                         
+                        while (reader != null && reader.Read())
                         {
-                            resultOrders.Add(MappinObject<Order>(reader, typeof(Order)));
+                            resultOrders.Add(mappingObject.MappinObject<Order>(reader));
                         }
                     }
                 }
@@ -45,7 +49,7 @@ namespace NorthwindDAL.Repositories
         }        
         public virtual Order GetOrderById(int id)
         {
-            using (var connection = CreateConnection())
+            using (var connection = connectionDB.CreateConnection())
             {
                 using (var command = connection.CreateCommand())
                 {
@@ -63,20 +67,18 @@ namespace NorthwindDAL.Repositories
 
                     using (var reader = command.ExecuteReader())
                     {
-                        if (reader == null)
-                            return null;                       
-                        if (!reader.HasRows)
+                        if (reader == null || !reader.HasRows)
                             return null;
                         reader.Read();
 
-                        var order = MappinObject<Order>(reader, typeof(Order));
+                        var order = mappingObject.MappinObject<Order>(reader);
                         order.Details = new List<OrderDetail>();
 
                         reader.NextResult();
 
                         while (reader.Read())
                         {
-                            order.Details.Add(MappinObject<OrderDetail>(reader, typeof(OrderDetail)));
+                            order.Details.Add(mappingObject.MappinObject<OrderDetail>(reader));
                         }
                         return order;
                     }
@@ -87,7 +89,7 @@ namespace NorthwindDAL.Repositories
         }
         public virtual void AddNew(Order newOrder)
         {
-            using (var connection = CreateConnection())
+            using (var connection = connectionDB.CreateConnection())
             {
                 var MaxID = CreateNewOrder(connection, newOrder);
                 foreach (var item in newOrder.Details)
@@ -103,7 +105,7 @@ namespace NorthwindDAL.Repositories
             if(order.Status != Status.newOrder)
                 return order;
 
-            using (var connection = CreateConnection())
+            using (var connection = connectionDB.CreateConnection())
             {
                 using (var command = connection.CreateCommand())
                 {
@@ -135,7 +137,7 @@ namespace NorthwindDAL.Repositories
         }
         public virtual void SetInProgress(int id)
         {
-            using (var connection = CreateConnection())
+            using (var connection = connectionDB.CreateConnection())
             {
                 using (var command = connection.CreateCommand())
                 {
@@ -147,7 +149,7 @@ namespace NorthwindDAL.Repositories
         }
         public virtual void SetInDone(int id)
         {
-            using (var connection = CreateConnection())
+            using (var connection = connectionDB.CreateConnection())
             {
                 using (var command = connection.CreateCommand())
                 {
@@ -160,7 +162,7 @@ namespace NorthwindDAL.Repositories
         public virtual IEnumerable<CustOrderHist> ExcudeaCustOrderHist(string customerID)
         {
             var custOrderHists = new List<CustOrderHist>();
-            using (var connection = CreateConnection())
+            using (var connection = connectionDB.CreateConnection())
             {
                 using (var command = connection.CreateCommand())
                 {
@@ -175,11 +177,9 @@ namespace NorthwindDAL.Repositories
                     command.Parameters.Add(nameParam);
                     using (var reader = command.ExecuteReader())
                     {
-                        if (reader == null)
-                            return null;
-                        while (reader.Read())
+                        while (reader == null ||reader.Read())
                         {
-                            custOrderHists.Add(MappinObject<CustOrderHist>(reader, typeof(CustOrderHist)));
+                            custOrderHists.Add(mappingObject.MappinObject<CustOrderHist>(reader));
                         }
                     }
                 }
@@ -189,7 +189,7 @@ namespace NorthwindDAL.Repositories
         public virtual IEnumerable<CustOrdersDetail> ExcudebCustOrdersDetail(int orderID)
         {
             var custOrderHists = new List<CustOrdersDetail>();
-            using (var connection = CreateConnection())
+            using (var connection = connectionDB.CreateConnection())
             {
                 using (var command = connection.CreateCommand())
                 {
@@ -204,11 +204,9 @@ namespace NorthwindDAL.Repositories
                     command.Parameters.Add(nameParam);
                     using (var reader = command.ExecuteReader())
                     {
-                        if (reader == null)
-                            return null;
-                        while (reader.Read())
+                        while (reader == null || reader.Read())
                         {
-                            custOrderHists.Add(MappinObject<CustOrdersDetail>(reader, typeof(CustOrdersDetail)));
+                            custOrderHists.Add(mappingObject.MappinObject<CustOrdersDetail>(reader));
                         }
                     }
                 }
@@ -223,7 +221,7 @@ namespace NorthwindDAL.Repositories
         }
         private void DeleteOrder(Order order)
         {
-            using (var connection = CreateConnection())
+            using (var connection = connectionDB.CreateConnection())
             {
                 using (var command = connection.CreateCommand())
                 {
@@ -238,13 +236,7 @@ namespace NorthwindDAL.Repositories
                 }
             }
         }
-        public DbConnection CreateConnection()
-        {
-            var connection = ProviderFactory.CreateConnection();
-            connection.ConnectionString = ConnectionString;
-            connection.Open();
-            return connection;
-        }         
+       
         private object CreateNewOrder(DbConnection connection, Order newOrder)
         {
             using (var command = connection.CreateCommand())
@@ -295,24 +287,5 @@ namespace NorthwindDAL.Repositories
                 command.ExecuteNonQuery();
             }
         }
-        private T MappinObject<T>(DbDataReader reader, Type type)
-        {
-            var properties = type.GetProperties();
-            T instance = (T)Activator.CreateInstance(type);
-            for (int i = 0; i < properties.Length; i++)
-            {
-                var Attributes = properties[i].CustomAttributes.FirstOrDefault(x=>x.AttributeType == typeof(IgnoreMapping));
-                if(Attributes != null)
-                {
-                    break;
-                }
-                var value = reader[properties[i].Name];
-                if (value.ToString().Equals(String.Empty))
-                    properties[i].SetValue(instance, null);
-                else
-                    properties[i].SetValue(instance, value);
-            }
-            return instance;
-        } 
     }
 }
