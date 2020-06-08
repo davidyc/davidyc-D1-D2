@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace NorthwindDAL.Models
 {
-    public class CustOrdersDetail
-    {
-
-        
+    public class CustomerOrdersDetail
+    {       
         public string ProductName { get; set; }
         public decimal UnitPrice { get; set; }
         public object Quantity { get; set; }     

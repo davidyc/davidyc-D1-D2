@@ -41,14 +41,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\IgnoreMapping.cs" />
-    <Compile Include="Connection.cs" />
+    <Compile Include="NorthwindDbConnectionFactory.cs" />
     <Compile Include="Enums\Status.cs" />
-    <Compile Include="Interfaces\IConnection.cs" />
-    <Compile Include="Interfaces\IMappingObject.cs" />
+    <Compile Include="Interfaces\IDbConnectionFactory.cs" />
+    <Compile Include="Interfaces\IObjectMapper.cs" />
     <Compile Include="Interfaces\IOrderRepository.cs" />
-    <Compile Include="MapObject.cs" />
-    <Compile Include="Models\CustOrderHist.cs" />
-    <Compile Include="Models\CustOrdersDetail.cs" />
+    <Compile Include="ObjectMapper.cs" />
+    <Compile Include="Models\CustomerProductDetail.cs" />
+    <Compile Include="Models\CustomerOrdersDetail.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\OrderDetail.cs" />
     <Compile Include="Models\Product.cs" />

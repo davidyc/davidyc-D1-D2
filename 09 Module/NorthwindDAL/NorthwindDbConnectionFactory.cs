@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace NorthwindDAL
 {
-    public class Connection : IConnection
+    public class NorthwindDbConnectionFactory : IDbConnectionFactory
     {
         public DbProviderFactory ProviderFactory { get; set; }
         public string ConnectionString { get; set; }

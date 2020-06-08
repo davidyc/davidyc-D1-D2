@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace NorthwindDAL.Interfaces
 {
-    public interface IConnection
+    public interface IDbConnectionFactory
     {
         DbProviderFactory ProviderFactory { get; set; }
         string ConnectionString { get; set; }

@@ -13,13 +13,13 @@ namespace NorthwindUnitTest
     {
         const string stringConnection = "data source=.\\SQLEXPRESS;Initial Catalog=Northwind;Integrated Security=True";
         const string providerName = "System.Data.SqlClient";
-        static OrderRepository  orderRepository = new OrderRepository(stringConnection, providerName, new MapObject()
-            , new Connection());
+        static OrderRepository  orderRepository = new OrderRepository(stringConnection, providerName, new ObjectMapper()
+            , new NorthwindDbConnectionFactory());
 
         static Helpers()
         {
-            OrderRepository orderRepository = new OrderRepository(stringConnection, providerName, new MapObject(),
-                new Connection());
+            OrderRepository orderRepository = new OrderRepository(stringConnection, providerName, new ObjectMapper(),
+                new NorthwindDbConnectionFactory());
         }
         public static int ExcuteSelectCountOrders()
         {
@@ -136,31 +136,31 @@ namespace NorthwindUnitTest
             return value;
         }
 
-        public static IEnumerable<CustOrderHist> GetTestCustOrderHist()
+        public static IEnumerable<CustomerProductDetail> GetTestCustOrderHist()
         {
-            return new List<CustOrderHist>
+            return new List<CustomerProductDetail>
             {
-                new CustOrderHist {ProductName = "Aniseed Syrup", Total=6},
-                new CustOrderHist {ProductName = "Chartreuse verte", Total=21},
-                new CustOrderHist {ProductName = "Escargots de Bourgogne", Total=40},
-                new CustOrderHist {ProductName = "Flotemysost", Total=20},
-                new CustOrderHist {ProductName = "Grandma's Boysenberry Spread", Total=16},
-                new CustOrderHist {ProductName = "Lakkalikööri", Total=15},
-                new CustOrderHist {ProductName = "Original Frankfurter grüne Soße", Total=2},
-                new CustOrderHist {ProductName = "Raclette Courdavault", Total=15},
-                new CustOrderHist {ProductName = "Rössle Sauerkraut", Total=17},
-                new CustOrderHist {ProductName = "Spegesild", Total=2},
-                new CustOrderHist {ProductName = "Vegie-spread", Total=20}
+                new CustomerProductDetail {ProductName = "Aniseed Syrup", Total=6},
+                new CustomerProductDetail {ProductName = "Chartreuse verte", Total=21},
+                new CustomerProductDetail {ProductName = "Escargots de Bourgogne", Total=40},
+                new CustomerProductDetail {ProductName = "Flotemysost", Total=20},
+                new CustomerProductDetail {ProductName = "Grandma's Boysenberry Spread", Total=16},
+                new CustomerProductDetail {ProductName = "Lakkalikööri", Total=15},
+                new CustomerProductDetail {ProductName = "Original Frankfurter grüne Soße", Total=2},
+                new CustomerProductDetail {ProductName = "Raclette Courdavault", Total=15},
+                new CustomerProductDetail {ProductName = "Rössle Sauerkraut", Total=17},
+                new CustomerProductDetail {ProductName = "Spegesild", Total=2},
+                new CustomerProductDetail {ProductName = "Vegie-spread", Total=20}
             };
         }
 
-        public static IEnumerable<CustOrdersDetail> GetTestCustOrdersDetail()
+        public static IEnumerable<CustomerOrdersDetail> GetTestCustOrdersDetail()
         {
-            return new List<CustOrdersDetail>
+            return new List<CustomerOrdersDetail>
             {
-                new CustOrdersDetail {ProductName = "Queso Cabrales", UnitPrice=10, Quantity = 10, Discount = 0, ExtendedPrice = 100},
-                new CustOrdersDetail {ProductName = "Singaporean Hokkien Fried Mee", UnitPrice=10, Quantity = 10, Discount = 0, ExtendedPrice = 100},
-                new CustOrdersDetail {ProductName = "Mozzarella di Giovanni", UnitPrice=10, Quantity = 10, Discount = 0, ExtendedPrice = 100}
+                new CustomerOrdersDetail {ProductName = "Queso Cabrales", UnitPrice=10, Quantity = 10, Discount = 0, ExtendedPrice = 100},
+                new CustomerOrdersDetail {ProductName = "Singaporean Hokkien Fried Mee", UnitPrice=10, Quantity = 10, Discount = 0, ExtendedPrice = 100},
+                new CustomerOrdersDetail {ProductName = "Mozzarella di Giovanni", UnitPrice=10, Quantity = 10, Discount = 0, ExtendedPrice = 100}
             };
         }
 

@@ -13,13 +13,11 @@ using NorthwindDAL.Attributes;
 namespace NorthwindDAL.Repositories
 {
     public class OrderRepository : IOrderRepository
-    {
-        private readonly DbProviderFactory ProviderFactory;
-        private readonly string ConnectionString;
-        private IMappingObject mappingObject;
-        public IConnection connectionDB { get; set; }
+    {      
+        private IObjectMapper mappingObject;
+        public IDbConnectionFactory connectionDB { get; set; }
 
-        public OrderRepository(string connectionString, string provider, IMappingObject mappingObject, IConnection connection)
+        public OrderRepository(string connectionString, string provider, IObjectMapper mappingObject, IDbConnectionFactory connection)
         {
             this.connectionDB = connection;
             connection.ConnectionString = connectionString;
@@ -40,7 +38,7 @@ namespace NorthwindDAL.Repositories
                                          
                         while (reader != null && reader.Read())
                         {
-                            resultOrders.Add(mappingObject.MappinObject<Order>(reader));
+                            resultOrders.Add(mappingObject.MapReaderToObject<Order>(reader));
                         }
                     }
                 }
@@ -71,14 +69,14 @@ namespace NorthwindDAL.Repositories
                             return null;
                         reader.Read();
 
-                        var order = mappingObject.MappinObject<Order>(reader);
+                        var order = mappingObject.MapReaderToObject<Order>(reader);
                         order.Details = new List<OrderDetail>();
 
                         reader.NextResult();
 
                         while (reader.Read())
                         {
-                            order.Details.Add(mappingObject.MappinObject<OrderDetail>(reader));
+                            order.Details.Add(mappingObject.MapReaderToObject<OrderDetail>(reader));
                         }
                         return order;
                     }
@@ -159,9 +157,9 @@ namespace NorthwindDAL.Repositories
                 }
             }
         }
-        public virtual IEnumerable<CustOrderHist> ExcudeaCustOrderHist(string customerID)
+        public virtual IEnumerable<CustomerProductDetail> GetCustomerProductDetails(string customerID)
         {
-            var custOrderHists = new List<CustOrderHist>();
+            var customerProductDetail = new List<CustomerProductDetail>();
             using (var connection = connectionDB.CreateConnection())
             {
                 using (var command = connection.CreateCommand())
@@ -179,16 +177,16 @@ namespace NorthwindDAL.Repositories
                     {
                         while (reader == null ||reader.Read())
                         {
-                            custOrderHists.Add(mappingObject.MappinObject<CustOrderHist>(reader));
+                            customerProductDetail.Add(mappingObject.MapReaderToObject<CustomerProductDetail>(reader));
                         }
                     }
                 }
-                return custOrderHists;              
+                return customerProductDetail;              
             }
         }
-        public virtual IEnumerable<CustOrdersDetail> ExcudebCustOrdersDetail(int orderID)
+        public virtual IEnumerable<CustomerOrdersDetail> GetCustomerOrderDetails(int orderID)
         {
-            var custOrderHists = new List<CustOrdersDetail>();
+            var custOrderHists = new List<CustomerOrdersDetail>();
             using (var connection = connectionDB.CreateConnection())
             {
                 using (var command = connection.CreateCommand())
@@ -206,7 +204,7 @@ namespace NorthwindDAL.Repositories
                     {
                         while (reader == null || reader.Read())
                         {
-                            custOrderHists.Add(mappingObject.MappinObject<CustOrdersDetail>(reader));
+                            custOrderHists.Add(mappingObject.MapReaderToObject<CustomerOrdersDetail>(reader));
                         }
                     }
                 }

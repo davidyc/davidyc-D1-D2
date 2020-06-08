@@ -16,8 +16,8 @@ namespace NorthwindDAL.Interfaces
         Order Update(Order order);
         void SetInProgress(int id);
         void SetInDone(int id);
-        IEnumerable<CustOrderHist> ExcudeaCustOrderHist(string customerID);
-        IEnumerable<CustOrdersDetail> ExcudebCustOrdersDetail(int orderID);
         void DeleteOrderByID(int orderID);
+        IEnumerable<CustomerProductDetail> GetCustomerProductDetails(string customerID);
+        IEnumerable<CustomerOrdersDetail> GetCustomerOrderDetails(int orderID);
     }
 }

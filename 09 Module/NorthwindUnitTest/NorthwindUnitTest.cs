@@ -14,7 +14,7 @@ namespace NorthwindUnitTest
     {
         const string stringConnection = "data source=.\\SQLEXPRESS;Initial Catalog=Northwind;Integrated Security=True";
         const string providerName = "System.Data.SqlClient";
-        OrderRepository orderRepository = new OrderRepository(stringConnection, providerName, new MapObject(), new Connection());
+        OrderRepository orderRepository = new OrderRepository(stringConnection, providerName, new ObjectMapper(), new NorthwindDbConnectionFactory());
 
         [TestMethod]
         public void AddNew_CountBefore_CountAfter()
@@ -68,7 +68,7 @@ namespace NorthwindUnitTest
         public void ExcuteCustOrderHist_ALFKI_IEnumerableWithCustOrderHist()
         {
             var ec = Helpers.GetTestCustOrderHist();
-            var actual = orderRepository.ExcudeaCustOrderHist("ALFKI");
+            var actual = orderRepository.GetCustomerProductDetails("ALFKI");
             Assert.IsTrue(actual.IsDeepEqual(ec));
         }
 
@@ -76,7 +76,7 @@ namespace NorthwindUnitTest
         public void ExcudebCustOrdersDetail_10248_IEnumerableWithCustOrdersDetail()
         {
             var ec = Helpers.GetTestCustOrdersDetail();
-            var actual = orderRepository.ExcudebCustOrdersDetail(10248);
+            var actual = orderRepository.GetCustomerOrderDetails(10248);
             Assert.IsTrue(actual.IsDeepEqual(ec));
         }
 
