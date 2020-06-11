@@ -1,7 +1,7 @@
 ﻿using System;
 using Task01;
 
-namespace Module_10
+namespace Task_1
 {
     class Program
     {
@@ -12,8 +12,14 @@ namespace Module_10
                 foreach (var item in connection.Categories)
                 {
                     Console.WriteLine(item.CategoryName);
+                    var prods = item.Products;
+                    foreach (var prod in prods)
+                    {
+                        Console.WriteLine(prod);
+                    }
                 }
             }
+            Console.Read();
         }
     }
 }
