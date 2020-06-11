@@ -1,6 +1,6 @@
 ﻿using LinqToDB.Mapping;
 using System;
-using System.Collections.Generic;;
+using System.Collections.Generic;
 
 namespace Task_1.Model
 {

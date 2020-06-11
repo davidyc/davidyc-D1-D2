@@ -47,10 +47,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\Category.cs" />
+    <Compile Include="Model\Customer.cs" />
+    <Compile Include="Model\CustomerCustomerDemo.cs" />
+    <Compile Include="Model\CustomerDemographic.cs" />
+    <Compile Include="Model\Employee.cs" />
+    <Compile Include="Model\EmployeeTerritory.cs" />
     <Compile Include="Model\OrderDetails.cs" />
     <Compile Include="Model\Order.cs" />
     <Compile Include="Model\Product.cs" />
+    <Compile Include="Model\Region.cs" />
+    <Compile Include="Model\Shipper.cs" />
     <Compile Include="Model\Suppliers.cs" />
+    <Compile Include="Model\Territory.cs" />
     <Compile Include="NorthwindDataConnection.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
