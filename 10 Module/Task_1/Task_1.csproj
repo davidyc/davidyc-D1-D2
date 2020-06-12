@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interface\IDataConnection.cs" />
     <Compile Include="Model\Category.cs" />
     <Compile Include="Model\Customer.cs" />
     <Compile Include="Model\CustomerCustomerDemo.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="NorthwindDataConnection.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueryDemostation.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
