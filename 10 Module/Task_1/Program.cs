@@ -36,7 +36,7 @@ namespace Task_1
                 //    Supplier = new Supplier {CompanyName = "SD industries"}
                 //}
                 //});
-                qd.ReplaceProductInNotShippedOrder(connection);
+                // qd.ReplaceProductInNotShippedOrder(connection);
 
 
                     Console.Read();
