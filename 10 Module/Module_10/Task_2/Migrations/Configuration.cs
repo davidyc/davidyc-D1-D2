@@ -12,12 +12,20 @@ namespace Task_2.Migrations
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(Task_2.NorthwindContext context)
+        protected override void Seed(NorthwindContext context)
         {
-            //  This method will be called after migrating to the latest version.
+            context.Categories.AddOrUpdate(c => c.CategoryName,
+                new Category { CategoryName = "Super Good" },
+                new Category { CategoryName = "New Category" },
+                new Category { CategoryName = "Software" });
 
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data.
+            context.Region.AddOrUpdate(r => r.RegionID,
+               new Region { RegionDescription = "Kazakhstan", RegionID = 17 });
+
+            context.Territories.AddOrUpdate(t => t.TerritoryID,
+                new Territory { TerritoryID = "100000000", TerritoryDescription = "Qaraganda", RegionID = 17 },
+                new Territory { TerritoryID = "200000000", TerritoryDescription = "Almaty", RegionID = 17 },
+                new Territory { TerritoryID = "300000000", TerritoryDescription = "Astana", RegionID = 17 });
         }
     }
 }
