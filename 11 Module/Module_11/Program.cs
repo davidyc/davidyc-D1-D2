@@ -34,10 +34,11 @@ namespace MongoApp
             //mongo.GetBookWithoutAuthor(nameTable);
             //mongo.GetAllAuthor(nameTable);
             //mongo.AddOneCountAllBook(nameTable);
+            //mongo.DeleteBookWhereCountLess(nameTable, 3);
+            //mongo.DeleteAll(nameTable);
+            //mongo.AddAdditionalGenge(nameTable, "fantasy", "favority");
 
 
-
-        
 
             Console.Read();
         }

@@ -89,7 +89,37 @@ namespace Module_11
                 collection.UpdateOne(filter, update);
             }
             Console.WriteLine("All books counts wae updated");
+        }
 
+        public void AddAdditionalGenge(string nameTable, string mainGenre, string additionalGenre)
+        {
+            var collection = db.GetCollection<Book>(nameTable);
+            var result = collection.Find(x => true).ToList().Where(x => x.Genre.Contains(mainGenre) && !x.Genre.Contains(additionalGenre));
+
+            foreach (var item in result)
+            {
+                var newArrayGenre = item.Genre.ToList();
+                newArrayGenre.Add(additionalGenre);
+                var filter = Builders<Book>.Filter.Eq("_id", item.ID);
+                var update = Builders<Book>.Update.Set("Genre", newArrayGenre.ToArray());
+                collection.UpdateOne(filter, update);
+            }
+            Console.WriteLine($"{result.Count()} was updeted");
+
+        }
+
+        public void DeleteBookWhereCountLess(string nameTable, int count)
+        {
+            var collection = db.GetCollection<Book>(nameTable);
+            var result = collection.DeleteMany<Book>(p => p.Count < 3);
+            Console.WriteLine($"Deleted: { result.DeletedCount}");
+        }
+
+        public void DeleteAll(string nameTable)
+        {
+            var collection = db.GetCollection<Book>(nameTable);
+            var result = collection.DeleteMany<Book>(p => true);
+            Console.WriteLine("Deleted: {0}", result.DeletedCount);
         }
     }
 }
