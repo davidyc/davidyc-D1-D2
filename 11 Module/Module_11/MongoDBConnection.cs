@@ -33,7 +33,7 @@ namespace Module_11
 
             foreach (var item in result)
             {
-                Console.WriteLine(item.Name.ToString());
+                Console.WriteLine(item.ToString());
             }
             // не уверен что правильно понял пункт D во 2 задании
             Console.WriteLine($"Count = {result.Sum(x => x.Count)}");
@@ -65,5 +65,31 @@ namespace Module_11
             }
         }
 
+        public void GetAllAuthor(string nameTable)
+        {
+            var collection = db.GetCollection<Book>(nameTable);
+            var result = collection.AsQueryable<Book>().Where(x => x.Author != null).Select(e => e.Author).Distinct();
+
+            foreach (var item in result)
+            {
+                Console.WriteLine(item);
+            }
+        }
+
+
+        public void AddOneCountAllBook(string nameTable)
+        {
+            var collection = db.GetCollection<Book>(nameTable);
+            var result = collection.Find(x => true).ToList();
+
+            foreach (var item in result)
+            {
+                var filter = Builders<Book>.Filter.Eq("_id", item.ID);
+                var update = Builders<Book>.Update.Set("Count", ++item.Count);
+                collection.UpdateOne(filter, update);
+            }
+            Console.WriteLine("All books counts wae updated");
+
+        }
     }
 }

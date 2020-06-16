@@ -32,13 +32,13 @@ namespace MongoApp
             //mongo.GetBookMinCount(nameTable);
             //mongo.GetBookMaxCount(nameTable);
             //mongo.GetBookWithoutAuthor(nameTable);
-            var collection = db.GetCollection<Book>(nameTable);
-            var result = collection.Find(x=>true).ToList();
-            foreach (var item in result)
-            {
-                Console.WriteLine(item);
-                collection.UpdateOne<Book>()
-            }
+            //mongo.GetAllAuthor(nameTable);
+            //mongo.AddOneCountAllBook(nameTable);
+
+
+
+        
+
             Console.Read();
         }
 
