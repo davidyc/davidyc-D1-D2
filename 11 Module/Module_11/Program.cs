@@ -22,7 +22,7 @@ namespace MongoApp
             var client = new MongoClient();
             var db = client.GetDatabase(nameDB);
 
-            var mongo = new MongoDBConnection(nameDB);
+            var mongo = new BookAccessor(nameDB);
             //var books = GetTestDataBooks();
             //foreach (var book in books)
             //{

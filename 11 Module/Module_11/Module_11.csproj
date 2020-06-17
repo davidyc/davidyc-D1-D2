@@ -79,7 +79,7 @@
   <ItemGroup>
     <Compile Include="Interfaces\IMongoDB.cs" />
     <Compile Include="Model\Book.cs" />
-    <Compile Include="MongoDBConnection.cs" />
+    <Compile Include="BookAccessor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
