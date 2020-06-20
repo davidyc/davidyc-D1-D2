@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Module11pack</id>
+    <version>1.0.0.0</version>
+    <title>Sergey Davydov Pack</title>
+    <authors>Sergey Davydov</authors>
+    <owners>Sergey Davydov</owners>
+    <licenseUrl>http://LICENSE_URL_HERE_OR_DELETE_THIS_LINE</licenseUrl>
+    <projectUrl>http://PROJECT_URL_HERE_OR_DELETE_THIS_LINE</projectUrl>
+    <iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
+    <copyright>Copyright 2020</copyright>
+    <tags>Tag1 Tag2</tags>
+    <dependencies>
+      <dependency id="Newtonsoft.Json" version="12.0.3" />
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Buffers" targetFramework="net472" />
+    </frameworkAssemblies>
+  </metadata>
+  <files>
+    <file src="readme.html" target="content"/>
+  </files>
+</package>
