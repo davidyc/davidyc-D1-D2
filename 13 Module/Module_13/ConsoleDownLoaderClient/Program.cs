@@ -13,9 +13,9 @@ namespace ConsoleDownLoaderClient
     {
         static void Main(string[] args)
         {
-            var sd = new SiteContentDownloader(new Saver());
-            sd.LoadFromURL("https://ru.wikipedia.org/wiki/%D0%A1%D0%B0%D0%B9%D1%82");
-            Console.WriteLine();
+            var sd = new SiteContentDownloader(new Saver(), 2);
+            sd.LoadFromURL("http://davidyc.pythonanywhere.com/");          
+            Console.Read();
         }
     }
 
@@ -23,12 +23,13 @@ namespace ConsoleDownLoaderClient
     {
         public void SaveFile(Uri uri, Stream fileStream)
         {
-            throw new NotImplementedException();
+            Console.Write("FIle -> ");
+            Console.WriteLine(uri.AbsoluteUri);
         }
 
         public void SaveHtmlDocument(Uri uri, string name, Stream documentStream)
         {
-            throw new NotImplementedException();
+            Console.WriteLine(name);
         }
     }
 }
