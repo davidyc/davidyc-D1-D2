@@ -16,10 +16,15 @@ namespace SiteDownloader
         private readonly int _maxDeepLevel;
         private const string htmlDocumentMediaType = "text/html";
         private readonly IContentSaver _contentSaver;
+        private readonly ILogger _logger;
         private readonly ISet<Uri> _alreadyVisited = new HashSet<Uri>();
+        private string _domain;
+        private bool _onlyBaseDomain;
 
+        public List<String> FileExetention { get; set; }
 
-        public SiteContentDownloader(IContentSaver contentSaver, int maxDeepLevel = 0)
+        public SiteContentDownloader(IContentSaver contentSaver, ILogger logger, int maxDeepLevel = 0, 
+            bool onlyBaseDomain = false)
         {
             if (maxDeepLevel < 0)
             {
@@ -27,6 +32,9 @@ namespace SiteDownloader
             }
             _maxDeepLevel = maxDeepLevel;
             _contentSaver = contentSaver;
+            _logger = logger;
+            _onlyBaseDomain = onlyBaseDomain;
+            FileExetention = new List<string>();
         }
 
         public void LoadFromURL(string URL)
@@ -35,14 +43,14 @@ namespace SiteDownloader
             using (var httpClient = new HttpClient())
             {
                 httpClient.BaseAddress = new Uri(URL);
+                _domain = httpClient.BaseAddress.Host;                
                 GetPageByURL(httpClient, httpClient.BaseAddress, 0);
             }
         }
 
         private void GetPageByURL(HttpClient httpClient, Uri uri, int level)
         {
-           // Console.WriteLine($"Level {level}");
-            if (IsMaxDeepLevel(level) || _alreadyVisited.Contains(uri))
+            if (IsMaxDeepLevel(level) || _alreadyVisited.Contains(uri) || NeedGetAllDomain(uri))
             {
                 return;
             }
@@ -58,8 +66,20 @@ namespace SiteDownloader
             }
             else
             {
-                SaveContentFile(httpClient, uri);
+                if (NeedSaveFile(uri.AbsoluteUri))
+                    SaveContentFile(httpClient, uri);
+                else
+                    _logger.MakeLog($"File {uri.AbsoluteUri} extension is not suitable");
             }
+        }
+
+        private bool NeedSaveFile(string path)
+        {
+            var extension = Path.GetExtension(path);
+            if (FileExetention.Contains(extension) || FileExetention.Count == 0)
+                return true;
+            else
+                return false;
         }
 
         private bool IsMaxDeepLevel(int level)
@@ -80,19 +100,17 @@ namespace SiteDownloader
         private void SaveContentFile(HttpClient httpClient, Uri uri)
         {
             var response = httpClient.GetAsync(uri).Result;
-            var x = response.Content.ReadAsStreamAsync().Result;
+            _logger.MakeLog($"Save file {uri.AbsoluteUri}");
             _contentSaver.SaveFile(uri, response.Content.ReadAsStreamAsync().Result);
         }
 
         private void SaveHtmlPage(HttpClient httpClient, Uri uri, int level)
-        {        
-            
+        {                    
             var response = httpClient.GetAsync(uri).Result;
             var document = new HtmlDocument();
-            document.Load(response.Content.ReadAsStreamAsync().Result, Encoding.UTF8);        
-
-
-           _contentSaver.SaveHtmlDocument(uri, CreateFileName(document), CreateStreamHTMLPage(document));
+            document.Load(response.Content.ReadAsStreamAsync().Result, Encoding.UTF8);
+            _logger.MakeLog($"Save page {uri.AbsoluteUri}");
+            _contentSaver.SaveHtmlDocument(uri, CreateFileName(document), CreateStreamHTMLPage(document));
 
             var attributesWithLinks = document.DocumentNode.Descendants().SelectMany(d => d.Attributes.Where(IsAttributeWithLink));
             foreach (var attributesWithLink in attributesWithLinks)
@@ -117,9 +135,20 @@ namespace SiteDownloader
             return attribute.Name == "src" || attribute.Name == "href";
         }
 
+        private void SetDomain(string domain)
+        {
+            if (_onlyBaseDomain)
+                _domain = String.Empty;
+            else
+                _domain = domain;
+        }
 
-
-
-
+        private bool NeedGetAllDomain(Uri uri)
+        {
+            if (_domain != uri.Host && _onlyBaseDomain)
+                return true;
+            else
+                return false;            
+        }
     }
 }

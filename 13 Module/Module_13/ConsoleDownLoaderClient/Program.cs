@@ -13,23 +13,13 @@ namespace ConsoleDownLoaderClient
     {
         static void Main(string[] args)
         {
-            var sd = new SiteContentDownloader(new Saver(), 2);
+            var saver = new ContentSaver(@"C:\Sergey Davydov\C#\EPAM Mentor program\Module 13");
+            var logger = new ConsoleLogger();
+            var maxDeepLevel = 2;
+            var sd = new SiteContentDownloader(saver, logger, maxDeepLevel, true);
+            sd.FileExetention = new List<string> { ".jpg" };
             sd.LoadFromURL("http://davidyc.pythonanywhere.com/");          
             Console.Read();
         }
-    }
-
-    public class Saver : IContentSaver
-    {
-        public void SaveFile(Uri uri, Stream fileStream)
-        {
-            Console.Write("FIle -> ");
-            Console.WriteLine(uri.AbsoluteUri);
-        }
-
-        public void SaveHtmlDocument(Uri uri, string name, Stream documentStream)
-        {
-            Console.WriteLine(name);
-        }
-    }
+    }   
 }
