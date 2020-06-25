@@ -13,12 +13,12 @@ namespace ConsoleDownLoaderClient
     {
         static void Main(string[] args)
         {
-            var saver = new ContentSaver(@"C:\Sergey Davydov\C#\EPAM Mentor program\Module 13");
+            var saver = new ContentSaver(@"..\..\..\..\Target Folder");
             var logger = new ConsoleLogger();
             var maxDeepLevel = 2;
             var sd = new SiteContentDownloader(saver, logger, maxDeepLevel, true);
-            sd.FileExetention = new List<string> { ".jpg" };
-            sd.LoadFromURL("http://davidyc.pythonanywhere.com/");          
+            sd.FileExetention = new List<string> { ".jpg", ".png" };
+            sd.LoadFromURL("https://www.google.com/");          
             Console.Read();
         }
     }   
