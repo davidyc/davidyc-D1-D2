@@ -6,25 +6,17 @@ using System.Web.Mvc;
 
 namespace WebApplicationForCodeTest.Controllers
 {
-    [Authorize]
-    public class HOMEController : Controller
+    public class WithMethodAttibuteController : Controller
     {
+        // GET: WithMethodAttibute
+        [Authorize]
         public ActionResult Index()
         {
             return View();
         }
 
-        public ActionResult About()
+        private ActionResult Index2()
         {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
             return View();
         }
     }

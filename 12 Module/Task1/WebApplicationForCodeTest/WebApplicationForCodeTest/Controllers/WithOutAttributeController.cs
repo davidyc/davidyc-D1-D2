@@ -6,10 +6,9 @@ using System.Web.Mvc;
 
 namespace WebApplicationForCodeTest.Controllers
 {
-    [Authorize]
-    public class WithOut : Controller
+    public class WithOutAttributeController : Controller
     {
-        // GET: WithOut
+        
         public ActionResult Index()
         {
             return View();
