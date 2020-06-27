@@ -7,9 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnalyzerRoslyn", "AnalyzerR
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnalyzerRoslyn.Vsix", "AnalyzerRoslyn\AnalyzerRoslyn.Vsix\AnalyzerRoslyn.Vsix.csproj", "{0F3D40E0-F3A9-4C99-9A4F-B8442E968BB3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnalyzerAttribute", "AnalyzerAttribute\AnalyzerAttribute\AnalyzerAttribute.csproj", "{DB68F743-0E76-4902-8F97-F43ACD06FB5E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnalyzerAttribute", "AnalyzerAttribute\AnalyzerAttribute\AnalyzerAttribute.csproj", "{DB68F743-0E76-4902-8F97-F43ACD06FB5E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnalyzerAttribute.Vsix", "AnalyzerAttribute\AnalyzerAttribute.Vsix\AnalyzerAttribute.Vsix.csproj", "{B886F21B-C843-46C0-A2DE-383A64E0DFCC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnalyzerEntities", "AnalyzerEntities\AnalyzerEntities\AnalyzerEntities.csproj", "{7E675FF8-AB45-4C68-94FB-071B0E0F3FF8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnalyzerEntities.Vsix", "AnalyzerEntities\AnalyzerEntities.Vsix\AnalyzerEntities.Vsix.csproj", "{FD5FF494-A2D3-4D32-AB21-DA7F20305973}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +37,14 @@ Global
 		{B886F21B-C843-46C0-A2DE-383A64E0DFCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B886F21B-C843-46C0-A2DE-383A64E0DFCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B886F21B-C843-46C0-A2DE-383A64E0DFCC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E675FF8-AB45-4C68-94FB-071B0E0F3FF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E675FF8-AB45-4C68-94FB-071B0E0F3FF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E675FF8-AB45-4C68-94FB-071B0E0F3FF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E675FF8-AB45-4C68-94FB-071B0E0F3FF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD5FF494-A2D3-4D32-AB21-DA7F20305973}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD5FF494-A2D3-4D32-AB21-DA7F20305973}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD5FF494-A2D3-4D32-AB21-DA7F20305973}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD5FF494-A2D3-4D32-AB21-DA7F20305973}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
