@@ -11,6 +11,7 @@ namespace ConsoleDownLoaderClient
     public class ContentSaver : IContentSaver
     {
         private readonly string _rootFoderPath;
+        private const int maxLenFileName = 200;
 
       
         public ContentSaver(string startPath)
@@ -19,33 +20,40 @@ namespace ConsoleDownLoaderClient
             CreateRootFolder();
         }
         public void SaveFile(Uri uri, Stream fileStream)
-        {
-            // fix it            
+        {         
             string filePath = CreateFolderPath(uri);
             var directoryPath = Path.GetDirectoryName(filePath);
             Directory.CreateDirectory(directoryPath);
+
             if (Directory.Exists(filePath))
             {
                 filePath = Path.Combine(filePath, Guid.NewGuid().ToString());
             }
 
-            var createdFileStream = File.Create(filePath);
-            fileStream.CopyTo(createdFileStream);
-            createdFileStream.Close();
+            SaveToFile(fileStream, filePath);
             fileStream.Close();
-
         }
 
         public void SaveHtmlDocument(Uri uri, string name, Stream documentStream)
         {
             string saveFolderPath = CreateFolderPath(uri);
-            Directory.CreateDirectory(saveFolderPath);       
+            Directory.CreateDirectory(saveFolderPath);
+            name = RemoveInvalidSymbols(name);
             string filePath = Path.Combine(saveFolderPath, name);
+            if (filePath.Length > maxLenFileName)
+            {
+                filePath = filePath.Substring(0, maxLenFileName) + ".htlm";
+            }
 
-            var createdFileStream = File.Create(filePath);
-            documentStream.CopyTo(createdFileStream);
-            createdFileStream.Close();
+            SaveToFile(documentStream, filePath);
             documentStream.Close();
+        }
+
+        private void SaveToFile(Stream stream, string fileFullPath)
+        {
+            var createdFileStream = File.Create(fileFullPath);
+            stream.CopyTo(createdFileStream);
+            createdFileStream.Close();
         }
 
         private string CreateFolderPath(Uri uri)
@@ -57,6 +65,12 @@ namespace ConsoleDownLoaderClient
         {
             if (!Directory.Exists(_rootFoderPath))
                 Directory.CreateDirectory(_rootFoderPath);
+        }
+
+        private string RemoveInvalidSymbols(string filename)
+        {
+            var invalidSymbols = Path.GetInvalidFileNameChars();
+            return new string(filename.Where(c => !invalidSymbols.Contains(c)).ToArray());
         }
     }
 

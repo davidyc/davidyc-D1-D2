@@ -76,15 +76,12 @@ namespace SiteDownloader
         private bool NeedSaveFile(string path)
         {
             var extension = Path.GetExtension(path);
-            if (FileExetention.Contains(extension) || FileExetention.Count == 0)
-                return true;
-            else
-                return false;
+            return FileExetention.Contains(extension) || FileExetention.Count == 0;
         }
 
         private bool IsMaxDeepLevel(int level)
         {
-            return level > _maxDeepLevel ? true : false;
+            return level > _maxDeepLevel;
         }
 
         private HttpResponseMessage GetHeaderWithSuccessStatusCode(HttpClient httpClient, Uri uri)
@@ -115,7 +112,7 @@ namespace SiteDownloader
             var attributesWithLinks = document.DocumentNode.Descendants().SelectMany(d => d.Attributes.Where(IsAttributeWithLink));
             foreach (var attributesWithLink in attributesWithLinks)
             {
-                GetPageByURL(httpClient, new Uri(httpClient.BaseAddress, attributesWithLink.Value), level + 1);
+               GetPageByURL(httpClient, new Uri(httpClient.BaseAddress, attributesWithLink.Value), level + 1);
             }
         }
         private string CreateFileName(HtmlDocument document)
@@ -145,10 +142,7 @@ namespace SiteDownloader
 
         private bool NeedGetAllDomain(Uri uri)
         {
-            if (_domain != uri.Host && _onlyBaseDomain)
-                return true;
-            else
-                return false;            
+            return _domain != uri.Host && _onlyBaseDomain;        
         }
     }
 }

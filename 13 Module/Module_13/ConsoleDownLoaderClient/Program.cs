@@ -18,8 +18,15 @@ namespace ConsoleDownLoaderClient
             var maxDeepLevel = 2;
             var sd = new SiteContentDownloader(saver, logger, maxDeepLevel, true);
             sd.FileExetention = new List<string> { ".jpg", ".png" };
-            sd.LoadFromURL("https://www.google.com/");          
-            Console.Read();
+            // вот эти вроде подгрузает без проблем))) не один сайт
+            //sd.LoadFromURL("https://www.google.com/");
+            //sd.LoadFromURL("https://stackoverflow.com//");
+            //sd.LoadFromURL("https://www.reddit.com/");
+            sd.LoadFromURL("https://docs.microsoft.com");
+   
+
+
+               Console.Read();
         }
     }   
 }
