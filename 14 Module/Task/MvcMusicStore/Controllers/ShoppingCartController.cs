@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using MusicStoreLogger;
 using MvcMusicStore.Models;
 using MvcMusicStore.ViewModels;
 
@@ -10,10 +11,18 @@ namespace MvcMusicStore.Controllers
     public class ShoppingCartController : Controller
     {
         private readonly MusicStoreEntities _storeContext = new MusicStoreEntities();
+        private readonly ILogger _logger;
+
+        public ShoppingCartController(ILogger logger)
+        {
+            _logger = logger;
+            _logger.Debug("Controller  Shopping was created");
+        }
 
         // GET: /ShoppingCart/
         public async Task<ActionResult> Index()
         {
+            _logger.Info("ShoppingCartController Index method");
             var cart = ShoppingCart.GetCart(_storeContext, this);
 
             var viewModel = new ShoppingCartViewModel
@@ -28,6 +37,7 @@ namespace MvcMusicStore.Controllers
         // GET: /ShoppingCart/AddToCart/5
         public async Task<ActionResult> AddToCart(int id)
         {
+            _logger.Info("ShoppingCartController AddToCart method");
             var cart = ShoppingCart.GetCart(_storeContext, this);
 
             await cart.AddToCart(await _storeContext.Albums.SingleAsync(a => a.AlbumId == id));
@@ -41,6 +51,7 @@ namespace MvcMusicStore.Controllers
         [HttpPost]
         public async Task<ActionResult> RemoveFromCart(int id)
         {
+            _logger.Info("ShoppingCartController RemoveFromCart method");
             var cart = ShoppingCart.GetCart(_storeContext, this);
 
             var albumName = await _storeContext.Carts
@@ -69,6 +80,7 @@ namespace MvcMusicStore.Controllers
         [ChildActionOnly]
         public ActionResult CartSummary()
         {
+            _logger.Info("ShoppingCartController CartSummary method");
             var cart = ShoppingCart.GetCart(_storeContext, this);
 
             var cartItems = cart.GetCartItems()

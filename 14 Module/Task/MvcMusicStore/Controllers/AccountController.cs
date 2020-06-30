@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
+using MusicStoreLogger;
 using MvcMusicStore.Models;
 
 namespace MvcMusicStore.Controllers
@@ -22,15 +23,16 @@ namespace MvcMusicStore.Controllers
         private const string XsrfKey = "XsrfId";
 
         private UserManager<ApplicationUser> _userManager;
+        private readonly ILogger _logger;
 
-        public AccountController()
-            : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext())))
+        public AccountController(ILogger logger) : this(logger, new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext())))
         {
         }
 
-        public AccountController(UserManager<ApplicationUser> userManager)
+        public AccountController(ILogger logger, UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
+            _logger = logger;
         }
 
         private IAuthenticationManager AuthenticationManager
@@ -40,6 +42,7 @@ namespace MvcMusicStore.Controllers
 
         private async Task MigrateShoppingCart(string userName)
         {
+            _logger.Debug("MigrateShoppingCart");
             using (var storeContext = new MusicStoreEntities())
             {
                 var cart = ShoppingCart.GetCart(storeContext, this);
@@ -55,6 +58,7 @@ namespace MvcMusicStore.Controllers
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
+            _logger.Info("AccountController Login method");
 
             return View();
         }
@@ -65,8 +69,10 @@ namespace MvcMusicStore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
+            _logger.Debug(returnUrl);
             if (ModelState.IsValid)
             {
+                _logger.Debug($"{model.UserName} user ");
                 var user = await _userManager.FindAsync(model.UserName, model.Password);
                 if (user != null)
                 {
@@ -85,6 +91,7 @@ namespace MvcMusicStore.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+            _logger.Info("AccountController Register method");
             return View();
         }
 
@@ -101,7 +108,7 @@ namespace MvcMusicStore.Controllers
                 if (result.Succeeded)
                 {
                     await SignInAsync(user, false);
-
+                    _logger.Info("Redirect Index Home method");
                     return RedirectToAction("Index", "Home");
                 }
 
