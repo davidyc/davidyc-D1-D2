@@ -3,6 +3,7 @@ using Autofac.Integration.Mvc;
 using MvcMusicStore.App_Start;
 using MvcMusicStore.Controllers;
 using NLog;
+using System;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
@@ -19,6 +20,13 @@ namespace MvcMusicStore
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+        }
+
+        protected void Application_Error(object sender, EventArgs e)
+        {
+            Exception exception = Server.GetLastError();
+            var logger = DependencyResolver.Current.GetService(typeof(ILogger)) as ILogger;
+            logger?.Error(exception);
         }
     }
 }
