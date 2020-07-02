@@ -1,6 +1,8 @@
 ﻿using Autofac;
 using Autofac.Integration.Mvc;
 using MusicStoreLogger;
+using MvcMusicStore.PerformanceCounters;
+using PerformanceCounterHelper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +18,7 @@ namespace MvcMusicStore.App_Start
             ContainerBuilder builder = new ContainerBuilder();
             builder.RegisterControllers(typeof(MvcApplication).Assembly);
             ConfigureBindings(builder);
-            var container = builder.Build();
+            var container = builder.Build();   
             return new AutofacDependencyResolver(container);
         }
 

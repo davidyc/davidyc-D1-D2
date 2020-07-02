@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
@@ -6,6 +8,8 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using MusicStoreLogger;
 using MvcMusicStore.Models;
+using MvcMusicStore.PerformanceCounters;
+using PerformanceCounterHelper;
 
 namespace MvcMusicStore.Controllers
 {
@@ -21,15 +25,22 @@ namespace MvcMusicStore.Controllers
         }
 
         private const string XsrfKey = "XsrfId";
-
         private UserManager<ApplicationUser> _userManager;
         private readonly ILogger _logger;
+        private const string categoryCounterNAme = "MVC_STORE_MUSIC";
+        private const string loginCounterNAme = "LoginCounter";
+        private const string logoffCounterNAme = "LogOffCounter";
+        private const string regCounterNAme = "RegPageVisitCounter";
+
+
 
         public AccountController(ILogger logger) : this(logger, new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext())))
-        {
+        {       
+
+        
         }
 
-        public AccountController(ILogger logger, UserManager<ApplicationUser> userManager)
+        public AccountController(ILogger logger,  UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
             _logger = logger;
@@ -59,7 +70,7 @@ namespace MvcMusicStore.Controllers
         {
             ViewBag.ReturnUrl = returnUrl;
             _logger.Info("AccountController Login method");
-
+            ControllerCounter.Increment(categoryCounterNAme, loginCounterNAme);
             return View();
         }
 
@@ -77,7 +88,6 @@ namespace MvcMusicStore.Controllers
                 if (user != null)
                 {
                     await SignInAsync(user, model.RememberMe);
-
                     return RedirectToLocal(returnUrl);
                 }
 
@@ -92,6 +102,8 @@ namespace MvcMusicStore.Controllers
         public ActionResult Register()
         {
             _logger.Info("AccountController Register method");
+
+            ControllerCounter.Increment(categoryCounterNAme, regCounterNAme);
             return View();
         }
 
@@ -326,6 +338,7 @@ namespace MvcMusicStore.Controllers
         {
             AuthenticationManager.SignOut();
 
+            ControllerCounter.Increment(categoryCounterNAme, logoffCounterNAme);
             return RedirectToAction("Index", "Home");
         }
 

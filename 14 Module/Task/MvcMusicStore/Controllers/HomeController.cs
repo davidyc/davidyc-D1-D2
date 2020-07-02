@@ -21,12 +21,11 @@ namespace MvcMusicStore.Controllers
         public async Task<ActionResult> Index()
         {
             _logger.Info("Homecontroller Index method");
-
+         
             return View(await _storeContext.Albums
                 .OrderByDescending(a => a.OrderDetails.Count())
                 .Take(6)
-                .ToListAsync());
-            
+                .ToListAsync());            
         }
 
         protected override void Dispose(bool disposing)
