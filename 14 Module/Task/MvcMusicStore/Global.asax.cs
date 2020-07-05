@@ -11,15 +11,17 @@ using System.Web.Routing;
 using PerformanceCounterHelper;
 using MvcMusicStore.PerformanceCounters;
 using System.Diagnostics;
+using System.Configuration;
 
 namespace MvcMusicStore
 {
     public class MvcApplication : System.Web.HttpApplication
     {
         protected void Application_Start()
-        {  
-            DependencyResolver.SetResolver(DependencyResolverMusicStore.GetConfiguredDependencyResolver());
-            ControllerCounter.InitCounter(); 
+        {
+            if(Boolean.Parse(ConfigurationManager.AppSettings["LoggerUse"]))
+                DependencyResolver.SetResolver(DependencyResolverMusicStore.GetConfiguredDependencyResolver());
+            ControllerCounter.InitCounter();      
 
 
             AreaRegistration.RegisterAllAreas();

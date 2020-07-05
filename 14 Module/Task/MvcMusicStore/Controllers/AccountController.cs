@@ -68,9 +68,7 @@ namespace MvcMusicStore.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-            ViewBag.ReturnUrl = returnUrl;
-            _logger.Info("AccountController Login method");
-            ControllerCounter.Increment(categoryCounterNAme, loginCounterNAme);
+            ViewBag.ReturnUrl = returnUrl;           
             return View();
         }
 
@@ -88,6 +86,8 @@ namespace MvcMusicStore.Controllers
                 if (user != null)
                 {
                     await SignInAsync(user, model.RememberMe);
+                    _logger.Info("AccountController Login method");
+                    ControllerCounter.Increment(categoryCounterNAme, loginCounterNAme);
                     return RedirectToLocal(returnUrl);
                 }
 
