@@ -68,7 +68,8 @@ namespace MvcMusicStore.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-            ViewBag.ReturnUrl = returnUrl;           
+            ViewBag.ReturnUrl = returnUrl;
+            _logger.Info("AccountController Login method");
             return View();
         }
 

@@ -19,10 +19,9 @@ namespace MvcMusicStore
     {
         protected void Application_Start()
         {
-            if(Boolean.Parse(ConfigurationManager.AppSettings["LoggerUse"]))
-                DependencyResolver.SetResolver(DependencyResolverMusicStore.GetConfiguredDependencyResolver());
+            DependencyResolver.SetResolver(DependencyResolverMusicStore
+                .GetConfiguredDependencyResolver(Boolean.Parse(ConfigurationManager.AppSettings["LoggerUse"])));
             ControllerCounter.InitCounter();      
-
 
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

@@ -13,18 +13,21 @@ namespace MvcMusicStore.App_Start
 {
     public class DependencyResolverMusicStore
     {
-        public static IDependencyResolver GetConfiguredDependencyResolver()
+        public static IDependencyResolver GetConfiguredDependencyResolver(bool needLog)
         {
             ContainerBuilder builder = new ContainerBuilder();
             builder.RegisterControllers(typeof(MvcApplication).Assembly);
-            ConfigureBindings(builder);
+            ConfigureBindings(builder, needLog);
             var container = builder.Build();   
             return new AutofacDependencyResolver(container);
         }
 
-        private static void ConfigureBindings(ContainerBuilder builder)
+        private static void ConfigureBindings(ContainerBuilder builder, bool needLog)
         {
-            builder.RegisterType<Logger>().As<ILogger>();
+            if(needLog)
+                builder.RegisterType<Logger>().As<ILogger>();
+            else
+                builder.RegisterType<FakeLogger>().As<ILogger>();
         }
     }
 }
