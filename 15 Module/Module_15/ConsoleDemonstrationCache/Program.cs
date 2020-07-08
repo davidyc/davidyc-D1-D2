@@ -1,5 +1,6 @@
 ﻿using Cache;
 using System;
+using System.Threading;
 
 namespace ConsoleDemonstrationCache
 {
@@ -7,14 +8,22 @@ namespace ConsoleDemonstrationCache
     {
         static void Main(string[] args)
         {
-            //var c = new CustomSystemCache<int>();
-            //c.Set("key123", 1234, DateTimeOffset.Now.AddMilliseconds(300));
-            //Console.WriteLine(c.Get("key123"));
-            //Thread.Sleep(300);
-            //Console.WriteLine(c.Get("key123"));
-            var cc = new RedisCache<int>();
-            cc.Set("key123", 1234, DateTimeOffset.Now.AddMilliseconds(300));
-            Console.WriteLine(cc.Get("key123"));
+            var fibonacci = new Fibonachi(new CustomSystemCache<int>());
+
+            for (var i = 1; i < 20; i++)
+            {
+                Console.WriteLine(fibonacci.ComputeFibonachi(i));
+                Thread.Sleep(100);
+            }
+
+            fibonacci = new Fibonachi(new RedisCache<int>());
+
+            for (var i = 1; i < 20; i++)
+            {
+                Console.WriteLine(fibonacci.ComputeFibonachi(i));
+                Thread.Sleep(100);
+            }
+
             Console.WriteLine();
 
         }
