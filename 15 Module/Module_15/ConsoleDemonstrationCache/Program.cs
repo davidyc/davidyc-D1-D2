@@ -1,10 +1,5 @@
 ﻿using Cache;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace ConsoleDemonstrationCache
 {
@@ -12,11 +7,16 @@ namespace ConsoleDemonstrationCache
     {
         static void Main(string[] args)
         {
-            var c = new CustomSystemCache<int>();
-            c.Set("key123", 1234, DateTimeOffset.Now.AddMilliseconds(300));
-            Console.WriteLine(c.Get("key123"));
-            Thread.Sleep(300);
-            Console.WriteLine(c.Get("key123"));
+            //var c = new CustomSystemCache<int>();
+            //c.Set("key123", 1234, DateTimeOffset.Now.AddMilliseconds(300));
+            //Console.WriteLine(c.Get("key123"));
+            //Thread.Sleep(300);
+            //Console.WriteLine(c.Get("key123"));
+            var cc = new RedisCache<int>();
+            cc.Set("key123", 1234, DateTimeOffset.Now.AddMilliseconds(300));
+            Console.WriteLine(cc.Get("key123"));
+            Console.WriteLine();
+
         }
     }
 }
