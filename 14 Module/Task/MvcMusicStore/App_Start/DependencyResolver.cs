@@ -24,10 +24,7 @@ namespace MvcMusicStore.App_Start
 
         private static void ConfigureBindings(ContainerBuilder builder, bool needLog)
         {
-            if(needLog)
-                builder.RegisterType<Logger>().As<ILogger>();
-            else
-                builder.RegisterType<FakeLogger>().As<ILogger>();
+            builder.RegisterType<Logger>().WithParameter("logON", needLog).As<ILogger>();            
         }
     }
 }
