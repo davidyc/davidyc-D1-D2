@@ -26,5 +26,10 @@ namespace Cache
         {                 
             _cache.Set(key, value, expirationDate);
         }
+
+        public void Set(string key, T value, CacheItemPolicy policy)
+        {
+            _cache.Set(key, value, policy);
+        }
     }
 }

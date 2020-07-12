@@ -1,5 +1,8 @@
 ﻿using Cache;
+using NorthwindLibrary;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 
 namespace ConsoleDemonstrationCache
@@ -7,6 +10,16 @@ namespace ConsoleDemonstrationCache
     class Program
     {
         static void Main(string[] args)
+        {
+            fibonacciDemonstarion();
+            MemoryCache();
+            //RedisCache();
+           // SqlMonitors();
+
+            Console.WriteLine();
+        }
+
+        static void fibonacciDemonstarion()
         {
             var fibonacci = new Fibonachi(new CustomSystemCache<int>());
 
@@ -24,8 +37,68 @@ namespace ConsoleDemonstrationCache
                 Thread.Sleep(100);
             }
 
-            Console.WriteLine();
+        }
 
+        static void MemoryCache()
+        {
+            var entitiesManager = new EntitiesManager<Category>(new CustomSystemCache<IEnumerable<Category>>());
+
+            for (var i = 0; i < 10; i++)
+            {
+                Console.WriteLine(entitiesManager.GetEntities().Count());
+                Thread.Sleep(100);
+            }
+
+            entitiesManager = new EntitiesManager<Category>(new CustomSystemCache<IEnumerable<Category>>());
+
+            for (var i = 0; i < 10; i++)
+            {
+                Console.WriteLine(entitiesManager.GetEntities().Count());
+                Thread.Sleep(100);
+            }
+        }
+
+        static void RedisCache()
+        {
+            var entitiesManager = new EntitiesManager<Category>(new RedisCache<IEnumerable<Category>>());
+
+            for (var i = 0; i < 10; i++)
+            {
+                Console.WriteLine(entitiesManager.GetEntities().Count());
+                Thread.Sleep(100);
+            }
+
+            entitiesManager = new EntitiesManager<Category>(new RedisCache<IEnumerable<Category>>());
+
+            for (var i = 0; i < 10; i++)
+            {
+                Console.WriteLine(entitiesManager.GetEntities().Count());
+                Thread.Sleep(100);
+            }
+        }
+
+        static void SqlMonitors()
+        {
+            var entitiesManager = new MemoryEntitiesManager<Supplier>(new CustomSystemCache<IEnumerable<Supplier>>(),
+                 @"SELECT [SupplierID]
+                  ,[CompanyName]
+                  ,[ContactName]
+                  ,[ContactTitle]
+                  ,[Address]
+                  ,[City]
+                  ,[Region]
+                  ,[PostalCode]
+                  ,[Country]
+                  ,[Phone]
+                  ,[Fax]
+                  ,[HomePage]
+              FROM [Northwind].[dbo].[Suppliers]");
+
+            for (var i = 0; i < 10; i++)
+            {
+                Console.WriteLine(entitiesManager.GetEntities().Count());
+                Thread.Sleep(100);
+            }
         }
     }
 }
