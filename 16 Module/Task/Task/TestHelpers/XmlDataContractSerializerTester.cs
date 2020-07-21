@@ -8,20 +8,23 @@ using System.Threading.Tasks;
 
 namespace Task.TestHelpers
 {
-	public class XmlDataContractSerializerTester<T> : SerializationTester<T, XmlObjectSerializer>
+	public class XmlDataContractSerializerTester<T> : ICustomSerializer<T>
 	{
-		public XmlDataContractSerializerTester(
-			XmlObjectSerializer serializer, bool showResult = false) : base(serializer, showResult)
-		{ }
-
-		internal override T Deserialization(MemoryStream stream)
+		private  XmlObjectSerializer _serializer;
+		public XmlDataContractSerializerTester(XmlObjectSerializer serializer)
 		{
-			return (T)serializer.ReadObject(stream);
+			_serializer = serializer;
 		}
 
-		internal override void Serialization(T data, MemoryStream stream)
+		public T Deserialization(MemoryStream stream)
 		{
-			serializer.WriteObject(stream, data);
+			return (T)_serializer.ReadObject(stream);
 		}
+
+		public void Serialization(T data, MemoryStream stream)
+		{
+			_serializer.WriteObject(stream, data);
+		}
+		
 	}
 }

@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace Task.TestHelpers
 {
-	public abstract class SerializationTester<TData, TSerializer>
+	public  class SerializationTester<TData>
 	{
-		protected TSerializer serializer;
-		bool showResult;
+		private ICustomSerializer<TData> _serializer;
+		private bool _showResult;
 
-		public SerializationTester(TSerializer serializer, bool showResult = false)
+		public SerializationTester(ICustomSerializer<TData> serializer, bool showResult = false)
 		{
-			this.serializer = serializer;
-			this.showResult = showResult;
+			_serializer = serializer;
+			_showResult = showResult;
 		}
 
 		public TData SerializeAndDeserialize(TData data)
@@ -23,10 +23,10 @@ namespace Task.TestHelpers
 			var stream = new MemoryStream();
 
 			Console.WriteLine("Start serialization");
-			Serialization(data, stream);
+			_serializer.Serialization(data, stream);
 			Console.WriteLine("Serialization finished");
 
-			if (showResult)
+			if (_showResult)
 			{
 				var r = Console.OutputEncoding.GetString(stream.GetBuffer(), 0, (int)stream.Length);
 				Console.WriteLine(r);
@@ -34,13 +34,10 @@ namespace Task.TestHelpers
 
 			stream.Seek(0, SeekOrigin.Begin);
 			Console.WriteLine("Start deserialization");
-			TData result = Deserialization(stream);
+			TData result = _serializer.Deserialization(stream);
 			Console.WriteLine("Deserialization finished");
 
 			return result;
 		}
-
-		internal abstract TData Deserialization(MemoryStream stream);
-		internal abstract void Serialization(TData data, MemoryStream stream);
 	}
 }
