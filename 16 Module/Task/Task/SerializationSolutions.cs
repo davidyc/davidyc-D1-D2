@@ -45,17 +45,13 @@ namespace Task
 		public void ISerializable()
 		{
 			dbContext.Configuration.ProxyCreationEnabled = false;
+
 			var serializationContext = new SerializationContext
 			{
 				ObjectContext = (dbContext as IObjectContextAdapter).ObjectContext,
-				TypeToSerialize = typeof(Order_Detail)
+				TypeToSerialize = typeof(Product)
 			};
-
-			var xmlSerializer = new NetDataContractSerializer()
-			{
-				SurrogateSelector = new OrderDetailSurrogateSelector(),
-				Context = new StreamingContext(StreamingContextStates.All, serializationContext)
-			};
+			var xmlSerializer = new NetDataContractSerializer(new StreamingContext(StreamingContextStates.All, serializationContext));
 			var serializer = new XmlDataContractSerializer<IEnumerable<Product>>(xmlSerializer);
 			var tester = new SerializationTester<IEnumerable<Product>>(serializer, true);
 			var products = dbContext.Products.ToList();
