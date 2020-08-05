@@ -33,10 +33,8 @@ namespace Task
 			};
 			var xmlSerializer = new NetDataContractSerializer(new StreamingContext(StreamingContextStates.All, sc));
 			var serializer = new XmlDataContractSerializerTester<IEnumerable<Category>>(xmlSerializer);
-			var tester = new SerializationTester<IEnumerable<Category>>(serializer, true); 
+			var tester = new SerializationTester<IEnumerable<Category>>(serializer, true);
 			var categories = dbContext.Categories.ToList();
-
-			var c = categories.First();
 
 			tester.SerializeAndDeserialize(categories);
 		}
